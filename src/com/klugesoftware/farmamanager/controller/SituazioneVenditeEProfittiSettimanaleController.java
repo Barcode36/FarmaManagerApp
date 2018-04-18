@@ -10,17 +10,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -41,18 +37,16 @@ public class SituazioneVenditeEProfittiSettimanaleController implements Initiali
     @FXML private DatePicker txtFldDataTo;
     @FXML private Label lblTotVendite;
     @FXML private Label lblTotProfitti;
-    @FXML private RadioButton rdtBtnVistaMensile;
-    @FXML private RadioButton rdtBtnVistaSettimanale;
-    @FXML private Button btnSettimanaBack;
+    @FXML private Button btnBack;
+    @FXML private Button btnForward;
+    @FXML private Label lblPeriodo;
+    @FXML private Label lblTitle;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        rdtBtnVistaMensile.setOnAction(new RadioButtonMensileListener());
-
-        rdtBtnVistaSettimanale.setOnAction(new RadioButtonSettimanaleListener());
-
-
+        btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK));
+        btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD));
         colData.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,String>("data"));
         colTotaleVendite.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,BigDecimal>("totaleVenditeLorde"));
         colTotaleProfitti.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,BigDecimal>("totaleProfitti"));
@@ -182,50 +176,6 @@ public class SituazioneVenditeEProfittiSettimanaleController implements Initiali
 
     }
 
-    @FXML
-    private void listenerSettimanaBack(ActionEvent event){
-        Importazioni importazione = ImportazioniDAOManager.findUltimoInsert();
-        Date lastDate = importazione.getDataUltimoMovImportato();
-        Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-        Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-        Calendar myCal = Calendar.getInstance(Locale.ITALY);
-        myCal.setTime(fromDate);
-        myCal.add(Calendar.DAY_OF_YEAR,-7);
-        fromDate = myCal.getTime();
-
-        myCal.add(Calendar.DAY_OF_YEAR,6);
-        toDate = myCal.getTime();
-        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
-        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
-        ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
-        tableVenditeEProfittiTotali.getItems().clear();
-        tableVenditeEProfittiTotali.getItems().setAll(elencoRighe);
-        tableVenditeEProfittiTotali.refresh();
-
-        aggiornaGrafico(graficoVenditeEProfitti,elencoRighe);
-    }
-
-    @FXML
-    private void listenerSettimanaForward(ActionEvent event){
-        Importazioni importazione = ImportazioniDAOManager.findUltimoInsert();
-        Date lastDate = importazione.getDataUltimoMovImportato();
-        Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-        Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-        Calendar myCal = Calendar.getInstance(Locale.ITALY);
-        myCal.setTime(fromDate);
-        myCal.add(Calendar.DAY_OF_YEAR,7);
-        fromDate = myCal.getTime();
-
-        myCal.add(Calendar.DAY_OF_YEAR,6);
-        toDate = myCal.getTime();
-        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
-        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
-        ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
-        tableVenditeEProfittiTotali.getItems().clear();
-        tableVenditeEProfittiTotali.getItems().setAll(elencoRighe);
-        tableVenditeEProfittiTotali.refresh();
-        aggiornaGrafico(graficoVenditeEProfitti,elencoRighe);
-    }
 
     @FXML
     private void listenerEsciButton(ActionEvent event){
@@ -235,32 +185,107 @@ public class SituazioneVenditeEProfittiSettimanaleController implements Initiali
     @FXML
     private void clickedMese(ActionEvent event) {
         try {
-            rdtBtnVistaMensile = (RadioButton) event.getSource();
-            rdtBtnVistaMensile.setSelected(true);
-            rdtBtnVistaSettimanale.setSelected(false);
-            Stage stage = (Stage) rdtBtnVistaMensile.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("../view/SituazioneVenditeEProfittiMensile.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.BACK));
+            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.FORWARD));
+            lblPeriodo.setText("    Mese  ");
+            lblTitle.setText("Situazione Vendite e Profitti Mensile");
         }catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
-    class RadioButtonMensileListener implements EventHandler<ActionEvent>{
+    @FXML
+    private void clickedSettimana(ActionEvent event) {
+        try {
+            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK));
+            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD));
+            lblPeriodo.setText(" Settimana");
+            lblTitle.setText("Situazione Vendite e Profitti Settimanale");
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    class ChangePeriodListener implements EventHandler<ActionEvent>{
+
+        private PeriodToShow period;
+        private PeriodDirection periodDirection;
+
+        ChangePeriodListener(PeriodToShow period, PeriodDirection periodDirection){
+            this.period = period;
+            this.periodDirection = periodDirection;
+        }
 
         @Override
         public void handle(ActionEvent event) {
-            System.out.println("Hello Month...");
+            Calendar myCal = Calendar.getInstance(Locale.ITALY);
+            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
+            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
+            myCal.setTime(fromDate);
+            switch(period){
+                case SETTIMANA:
+                    switch(periodDirection){
+                        case BACK:
+                            myCal.add(Calendar.DAY_OF_YEAR,-7);
+                            fromDate = myCal.getTime();
+                            myCal.add(Calendar.DAY_OF_YEAR,6);
+                            toDate = myCal.getTime();
+                            break;
+                        case FORWARD:
+                            myCal.add(Calendar.DAY_OF_YEAR,7);
+                            fromDate = myCal.getTime();
+                            myCal.add(Calendar.DAY_OF_YEAR,6);
+                            toDate = myCal.getTime();
+                            break;
+                        case CURRENT:
+                            break;
+                    }
+                    break;
+                case MESE:
+                    switch (periodDirection){
+                        case BACK:
+                            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
+                            myCal.add(Calendar.MONTH,-1);
+                            fromDate = myCal.getTime();
+                            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
+                            toDate = myCal.getTime();
+                            break;
+                        case FORWARD:
+                            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
+                            myCal.add(Calendar.MONTH,1);
+                            fromDate = myCal.getTime();
+                            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
+                            toDate = myCal.getTime();
+                            break;
+                        case CURRENT:
+                            break;
+                    }
+
+            }
+            ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
+            if(!elencoRighe.isEmpty()) {
+                txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
+                txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
+                tableVenditeEProfittiTotali.getItems().clear();
+                tableVenditeEProfittiTotali.getItems().setAll(elencoRighe);
+                tableVenditeEProfittiTotali.refresh();
+                aggiornaGrafico(graficoVenditeEProfitti, elencoRighe);
+            }else{
+                //TODO: Alert per mancanza di movimenti
+                //da vedere popup
+            }
         }
     }
 
-    class RadioButtonSettimanaleListener implements EventHandler<ActionEvent>{
+    enum PeriodToShow {
+        MESE,
+        SETTIMANA
+    }
 
-        @Override
-        public void handle(ActionEvent event) {
-            System.out.println("Hello week...");
-        }
+    enum PeriodDirection{
+        BACK,
+        FORWARD,
+        CURRENT
     }
 }

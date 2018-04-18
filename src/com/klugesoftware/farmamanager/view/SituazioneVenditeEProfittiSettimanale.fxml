@@ -80,7 +80,7 @@
                   </Button>
                   <VBox alignment="CENTER_LEFT" layoutX="575.0" layoutY="28.0" spacing="10.0">
                      <children>
-                        <RadioButton fx:id="rdtBtnVistaSettimanale" mnemonicParsing="false" selected="true" text="Vista Settimanale">
+                        <RadioButton fx:id="rdtBtnVistaSettimanale" mnemonicParsing="false" onAction="#clickedSettimana" selected="true" text="Vista Settimanale">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -88,7 +88,7 @@
                               <ToggleGroup fx:id="vista" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="rdtBtnVistaMensile" mnemonicParsing="false" text="Vista Mensile" toggleGroup="$vista">
+                        <RadioButton fx:id="rdtBtnVistaMensile" mnemonicParsing="false" onAction="#clickedMese" text="Vista Mensile" toggleGroup="$vista">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -105,7 +105,7 @@
                         <Image url="@/img/icons8-about-50.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="btnSettimanaBack" contentDisplay="RIGHT" defaultButton="true" graphicTextGap="5.0" layoutX="313.0" layoutY="23.0" mnemonicParsing="false" onAction="#listenerSettimanaBack" prefHeight="72.0" prefWidth="63.0" text=" ">
+                  <Button fx:id="btnBack" contentDisplay="RIGHT" defaultButton="true" graphicTextGap="5.0" layoutX="313.0" layoutY="23.0" mnemonicParsing="false" prefHeight="72.0" prefWidth="63.0" text=" ">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -117,7 +117,7 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnSettimanaForward" layoutX="494.0" layoutY="24.0" mnemonicParsing="false" onAction="#listenerSettimanaForward" prefHeight="72.0" prefWidth="63.0" text=" ">
+                  <Button fx:id="btnForward" layoutX="494.0" layoutY="24.0" mnemonicParsing="false" prefHeight="72.0" prefWidth="63.0" text=" ">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -129,7 +129,7 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Label layoutX="383.0" layoutY="49.0" text="Settimana" textAlignment="CENTER">
+                  <Label fx:id="lblPeriodo" layoutX="383.0" layoutY="49.0" text=" Settimana" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
