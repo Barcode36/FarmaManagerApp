@@ -185,6 +185,17 @@ public class SituazioneVenditeEProfittiSettimanaleController implements Initiali
     @FXML
     private void clickedMese(ActionEvent event) {
         try {
+            Calendar myCal = Calendar.getInstance(Locale.ITALY);
+            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
+            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
+            myCal.setTime(fromDate);
+            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
+            fromDate = myCal.getTime();
+            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            toDate = myCal.getTime();
+            ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
+            if (!elencoRighe.isEmpty())
+                aggiornaTable(elencoRighe,fromDate,toDate);
             btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.BACK));
             btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.FORWARD));
             lblPeriodo.setText("    Mese  ");
@@ -197,6 +208,17 @@ public class SituazioneVenditeEProfittiSettimanaleController implements Initiali
     @FXML
     private void clickedSettimana(ActionEvent event) {
         try {
+            Calendar myCal = Calendar.getInstance(Locale.ITALY);
+            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
+            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
+            myCal.setTime(fromDate);
+            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
+            fromDate = myCal.getTime();
+            myCal.add(Calendar.DAY_OF_YEAR,6);
+            toDate = myCal.getTime();
+            ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
+            if (!elencoRighe.isEmpty())
+                aggiornaTable(elencoRighe,fromDate,toDate);
             btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK));
             btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD));
             lblPeriodo.setText(" Settimana");
@@ -265,17 +287,21 @@ public class SituazioneVenditeEProfittiSettimanaleController implements Initiali
             }
             ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
             if(!elencoRighe.isEmpty()) {
-                txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
-                txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
-                tableVenditeEProfittiTotali.getItems().clear();
-                tableVenditeEProfittiTotali.getItems().setAll(elencoRighe);
-                tableVenditeEProfittiTotali.refresh();
-                aggiornaGrafico(graficoVenditeEProfitti, elencoRighe);
+                aggiornaTable(elencoRighe,fromDate,toDate);
             }else{
                 //TODO: Alert per mancanza di movimenti
-                //da vedere popup
             }
         }
+    }
+
+    private void aggiornaTable(ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe,Date fromDate,Date toDate){
+        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
+        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
+        tableVenditeEProfittiTotali.getItems().clear();
+        tableVenditeEProfittiTotali.getItems().setAll(elencoRighe);
+        tableVenditeEProfittiTotali.refresh();
+        aggiornaGrafico(graficoVenditeEProfitti, elencoRighe);
+
     }
 
     enum PeriodToShow {
