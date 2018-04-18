@@ -1,7 +1,6 @@
 package com.klugesoftware.farmamanager.model;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
