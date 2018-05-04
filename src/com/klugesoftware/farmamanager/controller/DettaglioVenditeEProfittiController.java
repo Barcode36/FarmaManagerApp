@@ -116,15 +116,17 @@ public class DettaglioVenditeEProfittiController implements Initializable {
 
     private void initTable(Date dateFrom,Date dateTo){
 
+        /* Codice che estrae i Totali dai singoli moviemnti dei prodotti
+
         TotaliGeneraliVenditaEstratti totaliGenerali = new TotaliGeneraliVenditaEstratti();
         EstrazioneDatiGeneraliVendite estrazioneDati = new EstrazioneDatiGeneraliVendite();
         totaliGenerali = estrazioneDati.estraiDatiTotali(dateFrom,dateTo);
+        */
 
-        /*
         TotaliGeneraliVenditaEstratti totaliGenerali = new TotaliGeneraliVenditaEstratti();
         ArrayList<TotaliGeneraliVenditaEstrattiGiornalieri> elencoTotaliGiornalieri = TotaliGeneraliVenditaEstrattiGiornalieriDAOManager.findbetweenDate(dateFrom,dateTo);
         totaliGenerali.addElencoTotaliGeneraliVenditaEstrattiGiornalieri(elencoTotaliGiornalieri);
-        */
+
 
         ObservableList<DettaglioTotaliVenditeRowData> data = FXCollections.observableArrayList(
                 new DettaglioTotaliVenditeRowData("Totale Vendite Lorde",totaliGenerali.getTotaleVenditeLorde(),totaliGenerali.getTotaleVenditeLordeLibere(),totaliGenerali.getTotaleVenditeLordeSSN()),
