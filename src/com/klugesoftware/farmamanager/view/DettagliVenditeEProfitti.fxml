@@ -95,16 +95,6 @@
                         </RadioButton>
                      </children>
                   </VBox>
-                  <TextArea fx:id="txtAreaInfo" editable="false" layoutX="865.0" layoutY="21.0" prefHeight="81.0" prefWidth="222.0" text="I totali si riferiscono alla somma delle vendite libere e delle vendite ssn" wrapText="true">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </TextArea>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="815.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@/img/icons8-about-50.png" />
-                     </image>
-                  </ImageView>
                   <Button fx:id="btnBack" contentDisplay="RIGHT" defaultButton="true" graphicTextGap="5.0" layoutX="313.0" layoutY="23.0" mnemonicParsing="false" prefHeight="72.0" prefWidth="63.0" text=" ">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">

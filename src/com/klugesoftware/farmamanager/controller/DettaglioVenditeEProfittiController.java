@@ -29,7 +29,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 
-public class DettaglioVenditeEProfittiController implements Initializable {
+public class DettaglioVenditeEProfittiController extends VenditeEProfittiController implements Initializable {
 
     @FXML private DatePicker txtFldDataFrom;
     @FXML private DatePicker txtFldDataTo;
@@ -128,6 +128,8 @@ public class DettaglioVenditeEProfittiController implements Initializable {
         totaliGenerali.addElencoTotaliGeneraliVenditaEstrattiGiornalieri(elencoTotaliGiornalieri);
 
 
+        //TODO: messaggio se movimenti mancanti....
+
         ObservableList<DettaglioTotaliVenditeRowData> data = FXCollections.observableArrayList(
                 new DettaglioTotaliVenditeRowData("Totale Vendite Lorde",totaliGenerali.getTotaleVenditeLorde(),totaliGenerali.getTotaleVenditeLordeLibere(),totaliGenerali.getTotaleVenditeLordeSSN()),
                 new DettaglioTotaliVenditeRowData("Totale Sconti",totaliGenerali.getTotaleSconti(),totaliGenerali.getTotaleScontiLibere(),totaliGenerali.getTotaleScontiSSN()),
@@ -162,19 +164,46 @@ public class DettaglioVenditeEProfittiController implements Initializable {
     }
 
     @FXML
-    private void clickedMese(ActionEvent event){
-
+    private void clickedMese(ActionEvent event) {
+        try {
+            Calendar myCal = Calendar.getInstance(Locale.ITALY);
+            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
+            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
+            myCal.setTime(fromDate);
+            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
+            fromDate = myCal.getTime();
+            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            toDate = myCal.getTime();
+            aggiornaTableAndScene(fromDate,toDate,false);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @FXML
-    private void clickedSettimana(ActionEvent event){
+    private void clickedSettimana(ActionEvent event) {
+        try {
+            Calendar myCal = Calendar.getInstance(Locale.ITALY);
+            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
+            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
+            myCal.setTime(fromDate);
+            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
+            fromDate = myCal.getTime();
+            myCal.add(Calendar.DAY_OF_YEAR,6);
+            toDate = myCal.getTime();
+            aggiornaTableAndScene(fromDate,toDate,true);
 
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
+
 
     /*
     aggiorna i dati della tableview in fuzione dell'intervallo di date; setta il giusto valore ai campi DatePicker, inoltre
     setta il giusto valore dei RadioButton, Label atc..in funzione del periodo di riferimento( Settimanale o Mensile)
      */
+    @Override
     public void aggiornaTableAndScene(Date fromDate,Date toDate,boolean vistaSettimanale){
         Calendar myCal = Calendar.getInstance(Locale.ITALY);
         myCal.setTime(fromDate);
@@ -185,14 +214,40 @@ public class DettaglioVenditeEProfittiController implements Initializable {
         txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
         initTable(fromDate,toDate);
         if (vistaSettimanale){
+            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK,this));
+            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD,this));
             rdtBtnVistaSettimanale.setSelected(true);
             lblPeriodo.setText(" Settimana");
-            lblTitle.setText("Situazione Vendite e Profitti Settimanale");
+            lblTitle.setText("Dettaglio Vendite e Profitti Settimanale");
         }else{
+            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.BACK,this));
+            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.FORWARD,this));
             lblPeriodo.setText("    Mese  ");
-            lblTitle.setText("Situazione Vendite e Profitti Mensile");
+            lblTitle.setText("Dettaglio Vendite e Profitti Mensile");
             rdtBtnVistaMensile.setSelected(true);
         }
     }
 
+    @Override
+    public void aggiornaTable(Date dateFrom, Date dateTo) {
+        Calendar myCal = Calendar.getInstance(Locale.ITALY);
+        myCal.setTime(dateFrom);
+        txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
+        myCal.setTime(dateTo);
+        txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
+
+        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom));
+        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(dateTo));
+
+        initTable(dateFrom,dateTo);
+    }
+
+
+    public Date getDateFrom(){
+        return DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
+    }
+
+    public Date getDateTo(){
+        return DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
+    }
 }

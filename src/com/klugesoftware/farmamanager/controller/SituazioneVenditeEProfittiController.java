@@ -33,7 +33,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 
-public class SituazioneVenditeEProfittiController implements Initializable {
+public class SituazioneVenditeEProfittiController extends VenditeEProfittiController implements Initializable {
 
     @FXML private TableView<ElencoTotaliGiornalieriRowData> tableVenditeEProfittiTotali;
     @FXML private TableColumn<ElencoTotaliGiornalieriRowData,String> colData;
@@ -57,8 +57,8 @@ public class SituazioneVenditeEProfittiController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK));
-        btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD));
+        btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK,this));
+        btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD,this));
         colData.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,String>("data"));
         colTotaleVendite.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,BigDecimal>("totaleVenditeLorde"));
         colTotaleProfitti.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,BigDecimal>("totaleProfitti"));
@@ -265,13 +265,7 @@ public class SituazioneVenditeEProfittiController implements Initializable {
             fromDate = myCal.getTime();
             myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
             toDate = myCal.getTime();
-            ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
-            if (!elencoRighe.isEmpty())
-                aggiornaTable(elencoRighe,fromDate,toDate);
-            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.BACK));
-            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.FORWARD));
-            lblPeriodo.setText("    Mese  ");
-            lblTitle.setText("Situazione Vendite e Profitti Mensile");
+            aggiornaTableAndScene(fromDate,toDate,false);
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -288,13 +282,7 @@ public class SituazioneVenditeEProfittiController implements Initializable {
             fromDate = myCal.getTime();
             myCal.add(Calendar.DAY_OF_YEAR,6);
             toDate = myCal.getTime();
-            ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
-            if (!elencoRighe.isEmpty())
-                aggiornaTable(elencoRighe,fromDate,toDate);
-            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK));
-            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD));
-            lblPeriodo.setText(" Settimana");
-            lblTitle.setText("Situazione Vendite e Profitti Settimanale");
+            aggiornaTableAndScene(fromDate,toDate,true);
 
         }catch (Exception ex){
             ex.printStackTrace();
@@ -316,71 +304,6 @@ public class SituazioneVenditeEProfittiController implements Initializable {
         app_stage.hide();
         app_stage.setScene(scene);
         app_stage.show();
-    }
-    
-    class ChangePeriodListener implements EventHandler<ActionEvent>{
-
-        private PeriodToShow period;
-        private PeriodDirection periodDirection;
-
-        ChangePeriodListener(PeriodToShow period, PeriodDirection periodDirection){
-            this.period = period;
-            this.periodDirection = periodDirection;
-        }
-
-        @Override
-        public void handle(ActionEvent event) {
-            Calendar myCal = Calendar.getInstance(Locale.ITALY);
-            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-            myCal.setTime(fromDate);
-            switch(period){
-                case SETTIMANA:
-                    switch(periodDirection){
-                        case BACK:
-                            myCal.add(Calendar.DAY_OF_YEAR,-7);
-                            fromDate = myCal.getTime();
-                            myCal.add(Calendar.DAY_OF_YEAR,6);
-                            toDate = myCal.getTime();
-                            break;
-                        case FORWARD:
-                            myCal.add(Calendar.DAY_OF_YEAR,7);
-                            fromDate = myCal.getTime();
-                            myCal.add(Calendar.DAY_OF_YEAR,6);
-                            toDate = myCal.getTime();
-                            break;
-                        case CURRENT:
-                            break;
-                    }
-                    break;
-                case MESE:
-                    switch (periodDirection){
-                        case BACK:
-                            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
-                            myCal.add(Calendar.MONTH,-1);
-                            fromDate = myCal.getTime();
-                            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
-                            toDate = myCal.getTime();
-                            break;
-                        case FORWARD:
-                            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
-                            myCal.add(Calendar.MONTH,1);
-                            fromDate = myCal.getTime();
-                            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
-                            toDate = myCal.getTime();
-                            break;
-                        case CURRENT:
-                            break;
-                    }
-
-            }
-            ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
-            if(!elencoRighe.isEmpty()) {
-                aggiornaTable(elencoRighe,fromDate,toDate);
-            }else{
-                //TODO: Alert per mancanza di movimenti
-            }
-        }
     }
 
     /*
@@ -406,18 +329,19 @@ public class SituazioneVenditeEProfittiController implements Initializable {
     /*
     aggiorna il periodo di riferimento della tabella e le varie label in funzione del periodo di riferimento( settimana o mese)
      */
+    @Override
     public void aggiornaTableAndScene(Date dateFrom, Date dateTo, boolean vistaSettimanale){
         ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((dateFrom),(dateTo)));
         aggiornaTable(elencoRighe,dateFrom,dateTo);
         if (vistaSettimanale){
-            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK));
-            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD));
+            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK,this));
+            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD,this));
             lblPeriodo.setText(" Settimana");
             lblTitle.setText("Situazione Vendite e Profitti Settimanale");
             rdtBtnVistaSettimanale.setSelected(true);
         }else{
-            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.BACK));
-            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.FORWARD));
+            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.BACK,this));
+            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.FORWARD,this));
             lblPeriodo.setText("    Mese  ");
             lblTitle.setText("Situazione Vendite e Profitti Mensile");
             rdtBtnVistaMensile.setSelected(true);
@@ -425,30 +349,19 @@ public class SituazioneVenditeEProfittiController implements Initializable {
 
     }
 
-    enum PeriodToShow {
-        MESE,
-        SETTIMANA
+    @Override
+    public void aggiornaTable(Date dateFrom,Date dateTo){
+        ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((dateFrom),(dateTo)));
+        //TODO: messsaggio se moviemnti mancanti....
+        aggiornaTable(elencoRighe,dateFrom,dateTo);
     }
 
-    enum PeriodDirection{
-        BACK,
-        FORWARD,
-        CURRENT
+    public Date getDateFrom(){
+        return DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
     }
 
-    public DatePicker getTxtFldDataFrom() {
-        return txtFldDataFrom;
+    public Date getDateTo(){
+        return DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
     }
 
-    public DatePicker getTxtFldDataTo(){
-        return txtFldDataTo;
-    }
-
-    public RadioButton getRdtBtnVistaSettimanale(){
-        return rdtBtnVistaSettimanale;
-    }
-
-    public RadioButton getRdtBtnVistaMensile(){
-        return rdtBtnVistaMensile;
-    }
 }
