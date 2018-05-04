@@ -37,7 +37,6 @@
 
 .table-cell{
     -fx-font-size: 18;
-    -fx-alignment: center;
 }
 
 #txtFldDataFrom{
@@ -58,6 +57,7 @@
 #panelBottom{
     -fx-background-color: rgb(238, 238, 238);
 }
+
 
 
 

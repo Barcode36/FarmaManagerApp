@@ -1,3 +1,4 @@
+
 package com.klugesoftware.farmamanager.model;
 
 import java.io.Serializable;

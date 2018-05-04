@@ -161,7 +161,7 @@
                <content>
                   <TableView fx:id="tableDettaglioTotali" prefHeight="601.0" prefWidth="677.0">
                     <columns>
-                        <TableColumn fx:id="colDescrizione" prefWidth="133.0" />
+                        <TableColumn fx:id="colDescrizione" prefWidth="133.0" text=" " />
                       <TableColumn fx:id="colTotaliLibere" prefWidth="168.0" text="Totali Vendite&#10;Libere&#10;" />
                       <TableColumn fx:id="colTotaliSSN" prefWidth="168.0" text="Totali  Vendite&#10;SSN" />
                         <TableColumn fx:id="colTotale" prefWidth="133.0" text="Totali&#10;Vendite&#10;" />
@@ -173,7 +173,7 @@
                </content>
             </ScrollPane>
             <Pane />
-            <PieChart fx:id="graficoComposizioneProfitto" prefHeight="603.0" prefWidth="504.0" title="Composizione Profitto" />
+            <PieChart fx:id="graficoComposizioneProfitto" title="Composizione Profitto" />
          </children>
       </HBox>
    </center>

@@ -9,14 +9,18 @@ import com.klugesoftware.farmamanager.utility.DateUtility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -44,6 +48,7 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
     @FXML private TableColumn<DettaglioTotaliVenditeRowData,BigDecimal> colTotaliLibere;
     @FXML private TableColumn<DettaglioTotaliVenditeRowData,BigDecimal> colTotaliSSN;
     @FXML private TableColumn<DettaglioTotaliVenditeRowData,BigDecimal> colTotale;
+    @FXML private PieChart graficoComposizioneProfitto;
 
 
 
@@ -68,7 +73,13 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
                         if (item == null || empty){
                             setText(null);
                         }else{
-                            setText(nf.format(item));
+                            if(item.doubleValue() > 0)
+                                setText(nf.format(item));
+                            else
+                            {
+                                item = item.multiply(new BigDecimal(-1));
+                                setText(item.toString() + " %");
+                            }
                         }
                     }
                 };
@@ -86,7 +97,13 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
                         if (item == null || empty){
                             setText(null);
                         }else{
-                            setText(nf.format(item));
+                            if(item.doubleValue() > 0)
+                                setText(nf.format(item));
+                            else
+                            {
+                                item = item.multiply(new BigDecimal(-1));
+                                setText(item.toString() + " %");
+                            }
                         }
                     }
                 };
@@ -103,7 +120,12 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
                         if (item == null || empty){
                             setText(null);
                         }else{
-                            setText(nf.format(item));
+                            if(item.doubleValue() > 0)
+                                setText(nf.format(item));
+                            else {
+                                item = item.multiply(new BigDecimal(-1));
+                                setText(item.toString() + " %");
+                            }
                         }
                     }
                 };
@@ -131,19 +153,42 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
         //TODO: messaggio se movimenti mancanti....
 
         ObservableList<DettaglioTotaliVenditeRowData> data = FXCollections.observableArrayList(
-                new DettaglioTotaliVenditeRowData("Totale Vendite Lorde",totaliGenerali.getTotaleVenditeLorde(),totaliGenerali.getTotaleVenditeLordeLibere(),totaliGenerali.getTotaleVenditeLordeSSN()),
-                new DettaglioTotaliVenditeRowData("Totale Sconti",totaliGenerali.getTotaleSconti(),totaliGenerali.getTotaleScontiLibere(),totaliGenerali.getTotaleScontiSSN()),
-                new DettaglioTotaliVenditeRowData("Totale Vendite al netto degli sconti",totaliGenerali.getTotaleVenditeNettoSconti(),totaliGenerali.getTotaleVenditeNettoScontiLibere(),totaliGenerali.getTotaleVenditeNettoScontiSSN()),
-                new DettaglioTotaliVenditeRowData("Totale Vendite netto iva e sconti",totaliGenerali.getTotaleVenditeNette(),totaliGenerali.getTotaleVenditeNetteLibere(),totaliGenerali.getTotaleVenditeNetteSSN()),
-                new DettaglioTotaliVenditeRowData("Totale Costi al netto iva",totaliGenerali.getTotaleCostiNetti(),totaliGenerali.getTotaleCostiNettiLibere(),totaliGenerali.getTotaleCostiNettiSSN()),
-                new DettaglioTotaliVenditeRowData("Totale Profitti",totaliGenerali.getTotaleProfitti(),totaliGenerali.getTotaleProfittiLibere(),totaliGenerali.getTotaleProfittiSSN()),
-                new DettaglioTotaliVenditeRowData("Margine",totaliGenerali.getMargineMedio(),totaliGenerali.getMargineMedioLibere(),totaliGenerali.getMargineMedioSSN()),
-                new DettaglioTotaliVenditeRowData("Ricarico",totaliGenerali.getRicaricoMedio(),totaliGenerali.getRicaricoMedioLibere(),totaliGenerali.getRicaricoMedioSSN())
+                new DettaglioTotaliVenditeRowData("Totale Vendite\n Lorde\n",totaliGenerali.getTotaleVenditeLorde(),totaliGenerali.getTotaleVenditeLordeLibere(),totaliGenerali.getTotaleVenditeLordeSSN()),
+                new DettaglioTotaliVenditeRowData("Totale Sconti\n",totaliGenerali.getTotaleSconti(),totaliGenerali.getTotaleScontiLibere(),totaliGenerali.getTotaleScontiSSN()),
+                new DettaglioTotaliVenditeRowData("Totale Vendite\n al netto degli sconti\n",totaliGenerali.getTotaleVenditeNettoSconti(),totaliGenerali.getTotaleVenditeNettoScontiLibere(),totaliGenerali.getTotaleVenditeNettoScontiSSN()),
+                new DettaglioTotaliVenditeRowData("Totale Vendite\n netto iva e sconti\n",totaliGenerali.getTotaleVenditeNette(),totaliGenerali.getTotaleVenditeNetteLibere(),totaliGenerali.getTotaleVenditeNetteSSN()),
+                new DettaglioTotaliVenditeRowData("Totale Costi\n al netto iva\n",totaliGenerali.getTotaleCostiNetti(),totaliGenerali.getTotaleCostiNettiLibere(),totaliGenerali.getTotaleCostiNettiSSN()),
+                new DettaglioTotaliVenditeRowData("Totale Profitti\n",totaliGenerali.getTotaleProfitti(),totaliGenerali.getTotaleProfittiLibere(),totaliGenerali.getTotaleProfittiSSN()),
+                new DettaglioTotaliVenditeRowData("Margine\n",totaliGenerali.getMargineMedio().multiply(new BigDecimal(-1)),totaliGenerali.getMargineMedioLibere().multiply(new BigDecimal(-1)),totaliGenerali.getMargineMedioSSN().multiply(new BigDecimal(-1))),
+                new DettaglioTotaliVenditeRowData("Ricarico\n",totaliGenerali.getRicaricoMedio().multiply(new BigDecimal(-1)),totaliGenerali.getRicaricoMedioLibere().multiply(new BigDecimal(-1)),totaliGenerali.getRicaricoMedioSSN().multiply(new BigDecimal(-1)))
         );
 
         tableDettaglioTotali.getItems().clear();
         tableDettaglioTotali.getItems().setAll(data);
         tableDettaglioTotali.refresh();
+
+        ObservableList<PieChart.Data> pieChartData =
+                FXCollections.observableArrayList(
+                        new PieChart.Data("Profitto Vendite SSN", totaliGenerali.getTotaleProfittiSSN().doubleValue()),
+                        new PieChart.Data("Profitto Vendite Libere", totaliGenerali.getTotaleProfittiLibere().doubleValue())
+                        );
+        graficoComposizioneProfitto.getData().clear();
+        graficoComposizioneProfitto.setData(pieChartData);
+
+        Label caption = new Label("");
+        caption.setTextFill(Color.DARKORANGE);
+        caption.setStyle("-fx-font: 24 arial;");
+
+        for (PieChart.Data dataTemp : graficoComposizioneProfitto.getData()) {
+            dataTemp.getNode().addEventHandler(MouseEvent.ANY,
+                    new EventHandler<MouseEvent>() {
+                        @Override public void handle(MouseEvent e) {
+                            caption.setTranslateX(e.getSceneX());
+                            caption.setTranslateY(e.getSceneY());
+                            caption.setText(String.valueOf(dataTemp.getPieValue()) + "%");
+                        }
+                    });
+        }
 
     }
 
