@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
+import com.klugesoftware.farmamanager.IOFunctions.TotaliGeneraliResiVenditaEstratti;
 import com.klugesoftware.farmamanager.model.CustomRoundingAndScaling;
 import com.klugesoftware.farmamanager.model.ProdottiVenditaLibera;
 import com.klugesoftware.farmamanager.model.ProdottiVenditaSSN;
@@ -344,6 +345,169 @@ public class TotaliGeneraliVenditaEstratti {
 			totaleVenditeNettoScontiSSN = totaleVenditeLordeSSN.add(totaleScontiSSN.multiply(new BigDecimal(-1)));
 		}
 	}
+
+	public void addElencoTotaliGeneraliVenditaEstrattiGiornalieri(ArrayList<TotaliGeneraliVenditaEstrattiGiornalieri> elencoTotaliGiornalieri){
+
+	    /*
+        private BigDecimal totaleVenditeLorde;
+        private BigDecimal totaleVenditeLordeLibere;
+        private BigDecimal totaleVenditeLordeSSN;
+        private BigDecimal totaleVenditeNette;
+        private BigDecimal totaleVenditeNetteLibere;
+        private BigDecimal totaleVenditeNetteSSN;
+        private BigDecimal totaleSconti;
+        private BigDecimal totaleScontiSSN;
+        private BigDecimal totaleScontiLibere;
+        private BigDecimal totaleVenditeNettoSconti;
+        private BigDecimal totaleVenditeNettoScontiLibere;
+        private BigDecimal totaleVenditeNettoScontiSSN;
+        private BigDecimal totaleCostiNetti;
+        private BigDecimal totaleCostiNettiLibere;
+        private BigDecimal totaleCostiNettiSSN;
+        private BigDecimal totaleProfitti;
+        private BigDecimal totaleProfittiLibere;
+        private BigDecimal totaleProfittiSSN;
+        private BigDecimal margineMedio;
+        private BigDecimal margineMedioLibere;
+        private BigDecimal margineMedioSSN;
+        private BigDecimal ricaricoMedio;
+        private BigDecimal ricaricoMedioLibere;
+        private BigDecimal ricaricoMedioSSN;
+        private boolean costiPresunti;
+    */
+        Iterator<TotaliGeneraliVenditaEstrattiGiornalieri> iterElenco = elencoTotaliGiornalieri.iterator();
+        TotaliGeneraliVenditaEstrattiGiornalieri totaleGenerale = new TotaliGeneraliVenditaEstrattiGiornalieri();
+        costiPresunti = false;
+        while (iterElenco.hasNext()){
+            totaleGenerale = (TotaliGeneraliVenditaEstrattiGiornalieri)iterElenco.next();
+            totaleVenditeLorde = totaleVenditeLorde.add(totaleGenerale.getTotaleVenditeLorde());
+            totaleVenditeLordeLibere = totaleVenditeLordeLibere.add(totaleGenerale.getTotaleVenditeLordeLibere());
+            totaleVenditeLordeSSN = totaleVenditeLordeSSN.add(totaleGenerale.getTotaleVenditeLordeSSN());
+            totaleVenditeNette = totaleVenditeNette.add(totaleGenerale.getTotaleVenditeNette());
+            totaleVenditeNetteLibere = totaleVenditeNetteLibere.add(totaleGenerale.getTotaleVenditeNetteLibere());
+            totaleVenditeNetteSSN = totaleVenditeNetteSSN.add(totaleGenerale.getTotaleVenditeNetteSSN());
+            totaleSconti = totaleSconti.add(totaleGenerale.getTotaleSconti());
+            totaleScontiLibere = totaleScontiLibere.add(totaleGenerale.getTotaleScontiLibere());
+            totaleScontiSSN = totaleScontiSSN.add(totaleGenerale.getTotaleScontiSSN());
+            totaleVenditeNettoSconti = totaleVenditeNettoSconti.add(totaleGenerale.getTotaleVenditeNettoSconti());
+            totaleVenditeNettoScontiLibere = totaleVenditeNettoScontiLibere.add(totaleGenerale.getTotaleVenditeNettoScontiLibere());
+            totaleVenditeNettoScontiSSN = totaleVenditeNettoScontiSSN.add(totaleGenerale.getTotaleVenditeNettoScontiSSN());
+            totaleCostiNetti = totaleCostiNetti.add(totaleGenerale.getTotaleCostiNetti());
+            totaleCostiNettiLibere = totaleCostiNettiLibere.add(totaleGenerale.getTotaleCostiNettiLibere());
+            totaleCostiNettiSSN = totaleCostiNettiSSN.add(totaleGenerale.getTotaleCostiNettiSSN());
+            totaleProfitti = totaleProfitti.add(totaleGenerale.getTotaleProfitti());
+            totaleProfittiLibere = totaleProfittiLibere.add(totaleGenerale.getTotaleProfittiLibere());
+            totaleProfittiSSN = totaleProfittiSSN.add(totaleGenerale.getTotaleProfittiSSN());
+            if (totaleGenerale.isCostiPresunti())
+                costiPresunti = true;
+        }
+
+        double tempMargine = 0;
+        double tempMargineLibere = 0;
+        double tempMargineSSN = 0;
+        if (this.getTotaleProfitti().doubleValue() > 0 && this.getTotaleVenditeNette().doubleValue() > 0)
+            tempMargine = (this.getTotaleProfitti().doubleValue()/this.getTotaleVenditeNette().doubleValue())*100;
+        if (this.getTotaleProfittiLibere().doubleValue() > 0 && this.getTotaleVenditeNetteLibere().doubleValue() > 0)
+            tempMargineLibere = (this.getTotaleProfittiLibere().doubleValue()/this.getTotaleVenditeNetteLibere().doubleValue())*100;
+        if (this.getTotaleProfittiSSN().doubleValue() > 0 && this.getTotaleVenditeNetteSSN().doubleValue() > 0)
+            tempMargineSSN = (this.getTotaleProfittiSSN().doubleValue()/this.getTotaleVenditeNetteSSN().doubleValue())*100;
+        this.setMargineMedio(new BigDecimal(tempMargine).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        this.setMargineMedioLibere(new BigDecimal(tempMargineLibere).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        this.setMargineMedioSSN(new BigDecimal(tempMargineSSN).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+
+        double tempRicarico = 0;
+        double tempRicaricoLibere = 0;
+        double tempRicaricoSSN = 0;
+        if (this.getTotaleProfitti().doubleValue() > 0 && this.getTotaleCostiNetti().doubleValue() > 0)
+            tempRicarico = (this.getTotaleProfitti().doubleValue()/this.getTotaleCostiNetti().doubleValue())*100;
+        if (this.getTotaleProfittiLibere().doubleValue() > 0 && this.getTotaleCostiNettiLibere().doubleValue() > 0)
+            tempRicaricoLibere = (this.getTotaleProfittiLibere().doubleValue()/this.getTotaleCostiNettiLibere().doubleValue())*100;
+        if (this.getTotaleProfittiSSN().doubleValue() > 0 && this.getTotaleCostiNettiSSN().doubleValue() > 0)
+            tempRicaricoSSN = (this.getTotaleProfittiSSN().doubleValue()/this.getTotaleCostiNettiSSN().doubleValue())*100;
+        this.setRicaricoMedio(new BigDecimal(tempRicarico).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        this.setRicaricoMedioLibere(new BigDecimal(tempRicaricoLibere).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        this.setRicaricoMedioSSN(new BigDecimal(tempRicaricoSSN).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+
+    }
+
+    public void addTotaleEstrattoGiornaliero(TotaliGeneraliVenditaEstrattiGiornalieri totaleGenerale){
+        totaleVenditeLorde = totaleVenditeLorde.add(totaleGenerale.getTotaleVenditeLorde());
+        totaleVenditeLordeLibere = totaleVenditeLordeLibere.add(totaleGenerale.getTotaleVenditeLordeLibere());
+        totaleVenditeLordeSSN = totaleVenditeLordeSSN.add(totaleGenerale.getTotaleVenditeLordeSSN());
+        totaleVenditeNette = totaleVenditeNette.add(totaleGenerale.getTotaleVenditeNette());
+        totaleVenditeNetteLibere = totaleVenditeNetteLibere.add(totaleGenerale.getTotaleVenditeNetteLibere());
+        totaleVenditeNetteSSN = totaleVenditeNetteSSN.add(totaleGenerale.getTotaleVenditeNetteSSN());
+        totaleSconti = totaleSconti.add(totaleGenerale.getTotaleSconti());
+        totaleScontiLibere = totaleScontiLibere.add(totaleGenerale.getTotaleScontiLibere());
+        totaleScontiSSN = totaleScontiSSN.add(totaleGenerale.getTotaleScontiSSN());
+        totaleVenditeNettoSconti = totaleVenditeNettoSconti.add(totaleGenerale.getTotaleVenditeNettoSconti());
+        totaleVenditeNettoScontiLibere = totaleVenditeNettoScontiLibere.add(totaleGenerale.getTotaleVenditeNettoScontiLibere());
+        totaleVenditeNettoScontiSSN = totaleVenditeNettoScontiSSN.add(totaleGenerale.getTotaleVenditeNettoScontiSSN());
+        totaleCostiNetti = totaleCostiNetti.add(totaleGenerale.getTotaleCostiNetti());
+        totaleCostiNettiLibere = totaleCostiNettiLibere.add(totaleGenerale.getTotaleCostiNettiLibere());
+        totaleCostiNettiSSN = totaleCostiNettiSSN.add(totaleGenerale.getTotaleCostiNettiSSN());
+        totaleProfitti = totaleProfitti.add(totaleGenerale.getTotaleProfitti());
+        totaleProfittiLibere = totaleProfittiLibere.add(totaleGenerale.getTotaleProfittiLibere());
+        totaleProfittiSSN = totaleProfittiSSN.add(totaleGenerale.getTotaleProfittiSSN());
+
+        if(totaleGenerale.isCostiPresunti())
+            costiPresunti = true;
+
+        double tempMargine = 0;
+        double tempMargineLibere = 0;
+        double tempMargineSSN = 0;
+        if (this.getTotaleProfitti().doubleValue() > 0 && this.getTotaleVenditeNette().doubleValue() > 0)
+            tempMargine = (this.getTotaleProfitti().doubleValue()/this.getTotaleVenditeNette().doubleValue())*100;
+        if (this.getTotaleProfittiLibere().doubleValue() > 0 && this.getTotaleVenditeNetteLibere().doubleValue() > 0)
+            tempMargineLibere = (this.getTotaleProfittiLibere().doubleValue()/this.getTotaleVenditeNetteLibere().doubleValue())*100;
+        if (this.getTotaleProfittiSSN().doubleValue() > 0 && this.getTotaleVenditeNetteSSN().doubleValue() > 0)
+            tempMargineSSN = (this.getTotaleProfittiSSN().doubleValue()/this.getTotaleVenditeNetteSSN().doubleValue())*100;
+        this.setMargineMedio(new BigDecimal(tempMargine).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        this.setMargineMedioLibere(new BigDecimal(tempMargineLibere).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        this.setMargineMedioSSN(new BigDecimal(tempMargineSSN).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+
+        double tempRicarico = 0;
+        double tempRicaricoLibere = 0;
+        double tempRicaricoSSN = 0;
+        if (this.getTotaleProfitti().doubleValue() > 0 && this.getTotaleCostiNetti().doubleValue() > 0)
+            tempRicarico = (this.getTotaleProfitti().doubleValue()/this.getTotaleCostiNetti().doubleValue())*100;
+        if (this.getTotaleProfittiLibere().doubleValue() > 0 && this.getTotaleCostiNettiLibere().doubleValue() > 0)
+            tempRicaricoLibere = (this.getTotaleProfittiLibere().doubleValue()/this.getTotaleCostiNettiLibere().doubleValue())*100;
+        if (this.getTotaleProfittiSSN().doubleValue() > 0 && this.getTotaleCostiNettiSSN().doubleValue() > 0)
+            tempRicaricoSSN = (this.getTotaleProfittiSSN().doubleValue()/this.getTotaleCostiNettiSSN().doubleValue())*100;
+        this.setRicaricoMedio(new BigDecimal(tempRicarico).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        this.setRicaricoMedioLibere(new BigDecimal(tempRicaricoLibere).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        this.setRicaricoMedioSSN(new BigDecimal(tempRicaricoSSN).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+
+    }
+
+    public void azzeraTotali(){
+        totaleVenditeLorde = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleVenditeLordeLibere = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleVenditeLordeSSN = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleVenditeNette = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleVenditeNetteLibere = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleVenditeNetteSSN = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleVenditeNettoSconti = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleVenditeNettoScontiLibere = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleVenditeNettoScontiSSN = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleSconti = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleScontiSSN = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleScontiLibere = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleCostiNetti = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleCostiNettiLibere = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleCostiNettiSSN = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleProfitti = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleProfittiLibere = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        totaleProfittiSSN = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        margineMedio = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        margineMedioLibere = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        margineMedioSSN = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        ricaricoMedio = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        ricaricoMedioLibere = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        ricaricoMedioSSN = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+        costiPresunti = false;
+    }
 	
 	public void aggiornaTotaliGenerali(Vendite vendita){
 		ArrayList<Vendite> elenco = new ArrayList<Vendite>();

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 import com.klugesoftware.farmamanager.model.CustomRoundingAndScaling;
 import com.klugesoftware.farmamanager.model.ProdottiVenditaLibera;
@@ -15,9 +14,6 @@ import com.klugesoftware.farmamanager.model.ResiProdottiVenditaSSN;
 import com.klugesoftware.farmamanager.model.ResiVendite;
 import com.klugesoftware.farmamanager.model.ResiVenditeLibere;
 import com.klugesoftware.farmamanager.model.ResiVenditeSSN;
-import com.klugesoftware.farmamanager.model.Vendite;
-import com.klugesoftware.farmamanager.model.VenditeLibere;
-import com.klugesoftware.farmamanager.model.VenditeSSN;
 import com.klugesoftware.farmamanager.IOFunctions.TotaliGeneraliResiVenditaEstratti;
 
 

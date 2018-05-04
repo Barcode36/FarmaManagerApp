@@ -1,13 +1,9 @@
 package com.klugesoftware.farmamanager.db;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import com.klugesoftware.farmamanager.model.ResiVendite;
 import com.klugesoftware.farmamanager.model.Vendite;
 import com.klugesoftware.farmamanager.IOFunctions.TotaliGeneraliResiVenditaEstratti;
 import com.klugesoftware.farmamanager.IOFunctions.TotaliGeneraliVenditaEstratti;
-import com.klugesoftware.farmamanager.DTO.ElencoProdottiLiberaVenditaRowData;
 import com.klugesoftware.farmamanager.utility.DateUtility;
 
 public class TotaliGeneraliVenditaEstrattiDAOManager {

@@ -10,7 +10,6 @@ import java.util.Date;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.klugesoftware.farmamanager.IOFunctions.TotaliGeneraliVenditaEstratti;
 import com.klugesoftware.farmamanager.IOFunctions.TotaliGeneraliVenditaEstrattiGiornalieri;
 
 public class TotaliGeneraliVenditaEstrattiGiornalieriDAO {
@@ -40,6 +39,8 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAO {
 	static final String SQL_FIND_BY_DATA = "SELECT * FROM TotaliGeneraliGiornalieri WHERE data = ? ";
 	
 	static final String SQL_FIND_COUNT_BY_DATA = "SELECT COUNT(*) FROM TotaliGeneraliGiornalieri WHERE data = ? ";
+
+	static final String SQL_FIND_BETWEEN_DATE = "SELECT * FROM TotaliGeneraliGiornalieri WHERE data BETWEEN ? AND ?";
 	
 	private final Logger logger = LogManager.getLogger(TotaliGeneraliVenditaEstrattiGiornalieriDAO.class.getName());
 	
@@ -215,6 +216,10 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAO {
 	
 	public TotaliGeneraliVenditaEstrattiGiornalieri findByDate(Date data){
 		return find(SQL_FIND_BY_DATA,data);
+	}
+
+	public ArrayList<TotaliGeneraliVenditaEstrattiGiornalieri> findBetweenDate(Date dateFrom,Date dateTo){
+		return findList(SQL_FIND_BETWEEN_DATE,dateFrom,dateTo);
 	}
 	
 	public int findCountByDate(Date data){

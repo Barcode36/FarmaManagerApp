@@ -1,5 +1,6 @@
 package com.klugesoftware.farmamanager.db;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.klugesoftware.farmamanager.model.ResiVendite;
@@ -25,6 +26,12 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAOManager {
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		TotaliGeneraliVenditaEstrattiGiornalieriDAO totaliGeneraliDAO = daoFactory.getTotaliGeneraliVenditaEstrattiGiornalieriDAO();
 		return totaliGeneraliDAO.findByDate(data);		
+	}
+
+	public static ArrayList<TotaliGeneraliVenditaEstrattiGiornalieri> findbetweenDate(Date dataFrom, Date dateTo){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		TotaliGeneraliVenditaEstrattiGiornalieriDAO totaliGeneraliDAO = daoFactory.getTotaliGeneraliVenditaEstrattiGiornalieriDAO();
+		return totaliGeneraliDAO.findBetweenDate(dataFrom,dateTo);
 	}
  
 	public static TotaliGeneraliVenditaEstrattiGiornalieri update(TotaliGeneraliVenditaEstrattiGiornalieri totaleGenerale){

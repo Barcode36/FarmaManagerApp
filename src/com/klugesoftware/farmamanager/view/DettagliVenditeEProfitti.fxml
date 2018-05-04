@@ -31,13 +31,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@css/SituazioneVenditeEProfittiMensile.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.SituazioneVenditeEProfittiMensileController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@css/DettaglioVenditeEProfitti.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.DettaglioVenditeEProfittiController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
             <Pane fx:id="pnlTitle" prefHeight="50.0">
                <children>
-                  <Label fx:id="lblTitle" layoutX="404.0" layoutY="8.0" text="Situazione Vendite e Profitti Mensile">
+                  <Label fx:id="lblTitle" layoutX="377.0" layoutY="8.0" text="Dettaglio Vendite e Profitti Settimanale">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -80,7 +80,7 @@
                   </Button>
                   <VBox alignment="CENTER_LEFT" layoutX="575.0" layoutY="28.0" spacing="10.0">
                      <children>
-                        <RadioButton fx:id="rdtBtnVistaSettimanale" mnemonicParsing="false" selected="true" text="Vista Settimanale">
+                        <RadioButton fx:id="rdtBtnVistaSettimanale" mnemonicParsing="false" onAction="#clickedSettimana" selected="true" text="Vista Settimanale">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -88,7 +88,7 @@
                               <ToggleGroup fx:id="vista" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="rdtBtnVistaMensile" mnemonicParsing="false" text="Vista Mensile" toggleGroup="$vista">
+                        <RadioButton fx:id="rdtBtnVistaMensile" mnemonicParsing="false" onAction="#clickedMese" text="Vista Mensile" toggleGroup="$vista">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -105,7 +105,7 @@
                         <Image url="@/img/icons8-about-50.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="btnMeseBack" contentDisplay="RIGHT" defaultButton="true" graphicTextGap="5.0" layoutX="335.0" layoutY="23.0" mnemonicParsing="false" onAction="#listenerMeseBack" prefHeight="72.0" prefWidth="63.0" text=" ">
+                  <Button fx:id="btnBack" contentDisplay="RIGHT" defaultButton="true" graphicTextGap="5.0" layoutX="313.0" layoutY="23.0" mnemonicParsing="false" prefHeight="72.0" prefWidth="63.0" text=" ">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -117,7 +117,7 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnMeseForward" layoutX="478.0" layoutY="25.0" mnemonicParsing="false" onAction="#listenerMeseForward" prefHeight="72.0" prefWidth="63.0" text=" ">
+                  <Button fx:id="btnForward" layoutX="494.0" layoutY="24.0" mnemonicParsing="false" prefHeight="72.0" prefWidth="63.0" text=" ">
                      <graphic>
                         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -129,7 +129,7 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Label layoutX="409.0" layoutY="47.0" text="Mese" textAlignment="CENTER">
+                  <Label fx:id="lblPeriodo" layoutX="383.0" layoutY="49.0" text=" Settimana" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -155,7 +155,10 @@
                <children>
                   <Button fx:id="btnVenditeLibere" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Libere" />
                   <Button fx:id="btnVenditeSSN" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;SSN" />
-                  <Button fx:id="btnDettaglioTotali" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Dettaglio&#10;Totali&#10;Vendite" />
+                  <Button fx:id="btnDettaglioTotali" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Confronta &#10;con periodo&#10;precedente">
+                     <font>
+                        <Font size="10.0" />
+                     </font></Button>
                </children>
             </VBox>
          </children>
@@ -164,13 +167,14 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane prefHeight="639.0" prefWidth="606.0">
+            <ScrollPane prefHeight="603.0" prefWidth="680.0">
                <content>
-                  <TableView fx:id="tableVenditeEProfittiTotali" prefHeight="600.0" prefWidth="604.0">
+                  <TableView fx:id="tableDettaglioTotali" prefHeight="601.0" prefWidth="677.0">
                     <columns>
-                      <TableColumn fx:id="colData" prefWidth="160.0" text="Data" />
-                      <TableColumn fx:id="colTotaleVendite" prefWidth="241.0" text="Totale &#10;Vendite" />
-                        <TableColumn fx:id="colTotaleProfitti" prefWidth="75.0" text="Totale&#10;Profitti&#10;" />
+                        <TableColumn fx:id="colDescrizione" prefWidth="133.0" />
+                      <TableColumn fx:id="colTotaliLibere" prefWidth="168.0" text="Totali Vendite&#10;Libere&#10;" />
+                      <TableColumn fx:id="colTotaliSSN" prefWidth="168.0" text="Totali  Vendite&#10;SSN" />
+                        <TableColumn fx:id="colTotale" prefWidth="133.0" text="Totali&#10;Vendite&#10;" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -178,50 +182,8 @@
                   </TableView>
                </content>
             </ScrollPane>
-            <Pane>
-               <children>
-                  <AreaChart fx:id="graficoVenditeEProfitti" layoutX="-6.0" layoutY="141.0" prefHeight="400.0" prefWidth="571.0" title="Vendite e Profitti">
-                    <xAxis>
-                      <CategoryAxis gapStartAndEnd="false" side="BOTTOM" tickLength="1.0" fx:id="xAxis" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis fx:id="yAxis" side="LEFT" tickLength="1.0" />
-                    </yAxis>
-                  </AreaChart>
-                  <GridPane layoutX="50.0" layoutY="23.0" prefHeight="87.0" prefWidth="459.0">
-                    <columnConstraints>
-                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label text="Totale Vendite" textAlignment="CENTER">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lblTotVendite" text="label" textAlignment="RIGHT" GridPane.columnIndex="1">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <Label text="Totale Profitti" textAlignment="CENTER" GridPane.rowIndex="1">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lblTotProfitti" text="Label" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </GridPane>
-               </children>
-            </Pane>
+            <Pane />
+            <PieChart fx:id="graficoComposizioneProfitto" prefHeight="603.0" prefWidth="504.0" title="Composizione Profitto" />
          </children>
       </HBox>
    </center>

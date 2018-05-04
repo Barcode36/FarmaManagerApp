@@ -3,15 +3,13 @@ package com.klugesoftware.farmamanager.IOFunctions;
 import java.io.FileInputStream;
 
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.swing.JOptionPane;
+
 import com.klugesoftware.farmamanager.db.ResiDAOManager;
 import com.klugesoftware.farmamanager.db.VenditeDAOManager;
 import com.klugesoftware.farmamanager.db.VenditeLibereDAOMAnager;

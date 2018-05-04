@@ -10,7 +10,6 @@ import java.util.Date;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.klugesoftware.farmamanager.IOFunctions.TotaliGeneraliVenditaEstrattiGiornalieri;
 import com.klugesoftware.farmamanager.DTO.ElencoTotaliGiornalieriRowData;
 
 public class ElencoTotaliGiornalieriRowDataDAO {

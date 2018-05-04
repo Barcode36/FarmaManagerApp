@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
+import com.klugesoftware.farmamanager.IOFunctions.TotaliGeneraliResiVenditaEstratti;
 import com.klugesoftware.farmamanager.model.CustomRoundingAndScaling;
 import com.klugesoftware.farmamanager.model.ProdottiVenditaLibera;
 import com.klugesoftware.farmamanager.model.ProdottiVenditaSSN;
