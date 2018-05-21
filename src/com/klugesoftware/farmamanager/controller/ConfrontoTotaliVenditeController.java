@@ -106,6 +106,8 @@ public class ConfrontoTotaliVenditeController implements Initializable {
         tabellaTotali.getItems().setAll(data);
         tabellaTotali.refresh();
 
+        
+
     }
 
     /**
