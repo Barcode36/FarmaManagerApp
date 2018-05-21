@@ -186,6 +186,16 @@ public class DateUtility {
 		data.set(currentYear, currentMonth, 1);
 		return (data.getTime());
 	}
+
+	public static Date ultimoGiornoDelMeseCorrente(Date toDay){
+		Calendar data = Calendar.getInstance(Locale.ITALY);
+		data.setTime(toDay);
+		int currentYear =  data.get(Calendar.YEAR);
+		int currentMonth = data.get(Calendar.MONTH);
+		data.set(currentYear, currentMonth, 1);
+		data.set(Calendar.DAY_OF_MONTH,data.getActualMaximum(Calendar.DAY_OF_MONTH));
+		return (data.getTime());
+	}
 	
 	/**
 	 * 
@@ -580,5 +590,39 @@ public class DateUtility {
 			return false;
 		}else 
 			return true;
+	}
+
+	/**
+	 *
+	 * @param firstDate
+	 * @param lastDate
+	 * @param annoPrecedente
+	 * @return Date firstDateBefore, Date lastDateBefore
+	 *
+	 * Se anno precedente = true ritorna il relativo intervallo riferito all'anno precedente
+	 * altrimenti ritorna il relativo intervallo riferito al mese precedente
+	 */
+	static public Date[] datesBefore(Date firstDate,Date lastDate, boolean annoPrecedente){
+
+		Date firstDateBefore;
+		Date lastDateBefore;
+		Calendar myCal = Calendar.getInstance(Locale.ITALY);
+		myCal.setTime(firstDate);
+		if (annoPrecedente){
+			myCal.set(Calendar.YEAR,myCal.get(Calendar.YEAR)-1);
+			firstDateBefore = myCal.getTime();
+			myCal.setTime(lastDate);
+			myCal.set(Calendar.YEAR,myCal.get(Calendar.YEAR)-1);
+			lastDateBefore = myCal.getTime();
+		}else{
+			myCal.set(Calendar.MONTH,myCal.get(Calendar.MONTH)-1);
+			firstDateBefore = myCal.getTime();
+			myCal.setTime(lastDate);
+			myCal.set(Calendar.MONTH,myCal.get(Calendar.MONTH)-1);
+			lastDateBefore = myCal.getTime();
+		}
+
+		Date[] dates = {firstDateBefore,lastDateBefore};
+		return  dates;
 	}
 }

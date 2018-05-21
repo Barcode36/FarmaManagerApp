@@ -175,6 +175,7 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
         graficoComposizioneProfitto.getData().clear();
         graficoComposizioneProfitto.setData(pieChartData);
 
+        //TODO: terminare la visualizzazione delle percentali all'interno del grafico a torta...
         Label caption = new Label("");
         caption.setTextFill(Color.DARKORANGE);
         caption.setStyle("-fx-font: 24 arial;");
@@ -294,5 +295,19 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
 
     public Date getDateTo(){
         return DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
+    }
+
+    @FXML
+    private void confrontaPeriodoClicked(ActionEvent event) throws IOException{
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/ConfrontoTotaliVendite.fxml"));
+        Parent parent = (Parent)fxmlLoader.load();
+        ConfrontoTotaliVenditeController controller = fxmlLoader.getController();
+        controller.setIntervalloMensile(getDateFrom(),getDateTo(),true);
+        Scene scene = new Scene(parent);
+        Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        app_stage.hide();
+        app_stage.setScene(scene);
+        app_stage.show();
+
     }
 }

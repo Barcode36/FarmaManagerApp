@@ -714,4 +714,5 @@ public class TotaliGeneraliVenditaEstratti {
 	public void setTotaleVenditeNettoScontiSSN(BigDecimal totaleVenditeNettoScontiSSN) {
 		this.totaleVenditeNettoScontiSSN = totaleVenditeNettoScontiSSN;
 	}
+
 }

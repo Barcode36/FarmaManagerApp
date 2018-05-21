@@ -145,7 +145,7 @@
                <children>
                   <Button fx:id="btnVenditeLibere" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Libere" />
                   <Button fx:id="btnVenditeSSN" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;SSN" />
-                  <Button fx:id="btnDettaglioTotali" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Confronta &#10;con periodo&#10;precedente">
+                  <Button fx:id="btnDettaglioTotali" mnemonicParsing="false" onAction="#confrontaPeriodoClicked" prefHeight="64.0" prefWidth="77.0" text="Confronta &#10;con periodo&#10;precedente">
                      <font>
                         <Font size="10.0" />
                      </font></Button>

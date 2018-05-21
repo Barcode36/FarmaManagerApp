@@ -4,12 +4,10 @@ import java.io.FileInputStream;
 
 
 import java.io.InputStream;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import javax.swing.JOptionPane;
 
+import com.klugesoftware.farmamanager.DTO.ConfrontoTotaliVenditeRowData;
 import com.klugesoftware.farmamanager.db.ResiDAOManager;
 import com.klugesoftware.farmamanager.db.VenditeDAOManager;
 import com.klugesoftware.farmamanager.db.VenditeLibereDAOMAnager;
@@ -65,7 +63,7 @@ public class EstrazioneDatiGeneraliVendite {
 			return elenco;
 		}		
 	}
-	
+
 	public static void main(String[] args) {
 	
 
