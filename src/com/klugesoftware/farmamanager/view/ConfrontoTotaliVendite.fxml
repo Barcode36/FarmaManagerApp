@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@css/ConfrontoTotaliVendite.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.ConfrontoTotaliVenditeController">
+   <top>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <Pane fx:id="pnlTitle" prefHeight="50.0">
+               <children>
+                  <Label fx:id="lblTitle" layoutX="480.0" layoutY="8.0" text="Confronto Totali Vendite">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlHeader" prefHeight="120.0">
+               <children>
+                  <Pane layoutX="105.0" layoutY="24.0">
+                     <children>
+                        <Label layoutX="7.0" layoutY="40.0" text=" a:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="txtFldDataTo" editable="false" layoutX="44.0" layoutY="40.0" onAction="#clickedDataTo" prefHeight="32.0" prefWidth="150.0" />
+                        <DatePicker fx:id="txtFldDataFrom" editable="false" layoutX="44.0" onAction="#clickedDataFrom" prefHeight="32.0" prefWidth="150.0" />
+                        <Label layoutY="3.0" text="da:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <ImageView fitHeight="66.0" fitWidth="78.0" layoutX="14.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/img/logo-temp.jpg" />
+                     </image></ImageView>
+                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1107.0" layoutY="28.0" mnemonicParsing="false" onAction="#listenerEsciButton" text="Esci">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@/img/icons8-home-filled-50.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <VBox alignment="CENTER_LEFT" layoutX="575.0" layoutY="4.0" prefHeight="113.0" prefWidth="271.0" spacing="10.0">
+                     <children>
+                        <RadioButton fx:id="rdtBtnMesePrecedente" mnemonicParsing="false" text="confronta con mese precedente">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="periodoDiConfronto" />
+                           </toggleGroup>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="rdtBtnAnnoPrecedente" mnemonicParsing="false" prefHeight="41.0" prefWidth="267.0" selected="true" text="confronta con anno precedente" toggleGroup="$periodoDiConfronto">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </RadioButton>
+                     </children>
+                  </VBox>
+                  <ComboBox fx:id="comboMeseDaConfrontare" layoutX="316.0" layoutY="48.0" onAction="#clickedMeseDaConfrontare" prefHeight="27.0" prefWidth="246.0" promptText="seleziona il mese da confrontare" visibleRowCount="13" />
+                  <TextArea fx:id="txtAreaPeriodiConfrontati" layoutX="847.0" layoutY="11.0" prefHeight="97.0" prefWidth="251.0" text="&#10;" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Pane>
+         </children>
+      </VBox>
+   </top>
+   <left>
+      <Pane fx:id="panelLeft" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox layoutX="7.0" layoutY="26.0" spacing="50.0">
+               <children>
+                  <Button fx:id="btnVenditeLibere" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Libere" />
+                  <Button fx:id="btnVenditeSSN" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;SSN" />
+                  <Button fx:id="btnDettaglioTotali" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Mostra&#10;Grafico&#10;Confronto">
+                     <font>
+                        <Font size="12.0" />
+                     </font></Button>
+               </children>
+            </VBox>
+         </children>
+      </Pane>
+   </left>
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="tabellaTotali" prefHeight="603.0" prefWidth="1184.0">
+              <columns>
+                 <TableColumn fx:id="colDescrizione" prefWidth="164.0" sortable="false" />
+                  <TableColumn fx:id="colTotaleLiberePrecedente" prefWidth="131.0" sortable="false" text="Totali&#10;Vendite&#10;Libere&#10;Periodo&#10;Precedente" />
+                 <TableColumn fx:id="colTotaleLibere" minWidth="0.0" prefWidth="120.0" sortable="false" text="Totali&#10;Vendite&#10;Libere&#10;Periodo &#10;Attuale&#10;" />
+                  <TableColumn fx:id="colDiffPercLibere" prefWidth="79.0" sortable="false" text="Differenza&#10;%" />
+                  <TableColumn fx:id="colTotaliSSNPrecedente" prefWidth="142.0" sortable="false" text="Totali&#10;Vendite&#10;SSN&#10;Periodo&#10;Precedente" />
+                  <TableColumn fx:id="colTotaliSSN" prefWidth="132.0" sortable="false" text="Totali&#10;Vendite&#10;SSN&#10;Periodo&#10;Attuale" />
+                  <TableColumn fx:id="colDiffPercSSN" prefWidth="78.0" sortable="false" text="Differenza&#10;%" />
+                  <TableColumn fx:id="colTotaliVenditePrecedente" prefWidth="131.0" sortable="false" text="Totali&#10;Vendite&#10;Periodo&#10;Precedente" />
+                  <TableColumn fx:id="colTotaliVendite" prefWidth="123.0" sortable="false" text="Totali&#10;Vendite&#10;Periodo&#10;Attuale&#10;" />
+                  <TableColumn fx:id="colDiffPercTotali" prefWidth="79.0" sortable="false" text="Differenza&#10;%" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
+   </center>
+   <bottom>
+      <Pane fx:id="panelBottom" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="lblBottom" layoutX="1220.0" layoutY="2.0" text="Cifarma srl">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </bottom>
+</BorderPane>

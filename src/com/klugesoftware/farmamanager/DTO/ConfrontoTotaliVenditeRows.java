@@ -45,7 +45,7 @@ public class ConfrontoTotaliVenditeRows {
                 "Totale Vendite\nLorde",
                 "Totale Sconti",
                 "Totale Vendite\nal netto di sconti",
-                "Totale Vendite\nal netto di iva e sconti",
+                "Totale Vendite\nal netto di iva\n e sconti",
                 "Totale Costi\nal netto di iva",
                 "Totale Profitti",
                 "Margine",
@@ -145,14 +145,14 @@ public class ConfrontoTotaliVenditeRows {
         row7.setTotaleLibere(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
         temp = totaliGeneraliPrecedenti.getTotaleProfittiLibere().doubleValue() / totaliGeneraliPrecedenti.getTotaleVenditeNetteLibere().doubleValue() * 100;
         row7.setTotaleLiberePrec(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
-        row7.setDiffPercLibere(row7.getTotaleLibere(),row7.getTotaleLiberePrec());
+        //row7.setDiffPercLibere(row7.getTotaleLibere(),row7.getTotaleLiberePrec());
 
         //margine vendite SSN
         temp = totaliGenerali.getTotaleProfittiSSN().doubleValue()/totaliGenerali.getTotaleVenditeNetteSSN().doubleValue()*100;
         row7.setTotaleSSN(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
         temp = totaliGeneraliPrecedenti.getTotaleProfittiSSN().doubleValue()/totaliGeneraliPrecedenti.getTotaleVenditeNette().doubleValue()*100;
         row7.setTotaleSSNPrecedente(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
-        row7.setDiffPercSSN(row7.getTotaleSSN(),row7.getTotaleSSNPrecedente());
+        //row7.setDiffPercSSN(row7.getTotaleSSN(),row7.getTotaleSSNPrecedente());
 
         //margine vendite totali
         temp = totaliGenerali.getTotaleProfitti().doubleValue()/totaliGenerali.getTotaleVenditeNette().doubleValue()*100;
@@ -172,14 +172,14 @@ public class ConfrontoTotaliVenditeRows {
         row8.setTotaleLibere(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
         temp = totaliGeneraliPrecedenti.getTotaleProfittiLibere().doubleValue()/totaliGeneraliPrecedenti.getTotaleCostiNettiLibere().doubleValue()*100;
         row8.setTotaleLiberePrec(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
-        row8.setDiffPercLibere(row8.getTotaleLibere(),row8.getTotaleLiberePrec());
+        //row8.setDiffPercLibere(row8.getTotaleLibere(),row8.getTotaleLiberePrec());
 
         //ricarico vendite ssn
         temp = totaliGenerali.getTotaleProfittiSSN().doubleValue()/totaliGenerali.getTotaleCostiNettiSSN().doubleValue()*100;
         row8.setTotaleSSN(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
         temp = totaliGeneraliPrecedenti.getTotaleProfittiSSN().doubleValue()/totaliGeneraliPrecedenti.getTotaleCostiNettiSSN().doubleValue()*100;
         row8.setTotaleSSNPrecedente(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
-        row8.setDiffPercSSN(row8.getTotaleSSN(),row8.getTotaleSSNPrecedente());
+        //row8.setDiffPercSSN(row8.getTotaleSSN(),row8.getTotaleSSNPrecedente());
 
         //ricarico vendite totali
         temp = totaliGenerali.getTotaleProfitti().doubleValue()/totaliGenerali.getTotaleCostiNetti().doubleValue()*100;
