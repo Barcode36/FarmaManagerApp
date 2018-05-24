@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -7,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@css/ConfrontoTotaliVendite.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.ConfrontoTotaliVenditeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@css/ConfrontoTotaliVendite.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.ConfrontoTotaliVenditeGraficoController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -29,8 +30,8 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="txtFldDataTo" editable="false" layoutX="44.0" layoutY="40.0" onAction="#clickedDataTo" prefHeight="32.0" prefWidth="150.0" />
-                        <DatePicker fx:id="txtFldDataFrom" editable="false" layoutX="44.0" onAction="#clickedDataFrom" prefHeight="32.0" prefWidth="150.0" />
+                        <DatePicker fx:id="txtFldDataTo" editable="false" layoutX="44.0" layoutY="40.0"  prefHeight="32.0" prefWidth="150.0" />
+                        <DatePicker fx:id="txtFldDataFrom" editable="false" layoutX="44.0"  prefHeight="32.0" prefWidth="150.0" />
                         <Label layoutY="3.0" text="da:">
                            <font>
                               <Font size="20.0" />
@@ -42,7 +43,7 @@
                      <image>
                         <Image url="@/img/logo-temp.jpg" />
                      </image></ImageView>
-                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1107.0" layoutY="28.0" mnemonicParsing="false" onAction="#listenerEsciButton" text="Esci">
+                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1107.0" layoutY="28.0" mnemonicParsing="false" text="Esci">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -71,7 +72,7 @@
                         </RadioButton>
                      </children>
                   </VBox>
-                  <ComboBox fx:id="comboMeseDaConfrontare" layoutX="316.0" layoutY="48.0" onAction="#clickedMeseDaConfrontare" prefHeight="27.0" prefWidth="246.0" promptText="seleziona il mese da confrontare" visibleRowCount="13" />
+                  <ComboBox fx:id="comboMeseDaConfrontare" layoutX="316.0" layoutY="48.0"  prefHeight="27.0" prefWidth="246.0" promptText="seleziona il mese da confrontare" visibleRowCount="13" />
                   <TextArea fx:id="txtAreaPeriodiConfrontati" layoutX="847.0" layoutY="11.0" prefHeight="97.0" prefWidth="251.0" text="&#10;" />
                </children>
                <opaqueInsets>
@@ -84,39 +85,17 @@
          </children>
       </VBox>
    </top>
-   <left>
-      <Pane fx:id="panelLeft" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox layoutX="7.0" layoutY="26.0" spacing="50.0">
-               <children>
-                  <Button fx:id="btnVenditeLibere" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Libere" />
-                  <Button fx:id="btnVenditeSSN" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;SSN" />
-                  <Button fx:id="btnDettaglioTotali" mnemonicParsing="false" onAction="#clickedGrafico" prefHeight="64.0" prefWidth="77.0" text="Mostra&#10;Grafico&#10;Confronto">
-                     <font>
-                        <Font size="12.0" />
-                     </font></Button>
-               </children>
-            </VBox>
-         </children>
-      </Pane>
-   </left>
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="tabellaTotali" prefHeight="603.0" prefWidth="1184.0">
-              <columns>
-                 <TableColumn fx:id="colDescrizione" prefWidth="164.0" sortable="false" />
-                  <TableColumn fx:id="colTotaleLiberePrecedente" prefWidth="131.0" sortable="false" text="Totali&#10;Vendite&#10;Libere&#10;Periodo&#10;Precedente" />
-                 <TableColumn fx:id="colTotaleLibere" minWidth="0.0" prefWidth="120.0" sortable="false" text="Totali&#10;Vendite&#10;Libere&#10;Periodo &#10;Attuale&#10;" />
-                  <TableColumn fx:id="colDiffPercLibere" prefWidth="79.0" sortable="false" text="Differenza&#10;%" />
-                  <TableColumn fx:id="colTotaliSSNPrecedente" prefWidth="142.0" sortable="false" text="Totali&#10;Vendite&#10;SSN&#10;Periodo&#10;Precedente" />
-                  <TableColumn fx:id="colTotaliSSN" prefWidth="132.0" sortable="false" text="Totali&#10;Vendite&#10;SSN&#10;Periodo&#10;Attuale" />
-                  <TableColumn fx:id="colDiffPercSSN" prefWidth="78.0" sortable="false" text="Differenza&#10;%" />
-                  <TableColumn fx:id="colTotaliVenditePrecedente" prefWidth="131.0" sortable="false" text="Totali&#10;Vendite&#10;Periodo&#10;Precedente" />
-                  <TableColumn fx:id="colTotaliVendite" prefWidth="123.0" sortable="false" text="Totali&#10;Vendite&#10;Periodo&#10;Attuale&#10;" />
-                  <TableColumn fx:id="colDiffPercTotali" prefWidth="79.0" sortable="false" text="Differenza&#10;%" />
-              </columns>
-            </TableView>
+            <BarChart fx:id="graficoConfronto" prefHeight="588.0" prefWidth="1285.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="yAxis" side="LEFT" />
+              </yAxis>
+            </BarChart>
          </children>
       </HBox>
    </center>

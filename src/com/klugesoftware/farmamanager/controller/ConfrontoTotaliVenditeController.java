@@ -55,6 +55,7 @@ public class ConfrontoTotaliVenditeController implements Initializable {
     private String periodoAttuale;
     private String periodoPrecedente;
     private String testoArea;
+    private ConfrontoTotaliVenditeRows rows;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -94,7 +95,7 @@ public class ConfrontoTotaliVenditeController implements Initializable {
 
     private void intiTabella(Date dateFrom, Date dateTo, Date dateFromPrec, Date dateToPrec){
 
-        ConfrontoTotaliVenditeRows rows = new ConfrontoTotaliVenditeRows(dateFrom,dateTo,dateFromPrec,dateToPrec);
+        rows = new ConfrontoTotaliVenditeRows(dateFrom,dateTo,dateFromPrec,dateToPrec);
         ObservableList<ConfrontoTotaliVenditeRowData> data = FXCollections.observableList(rows.getRows());
 
         periodoAttuale = DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom)+"-"+DateUtility.converteDateToGUIStringDDMMYYYY(dateTo);
@@ -261,6 +262,20 @@ public class ConfrontoTotaliVenditeController implements Initializable {
         app_stage.hide();
         app_stage.setScene(scene);
         app_stage.show();
+    }
+
+    @FXML
+    private void clickedGrafico(ActionEvent event) throws IOException{
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/ConfrontoTotaliVenditeGrafico.fxml"));
+        Parent parent = (Parent)fxmlLoader.load();
+        ConfrontoTotaliVenditeGraficoController controller = fxmlLoader.getController();
+        controller.initGrafico(rows);
+        Scene scene = new Scene(parent);
+        Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        app_stage.hide();
+        app_stage.setScene(scene);
+        app_stage.show();
+
     }
 
     class ListenerCambioPeriodoConfronto implements ChangeListener<Toggle>{

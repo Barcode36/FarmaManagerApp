@@ -26,6 +26,7 @@ public class ConfrontoTotaliVenditeRows {
         this.dateTo = dateTo;
         this.dateFromPrec = dateFromPrec;
         this.dateToPrec = dateToPrec;
+
         rows = new ArrayList<ConfrontoTotaliVenditeRowData>();
         makeRows();
     }
@@ -195,4 +196,23 @@ public class ConfrontoTotaliVenditeRows {
     public ArrayList<ConfrontoTotaliVenditeRowData> getRows(){
         return rows;
     }
+
+    public Date getDateFrom() {
+        return dateFrom;
+    }
+
+    public Date getDateTo() {
+        return dateTo;
+    }
+
+    public Date getDateFromPrec() {
+        return dateFromPrec;
+    }
+
+    public Date getDateToPrec() {
+        return dateToPrec;
+    }
+
+
+
 }

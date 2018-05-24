@@ -56,7 +56,7 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        
         btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK,this));
         btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD,this));
         colData.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,String>("data"));
