@@ -8,7 +8,6 @@ import com.klugesoftware.farmamanager.utility.DateUtility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -52,13 +51,26 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
     @FXML private Label lblTitle;
     @FXML private RadioButton rdtBtnVistaSettimanale;
     @FXML private RadioButton rdtBtnVistaMensile;
-
+    private ChangePeriodListener changePeriodListenerBack;
+    private ChangePeriodListener changePeriodListenerNext;
+    private ChangeDateAndViewListener changeDateListener;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
-        btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK,this));
-        btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD,this));
+
+        rdtBtnVistaMensile.setUserData("vistaMensile");
+        rdtBtnVistaSettimanale.setUserData("vistaSettimanale");
+        txtFldDataFrom.setUserData("dataFrom");
+        txtFldDataTo.setUserData("dataTo");
+        changeDateListener = new ChangeDateAndViewListener(this);
+        txtFldDataFrom.setOnAction(changeDateListener);
+        txtFldDataTo.setOnAction(changeDateListener);
+        rdtBtnVistaSettimanale.setOnAction(changeDateListener);
+        rdtBtnVistaMensile.setOnAction(changeDateListener);
+        changePeriodListenerBack = new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK,this);
+        changePeriodListenerNext = new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD,this);
+        btnBack.setOnAction(changePeriodListenerBack);
+        btnForward.setOnAction(changePeriodListenerNext);
         colData.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,String>("data"));
         colTotaleVendite.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,BigDecimal>("totaleVenditeLorde"));
         colTotaleProfitti.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,BigDecimal>("totaleProfitti"));
@@ -197,97 +209,12 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
 
     }
 
-    @FXML
-    private void clickedDataFrom(ActionEvent event){
-
-        Calendar myCal = Calendar.getInstance(Locale.ITALY);
-        Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-        Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-        myCal.setTime(fromDate);
-        if (rdtBtnVistaSettimanale.isSelected()){
-            myCal.add(Calendar.DAY_OF_YEAR,6);
-            toDate = myCal.getTime();
-        }else
-            if (rdtBtnVistaMensile.isSelected()){
-            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
-            toDate = myCal.getTime();
-            }
-        ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
-        if(!elencoRighe.isEmpty()){
-            txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
-            txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-            aggiornaTable(elencoRighe,fromDate,toDate);
-        }else{
-            //TODO: alert mancanza di movimenti
-        }
-    }
-
-    @FXML
-    private void clickedDataTo(ActionEvent event){
-
-        Calendar myCal = Calendar.getInstance(Locale.ITALY);
-        Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-        Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-        myCal.setTime(toDate);
-        if (rdtBtnVistaSettimanale.isSelected()){
-            myCal.set(Calendar.DAY_OF_WEEK,myCal.getActualMinimum(Calendar.DAY_OF_WEEK));
-            fromDate = myCal.getTime();
-        }else
-        if (rdtBtnVistaMensile.isSelected()){
-            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMinimum(Calendar.DAY_OF_MONTH));
-            fromDate = myCal.getTime();
-        }
-        ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
-        if(!elencoRighe.isEmpty()){
-            txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
-            txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-            aggiornaTable(elencoRighe,fromDate,toDate);
-        }else{
-            //TODO: alert mancanza di movimenti
-        }
-
-
-    }
 
     @FXML
     private void listenerEsciButton(ActionEvent event){
         System.exit(0);
     }
 
-    @FXML
-    private void clickedMese(ActionEvent event) {
-        try {
-            Calendar myCal = Calendar.getInstance(Locale.ITALY);
-            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-            myCal.setTime(fromDate);
-            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
-            fromDate = myCal.getTime();
-            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
-            toDate = myCal.getTime();
-            aggiornaTableAndScene(fromDate,toDate,false);
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void clickedSettimana(ActionEvent event) {
-        try {
-            Calendar myCal = Calendar.getInstance(Locale.ITALY);
-            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-            myCal.setTime(fromDate);
-            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
-            fromDate = myCal.getTime();
-            myCal.add(Calendar.DAY_OF_YEAR,6);
-            toDate = myCal.getTime();
-            aggiornaTableAndScene(fromDate,toDate,true);
-
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
 
     @FXML
     private void DettaglioVenditeClicked(ActionEvent event) throws IOException {
@@ -331,17 +258,18 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
      */
     @Override
     public void aggiornaTableAndScene(Date dateFrom, Date dateTo, boolean vistaSettimanale){
+
         ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((dateFrom),(dateTo)));
         aggiornaTable(elencoRighe,dateFrom,dateTo);
         if (vistaSettimanale){
-            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK,this));
-            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD,this));
+            changePeriodListenerBack.setPeriod(PeriodToShow.SETTIMANA);
+            changePeriodListenerNext.setPeriod(PeriodToShow.SETTIMANA);
             lblPeriodo.setText(" Settimana");
             lblTitle.setText("Situazione Vendite e Profitti Settimanale");
             rdtBtnVistaSettimanale.setSelected(true);
         }else{
-            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.BACK,this));
-            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.FORWARD,this));
+            changePeriodListenerBack.setPeriod(PeriodToShow.MESE);
+            changePeriodListenerNext.setPeriod(PeriodToShow.MESE);
             lblPeriodo.setText("    Mese  ");
             lblTitle.setText("Situazione Vendite e Profitti Mensile");
             rdtBtnVistaMensile.setSelected(true);
@@ -351,9 +279,12 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
 
     @Override
     public void aggiornaTable(Date dateFrom,Date dateTo){
+
         ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((dateFrom),(dateTo)));
-        //TODO: messsaggio se moviemnti mancanti....
-        aggiornaTable(elencoRighe,dateFrom,dateTo);
+        if(!elencoRighe.isEmpty()) {
+            //TODO: messsaggio se movimenti mancanti....
+            aggiornaTable(elencoRighe, dateFrom, dateTo);
+        }
     }
 
     public Date getDateFrom(){
@@ -363,5 +294,13 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
     public Date getDateTo(){
         return DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
     }
+
+    public RadioButton getRdbtVistaMensile(){
+        return rdtBtnVistaMensile;
+    }
+    public RadioButton getRdbtVistaSettimanale(){
+        return rdtBtnVistaSettimanale;
+    }
+
 
 }

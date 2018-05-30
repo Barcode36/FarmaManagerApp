@@ -48,7 +48,7 @@ public class SituazioneVenditeEProfittiLibereController implements Initializable
         if(!elencoRighe.isEmpty()){
             txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
             txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-            aggiornaTable(elencoRighe,fromDate,toDate);
+            //aggiornaTable(elencoRighe,fromDate,toDate);
         }else{
             //TODO: alert mancanza di movimenti
         }
@@ -73,7 +73,7 @@ public class SituazioneVenditeEProfittiLibereController implements Initializable
         if(!elencoRighe.isEmpty()){
             txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
             txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-            aggiornaTable(elencoRighe,fromDate,toDate);
+            //aggiornaTable(elencoRighe,fromDate,toDate);
         }else{
             //TODO: alert mancanza di movimenti
         }
@@ -97,7 +97,7 @@ public class SituazioneVenditeEProfittiLibereController implements Initializable
             fromDate = myCal.getTime();
             myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
             toDate = myCal.getTime();
-            aggiornaTableAndScene(fromDate,toDate,false);
+            //aggiornaTableAndScene(fromDate,toDate,false);
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -114,7 +114,7 @@ public class SituazioneVenditeEProfittiLibereController implements Initializable
             fromDate = myCal.getTime();
             myCal.add(Calendar.DAY_OF_YEAR,6);
             toDate = myCal.getTime();
-            aggiornaTableAndScene(fromDate,toDate,true);
+            //aggiornaTableAndScene(fromDate,toDate,true);
 
         }catch (Exception ex){
             ex.printStackTrace();

@@ -271,11 +271,11 @@ public class ConfrontoTotaliVenditeController implements Initializable {
         ConfrontoTotaliVenditeGraficoController controller = fxmlLoader.getController();
         controller.initGrafico(rows);
         Scene scene = new Scene(parent);
-        Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        app_stage.hide();
+        //Stage this_app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        //app_stage.hide();
+        Stage app_stage = new Stage();
         app_stage.setScene(scene);
         app_stage.show();
-
     }
 
     class ListenerCambioPeriodoConfronto implements ChangeListener<Toggle>{

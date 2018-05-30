@@ -1,9 +1,6 @@
 package com.klugesoftware.farmamanager.controller;
 
-import com.klugesoftware.farmamanager.DTO.ElencoTotaliGiornalieriRowData;
-import com.klugesoftware.farmamanager.db.ElencoTotaliGiornalieriRowDataManager;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.klugesoftware.farmamanager.utility.DateUtility;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -11,15 +8,24 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Questa classe si occupa di intercettare gli eventi legati ai Button di direzione:
+ * - direzione Back decrementa la settimana oppure il mese
+ * - direzione Forward incrementa la settimana oppure il mese.
+ *
+ * In fase di initialize del Controller si instanzia un oggetto per ogni button
+ * cioè un listener per il buttonBack ed uno per il listener per il buttonForward.
+ */
 public class ChangePeriodListener implements EventHandler<ActionEvent> {
     private PeriodToShow period;
     private PeriodDirection periodDirection;
     private VenditeEProfittiController controller;
 
-    ChangePeriodListener(PeriodToShow period, PeriodDirection periodDirection,VenditeEProfittiController controller){
+    ChangePeriodListener(PeriodToShow period, PeriodDirection periodDirection, VenditeEProfittiController controller){
         this.period = period;
         this.periodDirection = periodDirection;
         this.controller = controller;
+
     }
 
     @Override
@@ -68,8 +74,23 @@ public class ChangePeriodListener implements EventHandler<ActionEvent> {
                 }
 
         }
-
         controller.aggiornaTable(fromDate,toDate);
+    }
+
+    public PeriodToShow getPeriod() {
+        return period;
+    }
+
+    public PeriodDirection getPeriodDirection() {
+        return periodDirection;
+    }
+
+    public void setPeriodDirection(PeriodDirection periodDirection) {
+        this.periodDirection = periodDirection;
+    }
+
+    public void setPeriod(PeriodToShow period) {
+        this.period = period;
     }
 
 }

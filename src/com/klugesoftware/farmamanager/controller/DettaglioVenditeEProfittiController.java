@@ -49,11 +49,33 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
     @FXML private TableColumn<DettaglioTotaliVenditeRowData,BigDecimal> colTotaliSSN;
     @FXML private TableColumn<DettaglioTotaliVenditeRowData,BigDecimal> colTotale;
     @FXML private PieChart graficoComposizioneProfitto;
+    private ChangePeriodListener changePeriodListenerBack;
+    private ChangePeriodListener changePeriodListenerNext;
+    private ChangeDateAndViewListener changeDateListener;
 
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
+        changeDateListener = new ChangeDateAndViewListener(this);
+        rdtBtnVistaMensile.setUserData("vistaMensile");
+        rdtBtnVistaSettimanale.setUserData("vistaSettimanale");
+        rdtBtnVistaSettimanale.setOnAction(changeDateListener);
+        rdtBtnVistaMensile.setOnAction(changeDateListener);
+
+        txtFldDataFrom.setUserData("dataFrom");
+        txtFldDataTo.setUserData("dataTo");
+
+        txtFldDataFrom.setOnAction(changeDateListener);
+        txtFldDataTo.setOnAction(changeDateListener);
+
+        changePeriodListenerBack = new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK,this);
+        changePeriodListenerNext = new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD,this);
+        btnBack.setOnAction(changePeriodListenerBack);
+        btnForward.setOnAction(changePeriodListenerNext);
+
 
         colDescrizione.setCellValueFactory(new PropertyValueFactory<DettaglioTotaliVenditeRowData,String>("descrizione"));
         colTotaliLibere.setCellValueFactory(new PropertyValueFactory<DettaglioTotaliVenditeRowData,BigDecimal>("totaleVenditeLibere"));
@@ -132,13 +154,11 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
             }
         });
 
-       // initTable(DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText()),DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText()));
-
     }
 
     private void initTable(Date dateFrom,Date dateTo){
 
-        /* Codice che estrae i Totali dai singoli moviemnti dei prodotti
+        /* Codice che estrae i Totali dai singoli movimenti dei prodotti
 
         TotaliGeneraliVenditaEstratti totaliGenerali = new TotaliGeneraliVenditaEstratti();
         EstrazioneDatiGeneraliVendite estrazioneDati = new EstrazioneDatiGeneraliVendite();
@@ -209,6 +229,7 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
         app_stage.show();
     }
 
+    /*
     @FXML
     private void clickedMese(ActionEvent event) {
         try {
@@ -243,7 +264,7 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
             ex.printStackTrace();
         }
     }
-
+    */
 
     /*
     aggiorna i dati della tableview in fuzione dell'intervallo di date; setta il giusto valore ai campi DatePicker, inoltre
@@ -256,18 +277,20 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
         txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
         myCal.setTime(toDate);
         txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
+
         txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
         txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
+
         initTable(fromDate,toDate);
         if (vistaSettimanale){
-            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK,this));
-            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD,this));
+            changePeriodListenerBack.setPeriod(PeriodToShow.SETTIMANA);
+            changePeriodListenerNext.setPeriod(PeriodToShow.SETTIMANA);
             rdtBtnVistaSettimanale.setSelected(true);
             lblPeriodo.setText(" Settimana");
             lblTitle.setText("Dettaglio Vendite e Profitti Settimanale");
         }else{
-            btnBack.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.BACK,this));
-            btnForward.setOnAction(new ChangePeriodListener(PeriodToShow.MESE,PeriodDirection.FORWARD,this));
+            changePeriodListenerBack.setPeriod(PeriodToShow.MESE);
+            changePeriodListenerNext.setPeriod(PeriodToShow.MESE);
             lblPeriodo.setText("    Mese  ");
             lblTitle.setText("Dettaglio Vendite e Profitti Mensile");
             rdtBtnVistaMensile.setSelected(true);
@@ -276,16 +299,25 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
 
     @Override
     public void aggiornaTable(Date dateFrom, Date dateTo) {
+
         Calendar myCal = Calendar.getInstance(Locale.ITALY);
         myCal.setTime(dateFrom);
+        txtFldDataFrom.setOnAction(null);
+        txtFldDataTo.setOnAction(null);
         txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
         myCal.setTime(dateTo);
         txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
 
         txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom));
         txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(dateTo));
+        txtFldDataFrom.setOnAction(changeDateListener);
+        txtFldDataTo.setOnAction(changeDateListener);
 
         initTable(dateFrom,dateTo);
+
+        //FIXME: capire perchè è necessario "eliminare" listener e poi "riaggiugnerlo"...
+
+
     }
 
 
@@ -296,6 +328,14 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
     public Date getDateTo(){
         return DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
     }
+
+    public RadioButton getRdbtVistaMensile(){
+        return rdtBtnVistaMensile;
+    }
+    public RadioButton getRdbtVistaSettimanale(){
+        return  rdtBtnVistaSettimanale;
+    }
+
 
     @FXML
     private void confrontaPeriodoClicked(ActionEvent event) throws IOException{

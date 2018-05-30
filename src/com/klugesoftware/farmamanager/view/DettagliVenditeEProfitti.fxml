@@ -80,7 +80,7 @@
                   </Button>
                   <VBox alignment="CENTER_LEFT" layoutX="575.0" layoutY="28.0" spacing="10.0">
                      <children>
-                        <RadioButton fx:id="rdtBtnVistaSettimanale" mnemonicParsing="false" onAction="#clickedSettimana" selected="true" text="Vista Settimanale">
+                        <RadioButton fx:id="rdtBtnVistaSettimanale" mnemonicParsing="false" selected="true" text="Vista Settimanale">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -88,7 +88,7 @@
                               <ToggleGroup fx:id="vista" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="rdtBtnVistaMensile" mnemonicParsing="false" onAction="#clickedMese" text="Vista Mensile" toggleGroup="$vista">
+                        <RadioButton fx:id="rdtBtnVistaMensile" mnemonicParsing="false" text="Vista Mensile" toggleGroup="$vista">
                            <font>
                               <Font size="20.0" />
                            </font>

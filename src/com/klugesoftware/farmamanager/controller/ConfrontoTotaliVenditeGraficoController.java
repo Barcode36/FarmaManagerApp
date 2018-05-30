@@ -3,13 +3,20 @@ package com.klugesoftware.farmamanager.controller;
 import com.klugesoftware.farmamanager.DTO.ConfrontoTotaliVenditeRowData;
 import com.klugesoftware.farmamanager.DTO.ConfrontoTotaliVenditeRows;
 import com.klugesoftware.farmamanager.utility.DateUtility;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
@@ -75,4 +82,9 @@ public class ConfrontoTotaliVenditeGraficoController implements Initializable{
 
     }
 
+    @FXML
+    private void listenerEsciButton(ActionEvent event) throws IOException {
+        Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        app_stage.hide();
+    }
 }
