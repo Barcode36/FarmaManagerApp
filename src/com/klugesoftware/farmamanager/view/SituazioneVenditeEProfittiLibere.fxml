@@ -31,7 +31,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@css/SituazioneVenditeEProfitti.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.SituazioneVenditeEProfittiController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@css/SituazioneVenditeEProfittiLibere.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.SituazioneVenditeEProfittiLibereController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -53,8 +53,8 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="txtFldDataTo" editable="false" layoutX="44.0" layoutY="40.0" onAction="#clickedDataTo" prefHeight="32.0" prefWidth="150.0" />
-                        <DatePicker fx:id="txtFldDataFrom" editable="false" layoutX="44.0" onAction="#clickedDataFrom" prefHeight="32.0" prefWidth="150.0" />
+                        <DatePicker fx:id="txtFldDataTo" editable="false" layoutX="44.0" layoutY="40.0" prefHeight="32.0" prefWidth="150.0" />
+                        <DatePicker fx:id="txtFldDataFrom" editable="false" layoutX="44.0" prefHeight="32.0" prefWidth="150.0" />
                         <Label layoutY="3.0" text="da:">
                            <font>
                               <Font size="20.0" />
@@ -80,7 +80,7 @@
                   </Button>
                   <VBox alignment="CENTER_LEFT" layoutX="575.0" layoutY="28.0" spacing="10.0">
                      <children>
-                        <RadioButton fx:id="rdtBtnVistaSettimanale" mnemonicParsing="false" onAction="#clickedSettimana" selected="true" text="Vista Settimanale">
+                        <RadioButton fx:id="rdtBtnVistaSettimanale" mnemonicParsing="false" selected="true" text="Vista Settimanale">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -88,7 +88,7 @@
                               <ToggleGroup fx:id="vista" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="rdtBtnVistaMensile" mnemonicParsing="false" onAction="#clickedMese" text="Vista Mensile" toggleGroup="$vista">
+                        <RadioButton fx:id="rdtBtnVistaMensile" mnemonicParsing="false" text="Vista Mensile" toggleGroup="$vista">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -157,11 +157,11 @@
                      <font>
                         <Font size="12.0" />
                      </font></Button>
-                  <Button fx:id="btnVenditeSSN" mnemonicParsing="false" prefHeight="114.0" prefWidth="84.0" text="Elenco&#10;Vendite&#10;Raggruppate&#10;per &#10;Minsan">
+                  <Button fx:id="btnElencoMinsan" mnemonicParsing="false" onAction="#buttonElencoMinsanListener" prefHeight="114.0" prefWidth="84.0" text="Elenco&#10;Vendite&#10;Raggruppate&#10;per &#10;Minsan">
                      <font>
                         <Font size="11.0" />
                      </font></Button>
-                  <Button fx:id="btnDettaglioTotali" mnemonicParsing="false" onAction="#DettaglioVenditeClicked" prefHeight="64.0" prefWidth="84.0" text="Elenco&#10;Vendite" />
+                  <Button fx:id="btnDettaglioTotali" mnemonicParsing="false" prefHeight="64.0" prefWidth="84.0" text="Elenco&#10;Vendite" />
                </children>
             </VBox>
          </children>
@@ -172,12 +172,12 @@
          <children>
             <ScrollPane prefHeight="639.0" prefWidth="606.0">
                <content>
-                  <TableView fx:id="tableVenditeEProfittiTotali" prefHeight="600.0" prefWidth="604.0">
+                  <TableView fx:id="tableVenditeEProfittiLibere" prefHeight="600.0" prefWidth="604.0">
                     <columns>
-                      <TableColumn fx:id="colData" prefWidth="160.0" text="Data" />
-                      <TableColumn fx:id="colTotaleVenditeLibere" prefWidth="241.0" text="Totale &#10;Vendite&#10;Libere" />
-                        <TableColumn fx:id="colTotaleProfittiLibere" prefWidth="75.0" text="Totale&#10;Profitti" />
-                        <TableColumn fx:id="colDettagliMovimenti" prefWidth="75.0" text="Dettagli&#10;Movimenti&#10;" />
+                      <TableColumn fx:id="colData" prefWidth="173.0" text="Data" />
+                      <TableColumn fx:id="colTotaleVenditeLibere" minWidth="0.0" prefWidth="123.0" text="Totale &#10;Vendite&#10;Libere" />
+                        <TableColumn fx:id="colTotaleProfittiLibere" prefWidth="134.0" text="Totale&#10;Profitti" />
+                        <TableColumn fx:id="colDettagliMovimenti" prefWidth="136.0" text="&#10;" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -187,7 +187,7 @@
             </ScrollPane>
             <Pane>
                <children>
-                  <AreaChart fx:id="graficoVenditeEProfitti" layoutX="-6.0" layoutY="141.0" prefHeight="400.0" prefWidth="571.0" title="Vendite e Profitti">
+                  <AreaChart fx:id="graficoVenditeEProfittiLibere" layoutX="-6.0" layoutY="141.0" prefHeight="400.0" prefWidth="571.0" title="Vendite Libere e Profitti">
                     <xAxis>
                       <CategoryAxis gapStartAndEnd="false" side="BOTTOM" tickLength="1.0" fx:id="xAxis" />
                     </xAxis>

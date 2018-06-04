@@ -229,42 +229,6 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
         app_stage.show();
     }
 
-    /*
-    @FXML
-    private void clickedMese(ActionEvent event) {
-        try {
-            Calendar myCal = Calendar.getInstance(Locale.ITALY);
-            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-            myCal.setTime(fromDate);
-            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
-            fromDate = myCal.getTime();
-            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
-            toDate = myCal.getTime();
-            aggiornaTableAndScene(fromDate,toDate,false);
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void clickedSettimana(ActionEvent event) {
-        try {
-            Calendar myCal = Calendar.getInstance(Locale.ITALY);
-            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-            myCal.setTime(fromDate);
-            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
-            fromDate = myCal.getTime();
-            myCal.add(Calendar.DAY_OF_YEAR,6);
-            toDate = myCal.getTime();
-            aggiornaTableAndScene(fromDate,toDate,true);
-
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-    */
 
     /*
     aggiorna i dati della tableview in fuzione dell'intervallo di date; setta il giusto valore ai campi DatePicker, inoltre

@@ -2,123 +2,317 @@ package com.klugesoftware.farmamanager.controller;
 
 import com.klugesoftware.farmamanager.DTO.ElencoTotaliGiornalieriRowData;
 import com.klugesoftware.farmamanager.db.ElencoTotaliGiornalieriRowDataManager;
+import com.klugesoftware.farmamanager.db.ImportazioniDAOManager;
+import com.klugesoftware.farmamanager.model.Importazioni;
 import com.klugesoftware.farmamanager.utility.DateUtility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 
+import java.math.BigDecimal;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class SituazioneVenditeEProfittiLibereController implements Initializable {
+public class SituazioneVenditeEProfittiLibereController extends VenditeEProfittiController implements Initializable {
 
+    @FXML private AreaChart<String,Number> graficoVenditeEProfittiLibere;
+    @FXML private CategoryAxis xAxis;
+    @FXML private NumberAxis yAxis;
+    @FXML private Label lblTotVendite;
+    @FXML private Label lblTotProfitti;
+    @FXML private TableView<ElencoTotaliGiornalieriRowData> tableVenditeEProfittiLibere;
+    @FXML private TableColumn<ElencoTotaliGiornalieriRowData,String> colData;
+    @FXML private TableColumn<ElencoTotaliGiornalieriRowData,BigDecimal> colTotaleVenditeLibere;
+    @FXML private TableColumn<ElencoTotaliGiornalieriRowData,BigDecimal> colTotaleProfittiLibere;
+    @FXML private TableColumn colDettagliMovimenti;
+    @FXML private Label lblTitle;
+    @FXML private Label lblPeriodo;
     @FXML private DatePicker txtFldDataFrom;
     @FXML private DatePicker txtFldDataTo;
     @FXML private RadioButton rdtBtnVistaSettimanale;
     @FXML private RadioButton rdtBtnVistaMensile;
+    @FXML private Button btnBack;
+    @FXML private Button btnForward;
+    @FXML private Button btnElencoMinsan;
+    private ChangePeriodListener changePeriodListenerBack;
+    private ChangePeriodListener changePeriodListenerForward;
+    private ChangeDateAndViewListener changeDateAndViewListener;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        changePeriodListenerBack = new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK,this);
+        changePeriodListenerForward = new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD,this);
+        changeDateAndViewListener = new ChangeDateAndViewListener(this);
+
+        btnBack.setOnAction(changePeriodListenerBack);
+        btnForward.setOnAction(changePeriodListenerForward);
+
+        txtFldDataFrom.setUserData("dataFrom");
+        txtFldDataTo.setUserData("dataTo");
+        rdtBtnVistaMensile.setUserData("vistaMensile");
+        rdtBtnVistaSettimanale.setUserData("vistaSettimanale");
+
+        txtFldDataFrom.setOnAction(changeDateAndViewListener);
+        txtFldDataTo.setOnAction(changeDateAndViewListener);
+        rdtBtnVistaSettimanale.setOnAction(changeDateAndViewListener);
+        rdtBtnVistaMensile.setOnAction(changeDateAndViewListener);
+
+        colData.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,String>("data"));
+        colTotaleVenditeLibere.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,BigDecimal>("totaleVenditeLordeLibere"));
+        colTotaleProfittiLibere.setCellValueFactory(new PropertyValueFactory<ElencoTotaliGiornalieriRowData,BigDecimal>("totaleProfittiLibere"));
+
+        colData.setCellFactory(e ->{ return new TableCell<ElencoTotaliGiornalieriRowData,String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setText(null);
+                } else {
+                    setText(DateUtility.converteGUIStringDDMMYYYYToNameDayOfWeek(item));
+                }
+            }
+        };
+        });
+
+        NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.ITALY);
+        DecimalFormat df = (DecimalFormat)nf;
+
+        colTotaleProfittiLibere.setCellFactory(new Callback<TableColumn<ElencoTotaliGiornalieriRowData, BigDecimal>, TableCell<ElencoTotaliGiornalieriRowData, BigDecimal>>() {
+            @Override
+            public TableCell<ElencoTotaliGiornalieriRowData, BigDecimal> call(TableColumn<ElencoTotaliGiornalieriRowData, BigDecimal> e) {
+                return new TableCell<ElencoTotaliGiornalieriRowData, BigDecimal>() {
+                    @Override
+                    public void updateItem(BigDecimal item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(df.format(item));
+                        }
+                    }
+                };
+            }
+        });
+
+        colTotaleVenditeLibere.setCellFactory(new Callback<TableColumn<ElencoTotaliGiornalieriRowData, BigDecimal>, TableCell<ElencoTotaliGiornalieriRowData, BigDecimal>>() {
+            @Override
+            public TableCell<ElencoTotaliGiornalieriRowData, BigDecimal> call(TableColumn<ElencoTotaliGiornalieriRowData, BigDecimal> e) {
+                return new TableCell<ElencoTotaliGiornalieriRowData, BigDecimal>() {
+                    @Override
+                    public void updateItem(BigDecimal item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(nf.format(item));
+                        }
+                    }
+                };
+            }
+        });
+
+        colDettagliMovimenti.setCellFactory(ActionButtonTableCell.<ElencoTotaliGiornalieriRowData>forTableColumn("Dettagli", (ElencoTotaliGiornalieriRowData p) -> {
+            System.out.println(p.getTotaleProfittiLibere());
+            return p;
+        }));
+
+        ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = itemList();
+        tableVenditeEProfittiLibere.getItems().setAll(elencoRighe);
+        aggiornaGrafico(graficoVenditeEProfittiLibere,elencoRighe);
     }
 
-    @FXML
-    private void clickedDataFrom(ActionEvent event){
+    private ObservableList<ElencoTotaliGiornalieriRowData> itemList(){
 
+        Date toDate;
+        Date fromDate;
+
+        Importazioni importazione = ImportazioniDAOManager.findUltimoInsert();
+        toDate = importazione.getDataUltimoMovImportato();
         Calendar myCal = Calendar.getInstance(Locale.ITALY);
-        Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-        Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-        myCal.setTime(fromDate);
-        if (rdtBtnVistaSettimanale.isSelected()){
-            myCal.add(Calendar.DAY_OF_YEAR,6);
-            toDate = myCal.getTime();
-        }else
-        if (rdtBtnVistaMensile.isSelected()){
-            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
-            toDate = myCal.getTime();
-        }
-        ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
-        if(!elencoRighe.isEmpty()){
-            txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
-            txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-            //aggiornaTable(elencoRighe,fromDate,toDate);
-        }else{
-            //TODO: alert mancanza di movimenti
-        }
-    }
-
-    @FXML
-    private void clickedDataTo(ActionEvent event){
-
-        Calendar myCal = Calendar.getInstance(Locale.ITALY);
-        Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-        Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
         myCal.setTime(toDate);
-        if (rdtBtnVistaSettimanale.isSelected()){
-            myCal.set(Calendar.DAY_OF_WEEK,myCal.getActualMinimum(Calendar.DAY_OF_WEEK));
+
+        int diff = 0;
+        if (myCal.getFirstDayOfWeek() < myCal.get(Calendar.DAY_OF_WEEK))
+            diff = myCal.get(Calendar.DAY_OF_WEEK) - myCal.getFirstDayOfWeek();
+
+        if (myCal.get(Calendar.DAY_OF_WEEK) == 1) {
+            myCal.add(Calendar.DAY_OF_YEAR, -6);
             fromDate = myCal.getTime();
-        }else
-        if (rdtBtnVistaMensile.isSelected()){
-            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMinimum(Calendar.DAY_OF_MONTH));
+        } else {
+            if (diff > 0)
+                diff = diff * (-1);
+            myCal.add(Calendar.DAY_OF_YEAR, diff);
             fromDate = myCal.getTime();
         }
-        ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
-        if(!elencoRighe.isEmpty()){
-            txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
-            txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-            //aggiornaTable(elencoRighe,fromDate,toDate);
+
+
+        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
+        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
+
+        myCal.setTime(fromDate);
+        txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
+        myCal.setTime(toDate);
+        txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
+
+
+        return FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
+
+    }
+
+    private void aggiornaGrafico(AreaChart<String,Number> graficoVenditeEProfittiLibere,ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe){
+
+        xAxis.setLabel("Giorno");
+        yAxis.setLabel("Valore (in €)");
+        List<String> xLabels = new ArrayList<String>();
+
+        XYChart.Series seriesProfitti = new XYChart.Series();
+        seriesProfitti.setName("Profitti Vendite Libere");
+        XYChart.Series seriesVendite = new XYChart.Series();
+        seriesVendite.setName("Vendite Libere");
+        Iterator<ElencoTotaliGiornalieriRowData> iter = elencoRighe.iterator();
+        ElencoTotaliGiornalieriRowData totale;
+        String toDay;
+        BigDecimal totVendite = new BigDecimal(0);
+        BigDecimal totProfitti = new BigDecimal(0);
+        while(iter.hasNext()){
+            totale = (ElencoTotaliGiornalieriRowData)iter.next();
+            toDay = Integer.toString(DateUtility.getGiornoDelMese(DateUtility.converteGUIStringDDMMYYYYToDate(totale.getData())));
+            xLabels.add(toDay);
+            totVendite = totVendite.add(totale.getTotaleVenditeLordeLibere());
+            totProfitti = totProfitti.add(totale.getTotaleProfittiLibere());
+            seriesProfitti.getData().add(new XYChart.Data(toDay,totale.getTotaleProfitti()));
+            seriesVendite.getData().add(new XYChart.Data(toDay,totale.getTotaleVenditeLorde()));
+        }
+        ObservableList<String> xxLabels = FXCollections.observableArrayList(xLabels);
+        xAxis.getCategories().clear();
+        xAxis.setCategories(xxLabels);
+        graficoVenditeEProfittiLibere.getData().clear();
+        graficoVenditeEProfittiLibere.getData().addAll(seriesProfitti,seriesVendite);
+
+        NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.ITALY);
+        DecimalFormat df = (DecimalFormat)nf;
+        lblTotVendite.setText(df.format(totVendite.doubleValue()));
+        lblTotProfitti.setText(df.format(totProfitti.doubleValue()));
+    }
+
+
+    @Override
+    public Date getDateFrom() {
+        return DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
+    }
+
+    @Override
+    public Date getDateTo() {
+        return DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
+    }
+
+    @Override
+    public RadioButton getRdbtVistaMensile() {
+        return rdtBtnVistaMensile;
+    }
+
+    @Override
+    public RadioButton getRdbtVistaSettimanale() {
+        return rdtBtnVistaSettimanale;
+    }
+
+    @Override
+    public void aggiornaTableAndScene(Date dateFrom, Date dateTo, boolean vistaSettimanale) {
+
+        ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((dateFrom),(dateTo)));
+        aggiornaTable(elencoRighe,dateFrom,dateTo);
+        if (vistaSettimanale){
+            changePeriodListenerBack.setPeriod(PeriodToShow.SETTIMANA);
+            changePeriodListenerForward.setPeriod(PeriodToShow.SETTIMANA);
+            lblPeriodo.setText(" Settimana");
+            lblTitle.setText("Situazione Vendite e Profitti Settimanale");
+            rdtBtnVistaSettimanale.setSelected(true);
         }else{
-            //TODO: alert mancanza di movimenti
+            changePeriodListenerBack.setPeriod(PeriodToShow.MESE);
+            changePeriodListenerForward.setPeriod(PeriodToShow.MESE);
+            lblPeriodo.setText("    Mese  ");
+            lblTitle.setText("Situazione Vendite e Profitti Mensile");
+            rdtBtnVistaMensile.setSelected(true);
         }
 
+    }
 
+    @Override
+    public void aggiornaTable(Date dateFrom, Date dateTo) {
+        ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((dateFrom),(dateTo)));
+        if(!elencoRighe.isEmpty()) {
+            //TODO: messsaggio se movimenti mancanti....
+            aggiornaTable(elencoRighe, dateFrom, dateTo);
+        }
+    }
+
+    private void aggiornaTable(ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe,Date dateFrom, Date dateTo){
+        Calendar myCal = Calendar.getInstance(Locale.ITALY);
+        myCal.setTime(dateFrom);
+        txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
+        myCal.setTime(dateTo);
+        txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
+
+        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom));
+        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(dateTo));
+        tableVenditeEProfittiLibere.getItems().clear();
+        tableVenditeEProfittiLibere.getItems().setAll(elencoRighe);
+        tableVenditeEProfittiLibere.refresh();
+        aggiornaGrafico(graficoVenditeEProfittiLibere, elencoRighe);
+
+    }
+
+    @FXML
+    private void buttonElencoMinsanListener(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/ElencoMinsanVenditeLibere.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            ElencoMinsanVenditeLibereController controller = fxmlLoader.getController();
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     @FXML
     private void listenerEsciButton(ActionEvent event){
-        System.exit(0);
-    }
 
-    @FXML
-    private void clickedMese(ActionEvent event) {
         try {
-            Calendar myCal = Calendar.getInstance(Locale.ITALY);
-            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-            myCal.setTime(fromDate);
-            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
-            fromDate = myCal.getTime();
-            myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMaximum(Calendar.DAY_OF_MONTH));
-            toDate = myCal.getTime();
-            //aggiornaTableAndScene(fromDate,toDate,false);
-        }catch (Exception ex){
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SituazioneVenditeEProfitti.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            SituazioneVenditeEProfittiController controller = fxmlLoader.getController();
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
             ex.printStackTrace();
         }
     }
-
-    @FXML
-    private void clickedSettimana(ActionEvent event) {
-        try {
-            Calendar myCal = Calendar.getInstance(Locale.ITALY);
-            Date fromDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-            Date toDate = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
-            myCal.setTime(fromDate);
-            myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
-            fromDate = myCal.getTime();
-            myCal.add(Calendar.DAY_OF_YEAR,6);
-            toDate = myCal.getTime();
-            //aggiornaTableAndScene(fromDate,toDate,true);
-
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
 }

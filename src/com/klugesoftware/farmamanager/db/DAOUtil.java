@@ -130,10 +130,16 @@ public final class DAOUtil {
 	public static ElencoMinsanLiberaVenditaRowData mapElencoMinsanLiberaVenditaRowData(ResultSet rs) throws SQLException{
 		
 		Integer tempQuantitaTotale = new Integer(rs.getString("quantitaTotale"));
-		double tempProfittoMedio = rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue() - rs.getBigDecimal("costoMedio").doubleValue();
-		double tempMargineMedio = (tempProfittoMedio/rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue()) * 100;
-		double tempRicaricoMedio = (tempProfittoMedio/rs.getBigDecimal("costoMedio").doubleValue()) * 100;
-		
+		double tempProfittoMedio=0;
+		double tempMargineMedio=0;
+		double tempRicaricoMedio=0;
+
+
+		if ( (rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue() != 0) && (rs.getBigDecimal("costoMedio").doubleValue() != 0)  ){
+			tempProfittoMedio = rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue() - rs.getBigDecimal("costoMedio").doubleValue();
+			tempMargineMedio = (tempProfittoMedio/rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue()) * 100;
+			tempRicaricoMedio = (tempProfittoMedio/rs.getBigDecimal("costoMedio").doubleValue()) * 100;
+		}
 		return new ElencoMinsanLiberaVenditaRowData(
 				rs.getString("minsan"), 
 				rs.getString("descrizione"), 

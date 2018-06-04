@@ -108,4 +108,8 @@ public class ElencoMinsanLiberaVenditaRowData {
 		this.profittoMedio = profittoMedio;
 	}
 
+	@Override
+	public String toString() {
+		return minsan;
+	}
 }

@@ -34,6 +34,7 @@ import java.util.*;
 
 public class SituazioneVenditeEProfittiController extends VenditeEProfittiController implements Initializable {
 
+    @FXML private Button btnVenditeLibere;
     @FXML private TableView<ElencoTotaliGiornalieriRowData> tableVenditeEProfittiTotali;
     @FXML private TableColumn<ElencoTotaliGiornalieriRowData,String> colData;
     @FXML private TableColumn<ElencoTotaliGiornalieriRowData,BigDecimal> colTotaleVendite;
@@ -215,6 +216,22 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
         System.exit(0);
     }
 
+    @FXML
+    private void analisiLibereClicked(ActionEvent event){
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SituazioneVenditeEProfittiLibere.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
 
     @FXML
     private void DettaglioVenditeClicked(ActionEvent event) throws IOException {
