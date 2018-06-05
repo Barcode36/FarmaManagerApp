@@ -67,8 +67,8 @@
                   </ImageView>
                   <Pane layoutX="103.0" layoutY="5.0" prefHeight="110.0" prefWidth="437.0">
                      <children>
-                        <TextField layoutX="14.0" layoutY="36.0" prefHeight="39.0" prefWidth="318.0" promptText="digita la descrizione o il minsan da cercare" />
-                        <Button layoutX="340.0" layoutY="38.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="92.0" text="cerca" textAlignment="RIGHT">
+                        <TextField fx:id="txtSearch" layoutX="14.0" layoutY="36.0" prefHeight="39.0" prefWidth="318.0" promptText="digita la descrizione o il minsan da cercare" />
+                        <Button layoutX="340.0" layoutY="38.0" mnemonicParsing="false" onAction="#cercaClicked" prefHeight="35.0" prefWidth="92.0" text="cerca" textAlignment="RIGHT">
                            <graphic>
                               <ImageView fitHeight="23.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

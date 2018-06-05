@@ -16,10 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -44,6 +41,7 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,BigDecimal> colMargineMedio;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,BigDecimal> colRicaricoMedio;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,BigDecimal> colProfittoMedio;
+    @FXML private TextField txtSearch;
     @FXML private DatePicker txtFldDataFrom;
     @FXML private DatePicker txtFldDataTo;
           private ChangeDateListener changeDateListener;
@@ -214,6 +212,14 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
 
     }
 
+    @FXML
+    private void cercaClicked(ActionEvent event){
+        Date dateFrom = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
+        Date dateTo = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
+        tableElencoMinsan.getItems().clear();
+        tableElencoMinsan.getItems().setAll(FXCollections.observableArrayList(ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanProdottoVenditaLiberaLikeBetweenDate(dateFrom,dateTo,txtSearch.getText())));
+        tableElencoMinsan.refresh();
+    }
 }
 
 

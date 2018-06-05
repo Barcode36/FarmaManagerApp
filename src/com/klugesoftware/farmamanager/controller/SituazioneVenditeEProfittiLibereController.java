@@ -20,6 +20,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -32,6 +33,7 @@ import java.util.*;
 
 public class SituazioneVenditeEProfittiLibereController extends VenditeEProfittiController implements Initializable {
 
+    @FXML private BorderPane mainPanel;
     @FXML private AreaChart<String,Number> graficoVenditeEProfittiLibere;
     @FXML private CategoryAxis xAxis;
     @FXML private NumberAxis yAxis;
@@ -133,7 +135,7 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
         });
 
         colDettagliMovimenti.setCellFactory(ActionButtonTableCell.<ElencoTotaliGiornalieriRowData>forTableColumn("Dettagli", (ElencoTotaliGiornalieriRowData p) -> {
-            System.out.println(p.getTotaleProfittiLibere());
+            goToDettagli(DateUtility.converteGUIStringDDMMYYYYToDate(p.getData()));
             return p;
         }));
 
@@ -178,6 +180,22 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
 
         return FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
 
+    }
+
+    private void goToDettagli(Date data){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/ElencoMinsanVenditeLibere.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            ElencoMinsanVenditeLibereController controller = fxmlLoader.getController();
+            controller.aggiornaTable(data,data);
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ( mainPanel.getScene().getWindow());
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     private void aggiornaGrafico(AreaChart<String,Number> graficoVenditeEProfittiLibere,ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe){
