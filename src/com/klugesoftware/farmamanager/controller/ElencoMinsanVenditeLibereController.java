@@ -96,6 +96,7 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
                         } else {
                             String temp = item.toString().replace(".",",");
                             setText(temp.toString()+" %");
+                            
                         }
                     }
                 };
