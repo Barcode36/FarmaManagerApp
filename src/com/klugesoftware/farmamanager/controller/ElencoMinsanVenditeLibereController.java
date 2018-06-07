@@ -5,6 +5,7 @@ import com.klugesoftware.farmamanager.DTO.ElencoTotaliGiornalieriRowData;
 import com.klugesoftware.farmamanager.db.ElencoMinsanLiberaVenditaRowDataDAOManager;
 import com.klugesoftware.farmamanager.db.ElencoTotaliGiornalieriRowDataManager;
 import com.klugesoftware.farmamanager.db.ImportazioniDAOManager;
+import com.klugesoftware.farmamanager.model.CustomRoundingAndScaling;
 import com.klugesoftware.farmamanager.model.Importazioni;
 import com.klugesoftware.farmamanager.utility.DateUtility;
 import javafx.collections.FXCollections;
@@ -16,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
@@ -26,10 +28,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ElencoMinsanVenditeLibereController extends ElencoMinsanController implements Initializable {
 
@@ -45,6 +44,9 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
     @FXML private DatePicker txtFldDataFrom;
     @FXML private DatePicker txtFldDataTo;
           private ChangeDateListener changeDateListener;
+    @FXML private PieChart graficoComposizioneRicarico;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -92,7 +94,8 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
                         if (item == null || empty) {
                             setText(null);
                         } else {
-                            setText(df.format(item));
+                            String temp = item.toString().replace(".",",");
+                            setText(temp.toString()+" %");
                         }
                     }
                 };
@@ -108,7 +111,8 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
                         if (item == null || empty) {
                             setText(null);
                         } else {
-                            setText(df.format(item));
+                            String temp = item.toString().replace(".",",");
+                            setText(temp.toString()+" %");
                         }
                     }
                 };
@@ -159,8 +163,55 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
 
         txtFldDataFrom.setOnAction(changeDateListener);
         txtFldDataTo.setOnAction(changeDateListener);
+        ArrayList<ElencoMinsanLiberaVenditaRowData> elenco = ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanProdottoVenditaLiberaBetweenDate(fromDate,toDate);
+        aggiornaGrafico(elenco);
+        return FXCollections.observableArrayList(elenco);
 
-        return FXCollections.observableArrayList(ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanProdottoVenditaLiberaBetweenDate(fromDate,toDate));
+    }
+
+    private void aggiornaGrafico(ArrayList<ElencoMinsanLiberaVenditaRowData> elencoMinsanLiberaVenditaRowData){
+        ElencoMinsanLiberaVenditaRowData rowData;
+        Iterator<ElencoMinsanLiberaVenditaRowData> iter = elencoMinsanLiberaVenditaRowData.iterator();
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        double fascia1 = 0;
+        double fascia2 = 10;
+        double fascia3 = 20;
+        double fascia4 = 30;
+        double valFascia1=0;
+        double valFascia2=0;
+        double valFascia3=0;
+        double valFascia4=0;
+        double valFascia5=0;
+        double ricarico;
+
+        while(iter.hasNext()){
+            rowData = iter.next();
+            ricarico = rowData.getRicaricoMedio().doubleValue();
+            if(ricarico <= fascia1)
+                valFascia1++;
+            else
+                if(ricarico <= fascia2)
+                    valFascia2++;
+                else
+                    if(ricarico <= fascia3)
+                        valFascia3++;
+                    else
+                        if (ricarico <= fascia4)
+                            valFascia4++;
+                        else
+                            valFascia5++;
+        }
+
+        pieChartData.add(new PieChart.Data("minore di 0%",valFascia1));
+        pieChartData.add(new PieChart.Data("da 0 a 10 % ",valFascia2));
+        pieChartData.add(new PieChart.Data("da 10 a 20 % ",valFascia3));
+        pieChartData.add(new PieChart.Data("da 20 a 30 % ",valFascia4));
+        pieChartData.add(new PieChart.Data("maggiore di 30 % ",valFascia5));
+        graficoComposizioneRicarico.setTitle("Composizione Ricarico\ndal: "+txtFldDataFrom.getEditor().getText()+"\nal: "+txtFldDataTo.getEditor().getText());
+        graficoComposizioneRicarico.getData().clear();
+        graficoComposizioneRicarico.setData(pieChartData);
 
     }
 
@@ -205,11 +256,11 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
         txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(dateTo));
         txtFldDataFrom.setOnAction(changeDateListener);
         txtFldDataTo.setOnAction(changeDateListener);
-
+        ArrayList<ElencoMinsanLiberaVenditaRowData> elenco = ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanProdottoVenditaLiberaBetweenDate(dateFrom,dateTo);
         tableElencoMinsan.getItems().clear();
-        tableElencoMinsan.getItems().setAll(FXCollections.observableArrayList(ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanProdottoVenditaLiberaBetweenDate(dateFrom,dateTo)));
+        tableElencoMinsan.getItems().setAll(FXCollections.observableArrayList(elenco));
         tableElencoMinsan.refresh();
-
+        aggiornaGrafico(elenco);
     }
 
     @FXML

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -115,17 +116,17 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane prefHeight="600.0" prefWidth="709.0">
+            <ScrollPane prefHeight="603.0" prefWidth="719.0">
                <content>
-                  <TableView fx:id="tableElencoMinsan" prefHeight="600.0" prefWidth="705.0">
+                  <TableView fx:id="tableElencoMinsan" prefHeight="600.0" prefWidth="717.0">
                     <columns>
-                      <TableColumn fx:id="colMinsan" editable="false" prefWidth="117.0" resizable="false" text="minsan" />
-                      <TableColumn fx:id="colDescrizione" editable="false" minWidth="0.0" prefWidth="276.0" resizable="false" text="descrizione" />
-                        <TableColumn fx:id="colQuantita" editable="false" prefWidth="64.0" resizable="false" text="quantità&#10;" />
-                        <TableColumn fx:id="colPrezzoVenditaMedio" editable="false" prefWidth="66.0" resizable="false" text="prezzo&#10;vendita&#10;medio" />
-                        <TableColumn fx:id="colMargineMedio" editable="false" prefWidth="62.0" resizable="false" text="margine&#10;medio" />
-                        <TableColumn fx:id="colRicaricoMedio" editable="false" prefWidth="61.0" resizable="false" text="ricarico&#10;medio" />
-                        <TableColumn fx:id="colProfittoMedio" editable="false" prefWidth="57.0" resizable="false" text="profitto&#10;medio" />
+                      <TableColumn fx:id="colMinsan" editable="false" prefWidth="86.0" resizable="false" text="minsan" />
+                      <TableColumn fx:id="colDescrizione" editable="false" minWidth="0.0" prefWidth="252.0" resizable="false" text="descrizione" />
+                        <TableColumn fx:id="colQuantita" editable="false" prefWidth="56.0" resizable="false" text="quantità&#10;" />
+                        <TableColumn fx:id="colPrezzoVenditaMedio" editable="false" prefWidth="77.0" resizable="false" text="prezzo&#10;vendita&#10;medio" />
+                        <TableColumn fx:id="colMargineMedio" editable="false" prefWidth="87.0" resizable="false" text="margine&#10;medio" />
+                        <TableColumn fx:id="colRicaricoMedio" editable="false" prefWidth="75.0" resizable="false" text="ricarico&#10;medio" />
+                        <TableColumn fx:id="colProfittoMedio" editable="false" prefWidth="65.0" resizable="false" text="profitto&#10;medio" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -133,6 +134,7 @@
                   </TableView>
                </content>
             </ScrollPane>
+            <PieChart fx:id="graficoComposizioneRicarico" labelLineLength="5.0" prefHeight="603.0" prefWidth="457.0" title="Composizione Ricarico" />
          </children>
       </HBox>
    </center>
