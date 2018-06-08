@@ -1,11 +1,8 @@
 package com.klugesoftware.farmamanager.controller;
 
 import com.klugesoftware.farmamanager.DTO.ElencoMinsanLiberaVenditaRowData;
-import com.klugesoftware.farmamanager.DTO.ElencoTotaliGiornalieriRowData;
 import com.klugesoftware.farmamanager.db.ElencoMinsanLiberaVenditaRowDataDAOManager;
-import com.klugesoftware.farmamanager.db.ElencoTotaliGiornalieriRowDataManager;
 import com.klugesoftware.farmamanager.db.ImportazioniDAOManager;
-import com.klugesoftware.farmamanager.model.CustomRoundingAndScaling;
 import com.klugesoftware.farmamanager.model.Importazioni;
 import com.klugesoftware.farmamanager.utility.DateUtility;
 import javafx.collections.FXCollections;
@@ -30,13 +27,15 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.*;
 
-public class ElencoMinsanVenditeLibereController extends ElencoMinsanController implements Initializable {
+public class ElencoDettagliatoMinsanVenditeLibereController extends ElencoMinsanController implements Initializable {
 
     @FXML private TableView<ElencoMinsanLiberaVenditaRowData> tableElencoMinsan;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,String> colMinsan;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,String> colDescrizione;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,Integer> colQuantita;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,BigDecimal> colPrezzoVenditaMedio;
+    @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,BigDecimal> colScontoMedio;
+    @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,BigDecimal> colCostoMedio;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,BigDecimal> colMargineMedio;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,BigDecimal> colRicaricoMedio;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,BigDecimal> colProfittoMedio;
@@ -44,7 +43,6 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
     @FXML private DatePicker txtFldDataFrom;
     @FXML private DatePicker txtFldDataTo;
           private ChangeDateListener changeDateListener;
-    @FXML private PieChart graficoComposizioneRicarico;
 
 
     @Override
@@ -60,6 +58,8 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
         colDescrizione.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,String>("descrizione"));
         colQuantita.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,Integer>("quantitaTotale"));
         colPrezzoVenditaMedio.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,BigDecimal>("prezzoVenditaMedio"));
+        colScontoMedio.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,BigDecimal>("scontoMedio"));
+        colCostoMedio.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,BigDecimal>("costoMedio"));
         colMargineMedio.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,BigDecimal>("margineMedio"));
         colRicaricoMedio.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,BigDecimal>("ricaricoMedio"));
         colProfittoMedio.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,BigDecimal>("profittoMedio"));
@@ -84,6 +84,39 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
                 };
             }
         });
+
+        colScontoMedio.setCellFactory(new Callback<TableColumn<ElencoMinsanLiberaVenditaRowData, BigDecimal>, TableCell<ElencoMinsanLiberaVenditaRowData, BigDecimal>>() {
+            @Override
+            public TableCell<ElencoMinsanLiberaVenditaRowData, BigDecimal> call(TableColumn<ElencoMinsanLiberaVenditaRowData, BigDecimal> param) {
+                return new TableCell<ElencoMinsanLiberaVenditaRowData,BigDecimal>(){
+                    @Override
+                    public void updateItem(BigDecimal item,boolean empty){
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(df.format(item));
+                        }
+                    }
+                };
+            }
+        });
+
+        colCostoMedio.setCellFactory(new Callback<TableColumn<ElencoMinsanLiberaVenditaRowData, BigDecimal>, TableCell<ElencoMinsanLiberaVenditaRowData, BigDecimal>>() {
+            @Override
+            public TableCell<ElencoMinsanLiberaVenditaRowData, BigDecimal> call(TableColumn<ElencoMinsanLiberaVenditaRowData, BigDecimal> param) {
+                return new TableCell<ElencoMinsanLiberaVenditaRowData,BigDecimal>(){
+                    @Override
+                    public void updateItem(BigDecimal item,boolean empty){
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(df.format(item));
+                        }
+                    }
+                };
+            }
+        });
+
 
         colMargineMedio.setCellFactory(new Callback<TableColumn<ElencoMinsanLiberaVenditaRowData, BigDecimal>, TableCell<ElencoMinsanLiberaVenditaRowData, BigDecimal>>() {
             @Override
@@ -165,59 +198,14 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
         txtFldDataFrom.setOnAction(changeDateListener);
         txtFldDataTo.setOnAction(changeDateListener);
         ArrayList<ElencoMinsanLiberaVenditaRowData> elenco = ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanProdottoVenditaLiberaBetweenDate(fromDate,toDate);
-        aggiornaGrafico(elenco);
+
         return FXCollections.observableArrayList(elenco);
 
     }
 
-    private void aggiornaGrafico(ArrayList<ElencoMinsanLiberaVenditaRowData> elencoMinsanLiberaVenditaRowData){
-        ElencoMinsanLiberaVenditaRowData rowData;
-        Iterator<ElencoMinsanLiberaVenditaRowData> iter = elencoMinsanLiberaVenditaRowData.iterator();
-
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-
-        double fascia1 = 0;
-        double fascia2 = 10;
-        double fascia3 = 20;
-        double fascia4 = 30;
-        double valFascia1=0;
-        double valFascia2=0;
-        double valFascia3=0;
-        double valFascia4=0;
-        double valFascia5=0;
-        double ricarico;
-
-        while(iter.hasNext()){
-            rowData = iter.next();
-            ricarico = rowData.getRicaricoMedio().doubleValue();
-            if(ricarico <= fascia1)
-                valFascia1++;
-            else
-                if(ricarico <= fascia2)
-                    valFascia2++;
-                else
-                    if(ricarico <= fascia3)
-                        valFascia3++;
-                    else
-                        if (ricarico <= fascia4)
-                            valFascia4++;
-                        else
-                            valFascia5++;
-        }
-
-        pieChartData.add(new PieChart.Data("minore di 0%",valFascia1));
-        pieChartData.add(new PieChart.Data("da 0 a 10 % ",valFascia2));
-        pieChartData.add(new PieChart.Data("da 10 a 20 % ",valFascia3));
-        pieChartData.add(new PieChart.Data("da 20 a 30 % ",valFascia4));
-        pieChartData.add(new PieChart.Data("maggiore di 30 % ",valFascia5));
-        graficoComposizioneRicarico.setTitle("Composizione Ricarico\ndal: "+txtFldDataFrom.getEditor().getText()+"\nal: "+txtFldDataTo.getEditor().getText());
-        graficoComposizioneRicarico.getData().clear();
-        graficoComposizioneRicarico.setData(pieChartData);
-
-    }
 
     @FXML
-    private void listenerEsciButton(javafx.event.ActionEvent event){
+    private void listenerEsciButton(ActionEvent event){
 
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SituazioneVenditeEProfittiLibere.fxml"));
@@ -261,7 +249,6 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
         tableElencoMinsan.getItems().clear();
         tableElencoMinsan.getItems().setAll(FXCollections.observableArrayList(elenco));
         tableElencoMinsan.refresh();
-        aggiornaGrafico(elenco);
     }
 
     @FXML
@@ -288,25 +275,6 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
         }catch(Exception ex){
             ex.printStackTrace();
         }
-    }
-
-    @FXML
-    private void dettagliClicked(ActionEvent event){
-
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/ElencoDettagliatoMinsanVenditeLibere.fxml"));
-            Parent parent = (Parent) fxmlLoader.load();
-            ElencoDettagliatoMinsanVenditeLibereController controller = fxmlLoader.getController();
-            controller.aggiornaTable(getDateFrom(),getDateTo());
-            Scene scene = new Scene(parent);
-            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            app_stage.hide();
-            app_stage.setScene(scene);
-            app_stage.show();
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
-
     }
 }
 

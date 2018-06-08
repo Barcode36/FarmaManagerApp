@@ -161,7 +161,6 @@
                      <font>
                         <Font size="11.0" />
                      </font></Button>
-                  <Button fx:id="btnDettaglioTotali" mnemonicParsing="false" prefHeight="64.0" prefWidth="84.0" text="Elenco&#10;Vendite" />
                </children>
             </VBox>
          </children>
