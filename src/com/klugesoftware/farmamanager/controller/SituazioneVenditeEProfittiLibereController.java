@@ -333,4 +333,22 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             ex.printStackTrace();
         }
     }
+
+    @FXML
+    private void dettagliEConfrontoClicked(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/ConfrontoTotaliVenditeLibere.fxml"));
+            Parent parent = (Parent)fxmlLoader.load();
+            ConfrontoTotaliVenditeLibereController controller = fxmlLoader.getController();
+            controller.setIntervalloMensile(getDateFrom(),getDateTo(),true);
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
 }

@@ -27,14 +27,14 @@
 }
 
 .table-view .column-header .label {
-    -fx-font-size: 14pt;
+    -fx-font-size: 12pt;
     -fx-text-fill: black;
     -fx-alignment: center;
     -fx-opacity: 1;
 }
 
 .table-cell{
-    -fx-font-size: 18;
+    -fx-font-size: 14;
 }
 
 #txtFldDataFrom{
