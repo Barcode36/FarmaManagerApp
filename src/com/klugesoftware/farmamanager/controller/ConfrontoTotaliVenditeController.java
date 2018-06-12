@@ -20,8 +20,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -90,6 +90,62 @@ public class ConfrontoTotaliVenditeController implements Initializable {
         colTotaliVendite.setCellValueFactory(new PropertyValueFactory<ConfrontoTotaliVenditeRowData,BigDecimal>("totale"));
         colTotaliVenditePrecedente.setCellValueFactory(new PropertyValueFactory<ConfrontoTotaliVenditeRowData,BigDecimal>("totalePrecedente"));
         colDiffPercTotali.setCellValueFactory(new PropertyValueFactory<ConfrontoTotaliVenditeRowData,String>("diffPercTotale"));
+
+        colDiffPercLibere.setCellFactory(new Callback<TableColumn<ConfrontoTotaliVenditeRowData, String>, TableCell<ConfrontoTotaliVenditeRowData, String>>() {
+            @Override
+            public TableCell<ConfrontoTotaliVenditeRowData, String> call(TableColumn<ConfrontoTotaliVenditeRowData, String> param) {
+                return new TableCell<ConfrontoTotaliVenditeRowData,String>(){
+                    @Override
+                    public void updateItem(String item,boolean empty){
+                        if(item != null)
+                            if (item.contains("+")) {
+                                setText(item.toString());
+                                this.getStyleClass().add("confrontoTableUp");
+                            }else {
+                                setText(item.toString());
+                                this.getStyleClass().add("confrontoTableDown");
+                            }
+                    }
+                };
+            }
+        });
+        colDiffPercSSN.setCellFactory(new Callback<TableColumn<ConfrontoTotaliVenditeRowData, String>, TableCell<ConfrontoTotaliVenditeRowData, String>>() {
+            @Override
+            public TableCell<ConfrontoTotaliVenditeRowData, String> call(TableColumn<ConfrontoTotaliVenditeRowData, String> param) {
+                return new TableCell<ConfrontoTotaliVenditeRowData,String>(){
+                    @Override
+                    public void updateItem(String item,boolean empty){
+                        if(item != null)
+                            if (item.contains("+")) {
+                                setText(item.toString());
+                                this.getStyleClass().add("confrontoTableUp");
+                            }else {
+                                setText(item.toString());
+                                this.getStyleClass().add("confrontoTableDown");
+                            }
+                    }
+                };
+            }
+        });
+
+        colDiffPercTotali.setCellFactory(new Callback<TableColumn<ConfrontoTotaliVenditeRowData, String>, TableCell<ConfrontoTotaliVenditeRowData, String>>() {
+            @Override
+            public TableCell<ConfrontoTotaliVenditeRowData, String> call(TableColumn<ConfrontoTotaliVenditeRowData, String> param) {
+                return new TableCell<ConfrontoTotaliVenditeRowData,String>(){
+                    @Override
+                    public void updateItem(String item,boolean empty){
+                        if(item != null)
+                            if (item.contains("+")) {
+                                setText(item.toString());
+                                this.getStyleClass().add("confrontoTableUp");
+                            }else {
+                                setText(item.toString());
+                                this.getStyleClass().add("confrontoTableDown");
+                            }
+                    }
+                };
+            }
+        });
 
     }
 
@@ -269,13 +325,32 @@ public class ConfrontoTotaliVenditeController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/ConfrontoTotaliVenditeGrafico.fxml"));
         Parent parent = (Parent)fxmlLoader.load();
         ConfrontoTotaliVenditeGraficoController controller = fxmlLoader.getController();
-        controller.initGrafico(rows);
+        boolean anno = false;
+        if (rdtBtnAnnoPrecedente.isSelected())
+            anno = true;
+        controller.init(anno,comboMeseDaConfrontare.getSelectionModel().getSelectedIndex(),rows);
         Scene scene = new Scene(parent);
         //Stage this_app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         //app_stage.hide();
         Stage app_stage = new Stage();
         app_stage.setScene(scene);
         app_stage.show();
+    }
+
+    @FXML
+    private void clickedVenditeLibere(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SituazioneVenditeEProfittiLibere.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     class ListenerCambioPeriodoConfronto implements ChangeListener<Toggle>{

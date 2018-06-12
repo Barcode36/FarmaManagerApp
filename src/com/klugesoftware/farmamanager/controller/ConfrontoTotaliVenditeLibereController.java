@@ -113,18 +113,18 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
         ArrayList<ConfrontoTotaliVenditeRowData> rowsData = confrontoTotaliVenditeRows.getRows();
         XYChart.Series seriesPeriodoAttuale = new XYChart.Series();
         seriesPeriodoAttuale.setName(periodoAttuale);
-        seriesPeriodoAttuale.getData().add(new XYChart.Data<>(vendite,rowsData.get(0).getTotaleLibere()));
-        seriesPeriodoAttuale.getData().add(new XYChart.Data<>(sconti,rowsData.get(1).getTotaleLibere()));
-        seriesPeriodoAttuale.getData().add(new XYChart.Data<>(costi,rowsData.get(4).getTotaleLibere()));
-        seriesPeriodoAttuale.getData().add(new XYChart.Data<>(profitto,rowsData.get(5).getTotaleLibere()));
+        seriesPeriodoAttuale.getData().add(new XYChart.Data<>(vendite,rowsData.get(0).getValTotaleLibere()));
+        seriesPeriodoAttuale.getData().add(new XYChart.Data<>(sconti,rowsData.get(1).getValTotaleLibere()));
+        seriesPeriodoAttuale.getData().add(new XYChart.Data<>(costi,rowsData.get(4).getValTotaleLibere()));
+        seriesPeriodoAttuale.getData().add(new XYChart.Data<>(profitto,rowsData.get(5).getValTotaleLibere()));
 
 
         XYChart.Series seriesPeriodoPrecedente = new XYChart.Series();
         seriesPeriodoPrecedente.setName(periodoPrecedente);
-        seriesPeriodoPrecedente.getData().add(new XYChart.Data<>(vendite,rowsData.get(0).getTotaleLiberePrec()));
-        seriesPeriodoPrecedente.getData().add(new XYChart.Data<>(sconti,rowsData.get(1).getTotaleLiberePrec()));
-        seriesPeriodoPrecedente.getData().add(new XYChart.Data<>(costi,rowsData.get(4).getTotaleLiberePrec()));
-        seriesPeriodoPrecedente.getData().add(new XYChart.Data<>(profitto,rowsData.get(5).getTotaleLiberePrec()));
+        seriesPeriodoPrecedente.getData().add(new XYChart.Data<>(vendite,rowsData.get(0).getValTotaleLiberePrecedenti()));
+        seriesPeriodoPrecedente.getData().add(new XYChart.Data<>(sconti,rowsData.get(1).getValTotaleLiberePrecedenti()));
+        seriesPeriodoPrecedente.getData().add(new XYChart.Data<>(costi,rowsData.get(4).getValTotaleLiberePrecedenti()));
+        seriesPeriodoPrecedente.getData().add(new XYChart.Data<>(profitto,rowsData.get(5).getValTotaleLiberePrecedenti()));
 
         graficoConfronto.getData().clear();
         graficoConfronto.getData().addAll(seriesPeriodoPrecedente,seriesPeriodoAttuale);

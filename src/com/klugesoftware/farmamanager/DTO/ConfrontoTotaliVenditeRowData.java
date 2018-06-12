@@ -3,6 +3,9 @@ package com.klugesoftware.farmamanager.DTO;
 import com.klugesoftware.farmamanager.model.CustomRoundingAndScaling;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class ConfrontoTotaliVenditeRowData {
 
@@ -29,6 +32,10 @@ public class ConfrontoTotaliVenditeRowData {
      */
     private String diffPercTotale;
 
+    private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.ITALY);
+    private DecimalFormat df = (DecimalFormat)nf;
+
+
     public ConfrontoTotaliVenditeRowData(String colDescrizione, BigDecimal totaleLibere, BigDecimal totaleLiberePrec,  String diffPercLibere, BigDecimal totaleSSN, BigDecimal totaleSSNPrecedente, String diffPercSSN, BigDecimal totale, BigDecimal totalePrecedente, String diffPercTotale) {
         this.colDescrizione = colDescrizione;
         this.totaleLibere = totaleLibere;
@@ -52,16 +59,32 @@ public class ConfrontoTotaliVenditeRowData {
         this.colDescrizione = colDescrizione;
     }
 
-    public BigDecimal getTotaleLibere() {
-        return totaleLibere;
+    private String converteInPercentuale(BigDecimal temp){
+        String ret = temp.toString().replace(".",",");
+        return ret+" %";
+    }
+
+    public String getTotaleLibere() {
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+            return converteInPercentuale(totaleLibere);
+        }
+        else{
+            return df.format(totaleLibere);
+        }
+
     }
 
     public void setTotaleLibere(BigDecimal totaleLibere) {
         this.totaleLibere = totaleLibere;
     }
 
-    public BigDecimal getTotaleLiberePrec() {
-        return totaleLiberePrec;
+    public String getTotaleLiberePrec() {
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+            return converteInPercentuale(totaleLiberePrec);
+        }
+        else{
+            return df.format(totaleLiberePrec);
+        }
     }
 
     public void setTotaleLiberePrec(BigDecimal totaleLiberePrec) {
@@ -86,16 +109,26 @@ public class ConfrontoTotaliVenditeRowData {
         diffPercLibere = diffPercToString(valoreAttuale,valorePrecedente);
     }
 
-    public BigDecimal getTotaleSSN() {
-        return totaleSSN;
+    public String getTotaleSSN() {
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+            return converteInPercentuale(totaleSSN);
+        }
+        else{
+            return df.format(totaleSSN);
+        }
     }
 
     public void setTotaleSSN(BigDecimal totaleSSN) {
         this.totaleSSN = totaleSSN;
     }
 
-    public BigDecimal getTotaleSSNPrecedente() {
-        return totaleSSNPrecedente;
+    public String getTotaleSSNPrecedente() {
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+            return converteInPercentuale(totaleSSNPrecedente);
+        }
+        else{
+            return df.format(totaleSSNPrecedente);
+        }
     }
 
     public void setTotaleSSNPrecedente(BigDecimal totaleSSNPrecedente) {
@@ -123,16 +156,26 @@ public class ConfrontoTotaliVenditeRowData {
         this.diffPercSSN = diffPercToString(valoreAttuale,valorePrecedente);
     }
 
-    public BigDecimal getTotale() {
-        return totale;
+    public String getTotale() {
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+            return converteInPercentuale(totale);
+        }
+        else{
+            return df.format(totale);
+        }
     }
 
     public void setTotale(BigDecimal totale) {
         this.totale = totale;
     }
 
-    public BigDecimal getTotalePrecedente() {
-        return totalePrecedente;
+    public String getTotalePrecedente() {
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+            return converteInPercentuale(totalePrecedente);
+        }
+        else{
+            return df.format(totalePrecedente);
+        }
     }
 
     public void setTotalePrecedente(BigDecimal totalePrecedente) {
@@ -164,8 +207,36 @@ public class ConfrontoTotaliVenditeRowData {
         if(valoreAttuale.doubleValue() > 0 && valorePrecedente.doubleValue() > 0) {
             double temp = ((valoreAttuale.doubleValue() / valorePrecedente.doubleValue()) * 100) - 100;
             BigDecimal temp2 = new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
-            return (temp2.toString().replace(".", ",") + " %");
+            if (temp2.doubleValue() > 0)
+                return ("+"+temp2.toString().replace(".", ",") + " %");
+            else
+                return (temp2.toString().replace(".", ",") + " %");
         }else
             return "";
     }
+
+    public BigDecimal getValTotaleLibere(){
+        return totaleLibere;
+    }
+
+    public BigDecimal getValTotaleLiberePrecedenti(){
+        return totaleLiberePrec;
+    }
+
+    public BigDecimal getValTotaleSSN(){
+        return totaleSSN;
+    }
+
+    public BigDecimal getValTotaleSSNPrecedente(){
+        return totaleSSNPrecedente;
+    }
+
+    public BigDecimal getValTotale(){
+        return totale;
+    }
+
+    public BigDecimal getValTotalePrecedente(){
+        return totalePrecedente;
+    }
+
 }

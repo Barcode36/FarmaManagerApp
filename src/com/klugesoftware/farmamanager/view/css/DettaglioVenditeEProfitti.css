@@ -29,7 +29,6 @@
 
 .table-view .column-header .label {
     -fx-font-size: 16pt;
-
     -fx-text-fill: black;
     -fx-alignment: center;
     -fx-opacity: 1;

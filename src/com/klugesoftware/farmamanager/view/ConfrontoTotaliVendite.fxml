@@ -87,16 +87,14 @@
    <left>
       <Pane fx:id="panelLeft" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox layoutX="7.0" layoutY="26.0" spacing="50.0">
-               <children>
-                  <Button fx:id="btnVenditeLibere" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Libere" />
-                  <Button fx:id="btnVenditeSSN" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;SSN" />
-                  <Button fx:id="btnDettaglioTotali" mnemonicParsing="false" onAction="#clickedGrafico" prefHeight="64.0" prefWidth="77.0" text="Mostra&#10;Grafico&#10;Confronto">
-                     <font>
-                        <Font size="12.0" />
-                     </font></Button>
-               </children>
-            </VBox>
+            <VBox layoutX="7.0" layoutY="26.0" spacing="50.0" />
+            <Button fx:id="btnVenditeSSN" disable="true" layoutX="11.0" layoutY="332.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;SSN" />
+            <Button fx:id="btnVenditeLibere" layoutX="12.0" layoutY="218.0" mnemonicParsing="false" onAction="#clickedVenditeLibere" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Libere" />
+            <Button fx:id="btnDettaglioTotali" layoutX="11.0" layoutY="106.0" mnemonicParsing="false" onAction="#clickedGrafico" prefHeight="64.0" prefWidth="77.0" text="Mostra&#10;Grafico&#10;Confronto">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </left>
@@ -106,14 +104,14 @@
             <TableView fx:id="tabellaTotali" prefHeight="603.0" prefWidth="1184.0">
               <columns>
                  <TableColumn fx:id="colDescrizione" prefWidth="164.0" sortable="false" />
-                  <TableColumn fx:id="colTotaleLiberePrecedente" prefWidth="131.0" sortable="false" text="Totali&#10;Vendite&#10;Libere&#10;Periodo&#10;Precedente" />
-                 <TableColumn fx:id="colTotaleLibere" minWidth="0.0" prefWidth="120.0" sortable="false" text="Totali&#10;Vendite&#10;Libere&#10;Periodo &#10;Attuale&#10;" />
+                  <TableColumn fx:id="colTotaleLiberePrecedente" prefWidth="131.0" sortable="false" text="Totali Vendite&#10;Libere&#10;&#10;Precedente&#10;&#10;" />
+                 <TableColumn fx:id="colTotaleLibere" minWidth="0.0" prefWidth="120.0" sortable="false" text="Totali Vendite&#10;Libere&#10;&#10;Attuale&#10;" />
                   <TableColumn fx:id="colDiffPercLibere" prefWidth="79.0" sortable="false" text="Differenza&#10;%" />
-                  <TableColumn fx:id="colTotaliSSNPrecedente" prefWidth="142.0" sortable="false" text="Totali&#10;Vendite&#10;SSN&#10;Periodo&#10;Precedente" />
-                  <TableColumn fx:id="colTotaliSSN" prefWidth="132.0" sortable="false" text="Totali&#10;Vendite&#10;SSN&#10;Periodo&#10;Attuale" />
+                  <TableColumn fx:id="colTotaliSSNPrecedente" prefWidth="142.0" sortable="false" text="Totali Vendite&#10;SSN&#10;&#10;Precedente" />
+                  <TableColumn fx:id="colTotaliSSN" prefWidth="132.0" sortable="false" text="Totali Vendite&#10;SSN&#10;&#10;Attuale" />
                   <TableColumn fx:id="colDiffPercSSN" prefWidth="78.0" sortable="false" text="Differenza&#10;%" />
-                  <TableColumn fx:id="colTotaliVenditePrecedente" prefWidth="131.0" sortable="false" text="Totali&#10;Vendite&#10;Periodo&#10;Precedente" />
-                  <TableColumn fx:id="colTotaliVendite" prefWidth="123.0" sortable="false" text="Totali&#10;Vendite&#10;Periodo&#10;Attuale&#10;" />
+                  <TableColumn fx:id="colTotaliVenditePrecedente" prefWidth="131.0" sortable="false" text="Totali Vendite&#10;&#10;&#10;Precedente" />
+                  <TableColumn fx:id="colTotaliVendite" prefWidth="123.0" sortable="false" text="Totali Vendite&#10;&#10;&#10;Attuale&#10;" />
                   <TableColumn fx:id="colDiffPercTotali" prefWidth="79.0" sortable="false" text="Differenza&#10;%" />
               </columns>
             </TableView>

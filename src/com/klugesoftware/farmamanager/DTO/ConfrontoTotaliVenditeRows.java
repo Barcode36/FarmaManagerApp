@@ -58,10 +58,10 @@ public class ConfrontoTotaliVenditeRows {
         row1.setColDescrizione(descrizioni[0]);
         row1.setTotaleLibere(totaliGenerali.getTotaleVenditeLordeLibere());
         row1.setTotaleLiberePrec(totaliGeneraliPrecedenti.getTotaleVenditeLordeLibere());
-        row1.setDiffPercLibere(row1.getTotaleLibere(),row1.getTotaleLiberePrec());
+        row1.setDiffPercLibere(totaliGenerali.getTotaleVenditeLordeLibere(),totaliGeneraliPrecedenti.getTotaleVenditeLordeLibere());
         row1.setTotaleSSN(totaliGenerali.getTotaleVenditeLordeSSN());
         row1.setTotaleSSNPrecedente(totaliGeneraliPrecedenti.getTotaleVenditeLordeSSN());
-        row1.setDiffPercSSN(row1.getTotaleSSN(),row1.getTotaleSSNPrecedente());
+        row1.setDiffPercSSN(totaliGenerali.getTotaleVenditeLordeSSN(),totaliGeneraliPrecedenti.getTotaleVenditeLordeSSN());
         row1.setTotale(totaliGenerali.getTotaleVenditeLorde());
         row1.setTotalePrecedente(totaliGeneraliPrecedenti.getTotaleVenditeLorde());
         row1.setDiffPercTotale(totaliGenerali.getTotaleVenditeLorde(),totaliGeneraliPrecedenti.getTotaleVenditeLorde());

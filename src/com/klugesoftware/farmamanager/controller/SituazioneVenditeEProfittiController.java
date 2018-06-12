@@ -282,13 +282,11 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
             changePeriodListenerBack.setPeriod(PeriodToShow.SETTIMANA);
             changePeriodListenerNext.setPeriod(PeriodToShow.SETTIMANA);
             lblPeriodo.setText(" Settimana");
-            lblTitle.setText("Situazione Vendite e Profitti Settimanale");
             rdtBtnVistaSettimanale.setSelected(true);
         }else{
             changePeriodListenerBack.setPeriod(PeriodToShow.MESE);
             changePeriodListenerNext.setPeriod(PeriodToShow.MESE);
             lblPeriodo.setText("    Mese  ");
-            lblTitle.setText("Situazione Vendite e Profitti Mensile");
             rdtBtnVistaMensile.setSelected(true);
         }
 

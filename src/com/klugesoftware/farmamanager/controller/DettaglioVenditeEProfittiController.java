@@ -100,7 +100,8 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
                             else
                             {
                                 item = item.multiply(new BigDecimal(-1));
-                                setText(item.toString() + " %");
+                                String temp = item.toString().replace(".",",");
+                                setText(temp + " %");
                             }
                         }
                     }
@@ -124,7 +125,8 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
                             else
                             {
                                 item = item.multiply(new BigDecimal(-1));
-                                setText(item.toString() + " %");
+                                String temp = item.toString().replace(".",",");
+                                setText(temp + " %");
                             }
                         }
                     }
@@ -146,7 +148,8 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
                                 setText(nf.format(item));
                             else {
                                 item = item.multiply(new BigDecimal(-1));
-                                setText(item.toString() + " %");
+                                String temp = item.toString().replace(".",",");
+                                setText(temp + " %");
                             }
                         }
                     }
@@ -175,7 +178,7 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
         ObservableList<DettaglioTotaliVenditeRowData> data = FXCollections.observableArrayList(
                 new DettaglioTotaliVenditeRowData("Totale Vendite\n Lorde\n",totaliGenerali.getTotaleVenditeLorde(),totaliGenerali.getTotaleVenditeLordeLibere(),totaliGenerali.getTotaleVenditeLordeSSN()),
                 new DettaglioTotaliVenditeRowData("Totale Sconti\n",totaliGenerali.getTotaleSconti(),totaliGenerali.getTotaleScontiLibere(),totaliGenerali.getTotaleScontiSSN()),
-                new DettaglioTotaliVenditeRowData("Totale Vendite\n al netto degli sconti\n",totaliGenerali.getTotaleVenditeNettoSconti(),totaliGenerali.getTotaleVenditeNettoScontiLibere(),totaliGenerali.getTotaleVenditeNettoScontiSSN()),
+                new DettaglioTotaliVenditeRowData("Totale Vendite\n al netto degli\n sconti\n",totaliGenerali.getTotaleVenditeNettoSconti(),totaliGenerali.getTotaleVenditeNettoScontiLibere(),totaliGenerali.getTotaleVenditeNettoScontiSSN()),
                 new DettaglioTotaliVenditeRowData("Totale Vendite\n netto iva e sconti\n",totaliGenerali.getTotaleVenditeNette(),totaliGenerali.getTotaleVenditeNetteLibere(),totaliGenerali.getTotaleVenditeNetteSSN()),
                 new DettaglioTotaliVenditeRowData("Totale Costi\n al netto iva\n",totaliGenerali.getTotaleCostiNetti(),totaliGenerali.getTotaleCostiNettiLibere(),totaliGenerali.getTotaleCostiNettiSSN()),
                 new DettaglioTotaliVenditeRowData("Totale Profitti\n",totaliGenerali.getTotaleProfitti(),totaliGenerali.getTotaleProfittiLibere(),totaliGenerali.getTotaleProfittiSSN()),
@@ -251,12 +254,10 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
             changePeriodListenerNext.setPeriod(PeriodToShow.SETTIMANA);
             rdtBtnVistaSettimanale.setSelected(true);
             lblPeriodo.setText(" Settimana");
-            lblTitle.setText("Dettaglio Vendite e Profitti Settimanale");
         }else{
             changePeriodListenerBack.setPeriod(PeriodToShow.MESE);
             changePeriodListenerNext.setPeriod(PeriodToShow.MESE);
             lblPeriodo.setText("    Mese  ");
-            lblTitle.setText("Dettaglio Vendite e Profitti Mensile");
             rdtBtnVistaMensile.setSelected(true);
         }
     }
@@ -313,5 +314,22 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
         app_stage.setScene(scene);
         app_stage.show();
 
+    }
+
+    @FXML
+    private void analisiLibereClicked(ActionEvent event){
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SituazioneVenditeEProfittiLibere.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 }
