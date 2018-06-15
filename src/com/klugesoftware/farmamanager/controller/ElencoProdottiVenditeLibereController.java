@@ -349,5 +349,22 @@ public class ElencoProdottiVenditeLibereController extends ElencoMinsanControlle
         tableElencoProdotti.refresh();
     }
 
+    @FXML
+    private void goBack(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/ElencoMinsanVenditeLibere.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            ElencoMinsanVenditeLibereController controller = fxmlLoader.getController();
+            controller.aggiornaTable(getDateFrom(),getDateTo());
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
 
 }

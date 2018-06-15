@@ -306,7 +306,23 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
         }catch(Exception ex){
             ex.printStackTrace();
         }
+    }
 
+    @FXML
+    private void goBackClicked(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SituazioneVenditeEProfittiLibere.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
+            controller.aggiornaTableAndScene(getDateFrom(),getDateTo(),false);
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 }
 

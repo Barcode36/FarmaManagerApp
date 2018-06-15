@@ -88,12 +88,21 @@
       <Pane fx:id="panelLeft" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <VBox layoutX="7.0" layoutY="26.0" spacing="50.0" />
-            <Button fx:id="btnVenditeSSN" disable="true" layoutX="11.0" layoutY="332.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;SSN" />
-            <Button fx:id="btnVenditeLibere" layoutX="12.0" layoutY="218.0" mnemonicParsing="false" onAction="#clickedVenditeLibere" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Libere" />
-            <Button fx:id="btnDettaglioTotali" layoutX="11.0" layoutY="106.0" mnemonicParsing="false" onAction="#clickedGrafico" prefHeight="64.0" prefWidth="77.0" text="Mostra&#10;Grafico&#10;Confronto">
+            <Button fx:id="btnVenditeSSN" disable="true" layoutX="11.0" layoutY="411.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;SSN" />
+            <Button fx:id="btnVenditeLibere" layoutX="12.0" layoutY="302.0" mnemonicParsing="false" onAction="#clickedVenditeLibere" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Libere" />
+            <Button fx:id="btnDettaglioTotali" layoutX="12.0" layoutY="195.0" mnemonicParsing="false" onAction="#clickedGrafico" prefHeight="64.0" prefWidth="77.0" text="Mostra&#10;Grafico&#10;Confronto">
                <font>
                   <Font size="12.0" />
                </font>
+            </Button>
+            <Button layoutX="13.0" layoutY="100.0" mnemonicParsing="false" onAction="#goBackClicked" prefHeight="74.0" prefWidth="67.0">
+               <graphic>
+                  <ImageView fitHeight="61.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/img/icons8-left_circular.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children>
       </Pane>

@@ -72,6 +72,20 @@
     -fx-text-fill: rgb(43, 120, 228);
 }
 
+#lblTotProfitti{
+    -fx-text-fill: #ff5d00;
+}
+#lblTotVendite{
+    -fx-text-fill: #ff5d00;
+}
+
+#lblTitleTotProfitti{
+    -fx-text-fill: #ff5d00;
+}
+#lblTitleTotVendite{
+    -fx-text-fill: #ff5d00;
+}
+
 
 
 

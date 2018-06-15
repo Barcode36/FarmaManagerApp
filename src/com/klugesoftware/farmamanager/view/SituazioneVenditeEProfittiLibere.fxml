@@ -203,7 +203,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Totale Vendite Libere" textAlignment="CENTER">
+                        <Label fx:id="lblTitleTotVendite" text="Totale Vendite Libere" textAlignment="CENTER">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -213,7 +213,7 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="42.0" prefWidth="243.0" text="Totale Profitti" textAlignment="CENTER" GridPane.rowIndex="1">
+                        <Label fx:id="lblTitleTotProfitti" prefHeight="42.0" prefWidth="243.0" text="Totale Profitti" textAlignment="CENTER" GridPane.rowIndex="1">
                            <font>
                               <Font size="24.0" />
                            </font>

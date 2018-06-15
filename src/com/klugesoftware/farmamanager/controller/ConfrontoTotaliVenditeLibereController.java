@@ -22,6 +22,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -79,6 +80,26 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
         colTotaleLibere.setCellValueFactory(new PropertyValueFactory<ConfrontoTotaliVenditeRowData,BigDecimal>("totaleLibere"));
         colTotaleLiberePrecedente.setCellValueFactory(new PropertyValueFactory<ConfrontoTotaliVenditeRowData,BigDecimal>("totaleLiberePrec"));
         colDiffPercLibere.setCellValueFactory(new PropertyValueFactory<ConfrontoTotaliVenditeRowData,String>("diffPercLibere"));
+
+        colDiffPercLibere.setCellFactory(new Callback<TableColumn<ConfrontoTotaliVenditeRowData, String>, TableCell<ConfrontoTotaliVenditeRowData, String>>() {
+            @Override
+            public TableCell<ConfrontoTotaliVenditeRowData, String> call(TableColumn<ConfrontoTotaliVenditeRowData, String> param) {
+                return new TableCell<ConfrontoTotaliVenditeRowData,String>(){
+                    @Override
+                    public void updateItem(String item,boolean empty){
+                        if(item != null)
+                            if (item.contains("+")) {
+                                setText(item.toString());
+                                this.getStyleClass().add("confrontoTableUp");
+                            }else {
+                                setText(item.toString());
+                                this.getStyleClass().add("confrontoTableDown");
+                            }
+                    }
+                };
+            }
+        });
+
 
     }
 
@@ -272,19 +293,32 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
     }
 
     @FXML
-    private void listenerEsciButton(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SituazioneVenditeEProfittiLibere.fxml"));
-        Parent parent = (Parent)fxmlLoader.load();
-        SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
-        boolean vistaSettimanale = false;
-        controller.aggiornaTableAndScene(DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText()),DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText()),vistaSettimanale);
-        Scene scene = new Scene(parent);
-        Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        app_stage.hide();
-        app_stage.setScene(scene);
-        app_stage.show();
+    private void listenerEsciButton(ActionEvent event) {
+        goBack(event);
     }
 
+
+    @FXML
+    private void backClicked(ActionEvent event){
+        goBack(event);
+    }
+
+    private void goBack(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SituazioneVenditeEProfittiLibere.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
+            boolean vistaSettimanale = false;
+            controller.aggiornaTableAndScene(DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText()), DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText()), vistaSettimanale);
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+    }
 
     class ListenerCambioPeriodoConfronto implements ChangeListener<Toggle>{
 

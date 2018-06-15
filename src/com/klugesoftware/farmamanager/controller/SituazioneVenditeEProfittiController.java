@@ -46,6 +46,8 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
     @FXML private DatePicker txtFldDataTo;
     @FXML private Label lblTotVendite;
     @FXML private Label lblTotProfitti;
+    @FXML private Label lblTitleTotProfitti;
+    @FXML private Label lblTitleTotVendite;
     @FXML private Button btnBack;
     @FXML private Button btnForward;
     @FXML private Label lblPeriodo;

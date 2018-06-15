@@ -30,6 +30,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 
 public class SituazioneVenditeEProfittiLibereController extends VenditeEProfittiController implements Initializable {
 
@@ -39,6 +40,8 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
     @FXML private NumberAxis yAxis;
     @FXML private Label lblTotVendite;
     @FXML private Label lblTotProfitti;
+    @FXML private Label lblTitleTotProfitti;
+    @FXML private Label lblTitleTotVendite;
     @FXML private TableView<ElencoTotaliGiornalieriRowData> tableVenditeEProfittiLibere;
     @FXML private TableColumn<ElencoTotaliGiornalieriRowData,String> colData;
     @FXML private TableColumn<ElencoTotaliGiornalieriRowData,BigDecimal> colTotaleVenditeLibere;
@@ -305,6 +308,7 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/ElencoMinsanVenditeLibere.fxml"));
             Parent parent = (Parent) fxmlLoader.load();
             ElencoMinsanVenditeLibereController controller = fxmlLoader.getController();
+            controller.aggiornaTable(getDateFrom(),getDateTo());
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             app_stage.hide();
@@ -349,4 +353,5 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
         }
 
     }
+    
 }

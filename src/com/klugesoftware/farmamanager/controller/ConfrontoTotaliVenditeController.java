@@ -353,6 +353,24 @@ public class ConfrontoTotaliVenditeController implements Initializable {
         }
     }
 
+    @FXML
+    private void goBackClicked(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/DettagliVenditeEProfitti.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            DettaglioVenditeEProfittiController controller = fxmlLoader.getController();
+            controller.aggiornaTableAndScene(DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText()),DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText()),false);
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
+
     class ListenerCambioPeriodoConfronto implements ChangeListener<Toggle>{
 
         ListenerCambioPeriodoConfronto() {
