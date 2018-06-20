@@ -137,7 +137,7 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             }
         });
 
-        colDettagliMovimenti.setCellFactory(ActionButtonTableCell.<ElencoTotaliGiornalieriRowData>forTableColumn("Dettagli", (ElencoTotaliGiornalieriRowData p) -> {
+        colDettagliMovimenti.setCellFactory(ActionButtonTableCell.<ElencoTotaliGiornalieriRowData>forTableColumn("", (ElencoTotaliGiornalieriRowData p) -> {
             goToDettagli(DateUtility.converteGUIStringDDMMYYYYToDate(p.getData()));
             return p;
         }));
@@ -222,8 +222,8 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             xLabels.add(toDay);
             totVendite = totVendite.add(totale.getTotaleVenditeLordeLibere());
             totProfitti = totProfitti.add(totale.getTotaleProfittiLibere());
-            seriesProfitti.getData().add(new XYChart.Data(toDay,totale.getTotaleProfitti()));
-            seriesVendite.getData().add(new XYChart.Data(toDay,totale.getTotaleVenditeLorde()));
+            seriesProfitti.getData().add(new XYChart.Data(toDay,totale.getTotaleProfittiLibere()));
+            seriesVendite.getData().add(new XYChart.Data(toDay,totale.getTotaleVenditeLordeLibere()));
         }
         ObservableList<String> xxLabels = FXCollections.observableArrayList(xLabels);
         xAxis.getCategories().clear();

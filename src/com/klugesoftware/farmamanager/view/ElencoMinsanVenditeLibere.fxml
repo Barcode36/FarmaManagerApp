@@ -56,7 +56,7 @@
                      </graphic>
                   </Button>
                   <VBox alignment="CENTER_LEFT" layoutX="575.0" layoutY="28.0" spacing="10.0" />
-                  <TextArea fx:id="txtAreaInfo" editable="false" layoutX="810.0" layoutY="21.0" prefHeight="81.0" prefWidth="277.0" text="I totali si riferiscono alle vendite libere" wrapText="true">
+                  <TextArea fx:id="txtAreaInfo" editable="false" layoutX="810.0" layoutY="21.0" prefHeight="81.0" prefWidth="277.0" text="I valori si riferiscono alle vendite libere" wrapText="true">
                      <font>
                         <Font size="16.0" />
                      </font>

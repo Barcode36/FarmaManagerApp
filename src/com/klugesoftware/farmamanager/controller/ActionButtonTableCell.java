@@ -5,20 +5,24 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
 public class ActionButtonTableCell<S> extends TableCell<S, Button> {
 
     private final Button actionButton;
+    private final ImageView iconButton;
 
     public ActionButtonTableCell(String label, Function< S, S> function) {
         this.getStyleClass().add("action-button-table-cell");
-
+        iconButton = new ImageView("./img/1904745-32.png");
         this.actionButton = new Button(label);
+        this.actionButton.setGraphic(iconButton);
         this.actionButton.setOnAction((ActionEvent e) -> {
             function.apply(getCurrentItem());
         });
         this.actionButton.setMaxWidth(Double.MAX_VALUE);
+
     }
 
     public S getCurrentItem() {
