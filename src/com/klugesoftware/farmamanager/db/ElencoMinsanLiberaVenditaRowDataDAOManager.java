@@ -67,7 +67,22 @@ public class ElencoMinsanLiberaVenditaRowDataDAOManager {
 		return elencoMinsanDAO.elencoFiltroRicaricoMedio(dateFrom, dateTo, ricarico, segno);
 	}
 
+	public static ArrayList<ElencoMinsanLiberaVenditaRowData> lookUpElencoMinsanBetweenDateOrderByQuantDescLimit10(Date dateFrom, Date dateTo){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		ElencoMinsanLiberaVenditaRowDataDAO elencoMinsanDAO = daoFactory.getElencoMinsanLiberaVenditaDAO();
+		return elencoMinsanDAO.elencoBetweenDateOrderByQuantLimit10(dateFrom,dateTo);
+	}
 
+	public static ArrayList<ElencoMinsanLiberaVenditaRowData> lookUpElencoMinsanBetweenDateOrderByProfittoDescLimit5(Date dateFrom, Date dateTo){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		ElencoMinsanLiberaVenditaRowDataDAO elencoMinsanDAO = daoFactory.getElencoMinsanLiberaVenditaDAO();
+		return elencoMinsanDAO.elencoBetweenDateOrderByProdttoDescLimit5(dateFrom,dateTo);
+	}
 
+	public static ArrayList<ElencoMinsanLiberaVenditaRowData> lookUpElencoMinsanBetweenDateOrderByProfittoAscLimit5(Date dateFrom, Date dateTo){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		ElencoMinsanLiberaVenditaRowDataDAO elencoMinsanDAO = daoFactory.getElencoMinsanLiberaVenditaDAO();
+		return elencoMinsanDAO.elencoBetweenDateOrderByProdttoAscLimit5(dateFrom,dateTo);
+	}
 
 }

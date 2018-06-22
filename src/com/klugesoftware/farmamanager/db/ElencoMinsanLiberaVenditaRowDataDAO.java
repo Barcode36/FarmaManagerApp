@@ -27,8 +27,17 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 			+ "FROM ProdottiVenditaLibera WHERE dataVendita BETWEEN ? AND ?  "
 			+ "AND (quantita-quantitaReso) > 0 "
 			+ "GROUP BY minsan ";
-			
-	
+
+
+	private static final String SQL_FIND_BETWEEN_DATE_ORDER_BY_PROFITTO_DESC_LIMIT_5 = SQL_FIND_BETWEEN_DATE + " "
+			+ "ORDER BY profittoMedio DESC LIMIT 5";
+
+	private static final String SQL_FIND_BETWEEN_DATE_ORDER_BY_PROFITTO_ASC_LIMIT_5 = SQL_FIND_BETWEEN_DATE + " "
+			+ "ORDER BY profittoMedio ASC LIMIT 5";
+
+	private static final String SQL_FIND_BETWEEN_DATE_ORDER_BY_QUANT_LIMIT_10 = SQL_FIND_BETWEEN_DATE + " "
+			+ "ORDER BY quantitaTotale DESC LIMIT 20";
+
 	private static final String SQL_FIND_LIKE_BETWEEN_DATE = SQL_FIND_BETWEEN_DATE + " "
 			+ "HAVING (descrizione LIKE ? OR minsan LIKE ?)";
 		
@@ -139,7 +148,92 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 		return elenco;
 
 	}
-	
+
+	public ArrayList<ElencoMinsanLiberaVenditaRowData> elencoBetweenDateOrderByQuantLimit10(Date dateFrom,Date dateTo){
+		Connection conn = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ArrayList<ElencoMinsanLiberaVenditaRowData> elenco = new ArrayList<ElencoMinsanLiberaVenditaRowData>();
+		try{
+			conn = daoFactory.getConnetcion();
+			preparedStatement = conn.prepareStatement(SQL_FIND_BETWEEN_DATE_ORDER_BY_QUANT_LIMIT_10);
+			preparedStatement.setDate(1, new java.sql.Date(dateFrom.getTime()));
+			preparedStatement.setDate(2, new java.sql.Date(dateTo.getTime()));
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet == null){
+				JOptionPane.showMessageDialog(null, "La ricerca ha restituito un insieme vuoto.", "Search Between Date", JOptionPane.INFORMATION_MESSAGE);
+			}
+			else{
+				while(resultSet.next()){
+					elenco.add(DAOUtil.mapElencoMinsanLiberaVenditaRowData(resultSet));
+				}
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}finally{
+			DAOUtil.close(conn, preparedStatement, resultSet);
+		}
+		return elenco;
+
+	}
+
+	public ArrayList<ElencoMinsanLiberaVenditaRowData> elencoBetweenDateOrderByProdttoDescLimit5(Date dateFrom,Date dateTo){
+		Connection conn = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ArrayList<ElencoMinsanLiberaVenditaRowData> elenco = new ArrayList<ElencoMinsanLiberaVenditaRowData>();
+		try{
+			conn = daoFactory.getConnetcion();
+			preparedStatement = conn.prepareStatement(SQL_FIND_BETWEEN_DATE_ORDER_BY_PROFITTO_DESC_LIMIT_5);
+			preparedStatement.setDate(1, new java.sql.Date(dateFrom.getTime()));
+			preparedStatement.setDate(2, new java.sql.Date(dateTo.getTime()));
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet == null){
+				JOptionPane.showMessageDialog(null, "La ricerca ha restituito un insieme vuoto.", "Search Between Date", JOptionPane.INFORMATION_MESSAGE);
+			}
+			else{
+				while(resultSet.next()){
+					elenco.add(DAOUtil.mapElencoMinsanLiberaVenditaRowData(resultSet));
+				}
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}finally{
+			DAOUtil.close(conn, preparedStatement, resultSet);
+		}
+		return elenco;
+
+	}
+
+	public ArrayList<ElencoMinsanLiberaVenditaRowData> elencoBetweenDateOrderByProdttoAscLimit5(Date dateFrom,Date dateTo){
+		Connection conn = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ArrayList<ElencoMinsanLiberaVenditaRowData> elenco = new ArrayList<ElencoMinsanLiberaVenditaRowData>();
+		try{
+			conn = daoFactory.getConnetcion();
+			preparedStatement = conn.prepareStatement(SQL_FIND_BETWEEN_DATE_ORDER_BY_PROFITTO_ASC_LIMIT_5);
+			preparedStatement.setDate(1, new java.sql.Date(dateFrom.getTime()));
+			preparedStatement.setDate(2, new java.sql.Date(dateTo.getTime()));
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet == null){
+				JOptionPane.showMessageDialog(null, "La ricerca ha restituito un insieme vuoto.", "Search Between Date", JOptionPane.INFORMATION_MESSAGE);
+			}
+			else{
+				while(resultSet.next()){
+					elenco.add(DAOUtil.mapElencoMinsanLiberaVenditaRowData(resultSet));
+				}
+			}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+		}finally{
+			DAOUtil.close(conn, preparedStatement, resultSet);
+		}
+		return elenco;
+
+	}
+
+
 	public ArrayList<ElencoMinsanLiberaVenditaRowData> elencoLikeBetweenDate(Date dateFrom,Date dateTo,String search){
 		Connection conn = null;
 		PreparedStatement preparedStatement = null;

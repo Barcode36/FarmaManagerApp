@@ -69,6 +69,7 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
         DecimalFormat df = (DecimalFormat)nf;
 
 
+
         colPrezzoVenditaMedio.setCellFactory(new Callback<TableColumn<ElencoMinsanLiberaVenditaRowData, BigDecimal>, TableCell<ElencoMinsanLiberaVenditaRowData, BigDecimal>>() {
             @Override
             public TableCell<ElencoMinsanLiberaVenditaRowData, BigDecimal> call(TableColumn<ElencoMinsanLiberaVenditaRowData, BigDecimal> param) {
@@ -324,6 +325,7 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
             ex.printStackTrace();
         }
     }
+
 }
 
 
