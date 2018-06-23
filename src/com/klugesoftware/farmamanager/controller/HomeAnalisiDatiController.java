@@ -3,16 +3,23 @@ package com.klugesoftware.farmamanager.controller;
 import com.klugesoftware.farmamanager.DTO.ElencoMinsanLiberaVenditaRowData;
 import com.klugesoftware.farmamanager.DTO.ElencoTotaliGiornalieriRowData;
 import com.klugesoftware.farmamanager.db.ElencoMinsanLiberaVenditaRowDataDAOManager;
+import com.klugesoftware.farmamanager.db.ElencoTotaliGiornalieriRowDataManager;
 import com.klugesoftware.farmamanager.db.ImportazioniDAOManager;
 import com.klugesoftware.farmamanager.model.Importazioni;
 import com.klugesoftware.farmamanager.utility.DateUtility;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.util.Callback;
-
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -20,7 +27,7 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.*;
 
-public class HomeAnalisiDatiController extends ElencoMinsanController implements Initializable {
+public class HomeAnalisiDatiController extends VenditeEProfittiController implements Initializable {
 
 
     @FXML private TableView<ElencoMinsanLiberaVenditaRowData> tableQuantita;
@@ -46,17 +53,36 @@ public class HomeAnalisiDatiController extends ElencoMinsanController implements
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,BigDecimal> colProfittoMedio3;
     @FXML private DatePicker txtFldDataTo;
     @FXML private DatePicker txtFldDataFrom;
-          private ChangeDateListener changeDateListener;
+    @FXML private RadioButton rdtBtnVistaSettimanale;
+    @FXML private RadioButton rdtBtnVistaMensile;
+    @FXML private Label lblPeriodo;
+    @FXML private Button btnBack;
+    @FXML private Button btnForward;
+    private ChangePeriodListener changePeriodListenerBack;
+    private ChangePeriodListener changePeriodListenerForward;
+    private ChangeDateAndViewListener changeDateAndViewListener;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        changeDateListener = new ChangeDateListener(this);
+        changePeriodListenerBack = new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.BACK,this);
+        changePeriodListenerForward = new ChangePeriodListener(PeriodToShow.SETTIMANA,PeriodDirection.FORWARD,this);
+        changeDateAndViewListener = new ChangeDateAndViewListener(this);
+
+        btnBack.setOnAction(changePeriodListenerBack);
+        btnForward.setOnAction(changePeriodListenerForward);
+
         txtFldDataFrom.setUserData("dataFrom");
         txtFldDataTo.setUserData("dataTo");
-        txtFldDataFrom.setOnAction(changeDateListener);
-        txtFldDataTo.setOnAction(changeDateListener);
+        rdtBtnVistaMensile.setUserData("vistaMensile");
+        rdtBtnVistaSettimanale.setUserData("vistaSettimanale");
+
+        txtFldDataFrom.setOnAction(changeDateAndViewListener);
+        txtFldDataTo.setOnAction(changeDateAndViewListener);
+        rdtBtnVistaSettimanale.setOnAction(changeDateAndViewListener);
+        rdtBtnVistaMensile.setOnAction(changeDateAndViewListener);
+
 
         colMinsan1.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,String>("minsan"));
         colDescrizione1.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,String>("descrizione"));
@@ -261,15 +287,10 @@ public class HomeAnalisiDatiController extends ElencoMinsanController implements
         myCal.setTime(toDate);
         txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
 
-        txtFldDataFrom.setOnAction(changeDateListener);
-        txtFldDataTo.setOnAction(changeDateListener);
-        ArrayList<ElencoMinsanLiberaVenditaRowData> elencoTableQuantita = ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanBetweenDateOrderByQuantDescLimit10(fromDate,toDate);
-        ArrayList<ElencoMinsanLiberaVenditaRowData> elencoTableHiProfitto = ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanBetweenDateOrderByProfittoDescLimit5(fromDate,toDate);
-        ArrayList<ElencoMinsanLiberaVenditaRowData> elencotableLowProfitto = ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanBetweenDateOrderByProfittoAscLimit5(fromDate,toDate);
+        txtFldDataFrom.setOnAction(changeDateAndViewListener);
+        txtFldDataTo.setOnAction(changeDateAndViewListener);
 
-        tableQuantita.getItems().setAll(FXCollections.observableArrayList(elencoTableQuantita));
-        tableHiProfitti.getItems().setAll(FXCollections.observableArrayList(elencoTableHiProfitto));
-        tableLowProfitti.getItems().setAll(FXCollections.observableArrayList(elencotableLowProfitto));
+        aggiornaTableAndScene(fromDate,toDate,false);
     }
 
     @Override
@@ -283,8 +304,94 @@ public class HomeAnalisiDatiController extends ElencoMinsanController implements
     }
 
     @Override
-    public void aggiornaTable(Date dateFrom, Date dateTo) {
+    public RadioButton getRdbtVistaMensile() {
+        return rdtBtnVistaMensile;
+    }
+
+    @Override
+    public RadioButton getRdbtVistaSettimanale() {
+        return rdtBtnVistaSettimanale;
+    }
+
+    @Override
+    public void aggiornaTableAndScene(Date dateFrom, Date dateTo, boolean vistaSettimanale) {
+        aggiornaTable(dateFrom,dateTo);
+        if (vistaSettimanale){
+            changePeriodListenerBack.setPeriod(PeriodToShow.SETTIMANA);
+            changePeriodListenerForward.setPeriod(PeriodToShow.SETTIMANA);
+            lblPeriodo.setText(" Settimana");
+            rdtBtnVistaSettimanale.setSelected(true);
+        }else{
+            changePeriodListenerBack.setPeriod(PeriodToShow.MESE);
+            changePeriodListenerForward.setPeriod(PeriodToShow.MESE);
+            lblPeriodo.setText("    Mese  ");
+            rdtBtnVistaMensile.setSelected(true);
+        }
 
     }
 
+    @Override
+    public void aggiornaTable(Date dateFrom, Date dateTo) {
+
+        txtFldDataFrom.setOnAction(null);
+        txtFldDataTo.setOnAction(null);
+        Calendar myCal = Calendar.getInstance(Locale.ITALY);
+        myCal.setTime(dateFrom);
+        txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
+        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom));
+        myCal.setTime(dateTo);
+        txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
+        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(dateTo));
+        txtFldDataFrom.setOnAction(changeDateAndViewListener);
+        txtFldDataTo.setOnAction(changeDateAndViewListener);
+
+
+        ArrayList<ElencoMinsanLiberaVenditaRowData> elencoTableQuantita = ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanBetweenDateOrderByQuantDescLimit10(dateFrom,dateTo);
+        ArrayList<ElencoMinsanLiberaVenditaRowData> elencoTableHiProfitto = ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanBetweenDateOrderByProfittoDescLimit5(dateFrom,dateTo);
+        ArrayList<ElencoMinsanLiberaVenditaRowData> elencotableLowProfitto = ElencoMinsanLiberaVenditaRowDataDAOManager.lookUpElencoMinsanBetweenDateOrderByProfittoAscLimit5(dateFrom,dateTo);
+
+        tableQuantita.getItems().setAll(FXCollections.observableArrayList(elencoTableQuantita));
+        tableHiProfitti.getItems().setAll(FXCollections.observableArrayList(elencoTableHiProfitto));
+        tableLowProfitti.getItems().setAll(FXCollections.observableArrayList(elencotableLowProfitto));
+
+    }
+
+    @FXML
+    private void esciClicked(ActionEvent event){
+        System.exit(0);
+    }
+
+    @FXML
+    private void venditeLibereClicked(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SituazioneVenditeEProfittiLibere.fxml"));
+            Parent parent = (Parent)fxmlLoader.load();
+            SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
+
+    @FXML
+    private void venditeTotaliClicked(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SituazioneVenditeEProfitti.fxml"));
+            Parent parent = (Parent)fxmlLoader.load();
+            SituazioneVenditeEProfittiController controller = fxmlLoader.getController();
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
 }

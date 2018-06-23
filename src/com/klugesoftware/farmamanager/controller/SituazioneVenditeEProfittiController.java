@@ -215,7 +215,19 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
 
     @FXML
     private void listenerEsciButton(ActionEvent event){
-        System.exit(0);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/HomeAnalisiDati.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            HomeAnalisiDatiController controller = fxmlLoader.getController();
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+
     }
 
     @FXML

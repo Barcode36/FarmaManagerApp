@@ -323,9 +323,9 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
     private void listenerEsciButton(ActionEvent event){
 
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/SituazioneVenditeEProfitti.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/HomeAnalisiDati.fxml"));
             Parent parent = (Parent) fxmlLoader.load();
-            SituazioneVenditeEProfittiController controller = fxmlLoader.getController();
+            HomeAnalisiDatiController controller = fxmlLoader.getController();
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             app_stage.hide();
