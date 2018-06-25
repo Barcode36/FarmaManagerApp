@@ -108,6 +108,25 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
         NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.ITALY);
         DecimalFormat df = (DecimalFormat)nf;
 
+        colQuantita1.setCellFactory(new Callback<TableColumn<ElencoMinsanLiberaVenditaRowData, Integer>, TableCell<ElencoMinsanLiberaVenditaRowData, Integer>>() {
+            @Override
+            public TableCell<ElencoMinsanLiberaVenditaRowData, Integer> call(TableColumn<ElencoMinsanLiberaVenditaRowData, Integer> param) {
+                return new TableCell<ElencoMinsanLiberaVenditaRowData,Integer>(){
+                    @Override
+                    public void updateItem(Integer item,boolean empty){
+                        if (item == null || empty) {
+                            setText(null);
+                            this.getStyleClass().remove("clnProfitto");
+                        } else {
+                            setText(df.format(item));
+                            this.getStyleClass().add("clnProfitto");
+                        }
+                    }
+                };
+            }
+        });
+
+
         colPrezzoVendita1.setCellFactory(new Callback<TableColumn<ElencoMinsanLiberaVenditaRowData, BigDecimal>, TableCell<ElencoMinsanLiberaVenditaRowData, BigDecimal>>() {
             @Override
             public TableCell<ElencoMinsanLiberaVenditaRowData, BigDecimal> call(TableColumn<ElencoMinsanLiberaVenditaRowData, BigDecimal> param) {
@@ -134,6 +153,7 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
                             setText(null);
                         } else {
                             setText(df.format(item));
+
                         }
                     }
                 };
@@ -186,6 +206,7 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
                             setText(null);
                         } else {
                             setText(df.format(item));
+                            this.getStyleClass().add("clnProfitto");
                         }
                     }
                 };
@@ -254,6 +275,7 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
                             setText(null);
                         } else {
                             setText(df.format(item));
+                            this.getStyleClass().add("clnProfitto");
                         }
                     }
                 };
