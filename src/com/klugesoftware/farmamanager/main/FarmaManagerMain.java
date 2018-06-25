@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 
-public class FarmaManagerMain2 extends Application{
+public class FarmaManagerMain extends Application{
 
     @FXML private RadioButton rdtBtnVistaMensile;
 
