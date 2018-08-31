@@ -1,4 +1,4 @@
-package com.klugesoftware.farmamanager.controller;
+package sample;
 
 import javafx.concurrent.Task;
 
