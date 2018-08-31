@@ -8,12 +8,13 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import com.klugesoftware.farmamanager.model.ProdottiVenditaLibera;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public abstract class DAOFactory {
-	
+
 	public static final String PROPERTIES_FILE_NAME = "./resources/config/config.properties";
-	
 	private static final Properties propDb = new Properties();
 	
 	static {

@@ -20,6 +20,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -30,6 +33,7 @@ import java.util.*;
 public class HomeAnalisiDatiController extends VenditeEProfittiController implements Initializable {
 
 
+    private final Logger logger = LogManager.getLogger(HomeAnalisiDatiController.class.getName());
     @FXML private TableView<ElencoMinsanLiberaVenditaRowData> tableQuantita;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,String> colMinsan1;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,String> colDescrizione1;
@@ -395,7 +399,7 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
 
     }
@@ -412,7 +416,7 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
 
     }

@@ -11,8 +11,12 @@ import javax.swing.JOptionPane;
 
 import com.klugesoftware.farmamanager.DTO.ElencoProdottiLiberaVenditaRowData;
 import com.klugesoftware.farmamanager.DTO.ElencoMinsanLiberaVenditaRowData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ElencoMinsanLiberaVenditaRowDataDAO {
+
+	private final Logger logger = LogManager.getLogger(ElencoMinsanLiberaVenditaRowDataDAO.class.getName());
 	private static final String SQL_FIND_BETWEEN_DATE = "SELECT "
 			+ "minsan,"
 			+ "descrizione,"
@@ -141,7 +145,7 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -169,7 +173,8 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
+
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -197,7 +202,8 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
+
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -225,7 +231,7 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -256,7 +262,7 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -291,7 +297,7 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -326,7 +332,7 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -361,7 +367,7 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -396,7 +402,7 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -431,7 +437,7 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -466,7 +472,7 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -501,7 +507,7 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -536,7 +542,7 @@ public class ElencoMinsanLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}

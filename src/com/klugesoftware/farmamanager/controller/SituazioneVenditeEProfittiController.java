@@ -22,6 +22,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -34,6 +36,7 @@ import java.util.*;
 
 public class SituazioneVenditeEProfittiController extends VenditeEProfittiController implements Initializable {
 
+    private final Logger logger = LogManager.getLogger(SituazioneVenditeEProfittiController.class.getName());
     @FXML private Button btnVenditeLibere;
     @FXML private TableView<ElencoTotaliGiornalieriRowData> tableVenditeEProfittiTotali;
     @FXML private TableColumn<ElencoTotaliGiornalieriRowData,String> colData;
@@ -225,7 +228,7 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
 
     }
@@ -243,7 +246,7 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
     }
 

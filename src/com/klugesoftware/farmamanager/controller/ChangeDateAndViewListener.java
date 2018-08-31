@@ -5,6 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -26,7 +28,9 @@ import java.util.Locale;
  */
 public class ChangeDateAndViewListener implements EventHandler<ActionEvent> {
 
+    private final Logger logger = LogManager.getLogger(ChangeDateAndViewListener.class.getName());
     private VenditeEProfittiController controller;
+
     public ChangeDateAndViewListener(VenditeEProfittiController controller){
         this.controller = controller;
     }
@@ -98,7 +102,7 @@ public class ChangeDateAndViewListener implements EventHandler<ActionEvent> {
             toDate = myCal.getTime();
             controller.aggiornaTableAndScene(fromDate,toDate,false);
         }catch (Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
 
     }
@@ -116,7 +120,7 @@ public class ChangeDateAndViewListener implements EventHandler<ActionEvent> {
             controller.aggiornaTableAndScene(fromDate,toDate,true);
 
         }catch (Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
 
     }

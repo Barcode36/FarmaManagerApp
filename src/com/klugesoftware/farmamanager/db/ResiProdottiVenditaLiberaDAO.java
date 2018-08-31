@@ -62,7 +62,7 @@ public class ResiProdottiVenditaLiberaDAO {
 				//throw new SQLException("Non è stata trovato nessun record.");
 				logger.warn("Non è stato trovato nessun record.");
 			}catch(SQLException ex){
-				ex.printStackTrace();
+				logger.error(ex);
 		}finally {
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -82,7 +82,7 @@ public class ResiProdottiVenditaLiberaDAO {
 				elenco.add(DAOUtil.mapResiProdottiVenditaLibera(resultSet));
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -140,7 +140,7 @@ public class ResiProdottiVenditaLiberaDAO {
 				throw new SQLException("La creazione di un nuovo ResoProdotto non è andata a buon fine: non è stato creato nessun record nel database!");
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement, generetedKey);
 		}
@@ -181,7 +181,7 @@ public class ResiProdottiVenditaLiberaDAO {
 			if (affectedRows == 0)
 				throw new SQLException("La modifica non è andata a buon fine: non è stato modifica nessun record!");
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement);
 		}
@@ -204,7 +204,7 @@ public class ResiProdottiVenditaLiberaDAO {
 			}
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
 		}
@@ -226,7 +226,7 @@ public class ResiProdottiVenditaLiberaDAO {
 			}
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
 		}
@@ -244,7 +244,7 @@ public class ResiProdottiVenditaLiberaDAO {
 			preparedStatement.executeUpdate();
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
 		}

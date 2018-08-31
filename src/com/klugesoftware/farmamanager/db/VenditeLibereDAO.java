@@ -9,8 +9,12 @@ import java.util.Date;
 
 import com.klugesoftware.farmamanager.model.ProdottiVenditaLibera;
 import com.klugesoftware.farmamanager.model.VenditeLibere;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class VenditeLibereDAO {
+
+	private final Logger logger = LogManager.getLogger(VenditeLibereDAO.class.getName());
 	
 	private static final String SQL_INSERT = "INSERT INTO VenditeLibere (idVenditaLibera,numreg,"
 			+ "idVendita,posizioneInVendita,valoreVenditaLibera,totaleIva,totalePezziVenduti,"
@@ -78,7 +82,7 @@ public class VenditeLibereDAO {
 				throw new SQLException("La creazione di una nuova VenditaLibera non è andata a buon fine: non è stato creato nessun record nel database!");
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement, generetedKey);
 		}
@@ -101,7 +105,7 @@ public class VenditeLibereDAO {
 			else 
 				throw new SQLException("Non è stata trovato nessun record.");
 			}catch(SQLException ex){
-				ex.printStackTrace();
+				logger.error(ex);
 		}finally {
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -121,7 +125,7 @@ public class VenditeLibereDAO {
 				elenco.add(DAOUtil.mapVenditaLibera(resultSet));
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}

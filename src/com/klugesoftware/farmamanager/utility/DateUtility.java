@@ -196,7 +196,38 @@ public class DateUtility {
 		data.set(Calendar.DAY_OF_MONTH,data.getActualMaximum(Calendar.DAY_OF_MONTH));
 		return (data.getTime());
 	}
-	
+
+	public static Date primoGiornoAnnoCorrente(){
+		Calendar myData = Calendar.getInstance(Locale.ITALY);
+		myData.set(Calendar.DAY_OF_MONTH,1);
+		myData.set(Calendar.MONTH,0);
+		return myData.getTime();
+	}
+
+	public static Date ultimoGiornoAnnoCorrente(){
+		Calendar myData = Calendar.getInstance(Locale.ITALY);
+		myData.set(Calendar.DAY_OF_MONTH,31);
+		myData.set(Calendar.MONTH,11);
+		return myData.getTime();
+	}
+
+	public static Date primoGiornoAnnoPrecedente(){
+		Calendar myData = Calendar.getInstance(Locale.ITALY);
+		myData.set(Calendar.DAY_OF_MONTH,1);
+		myData.set(Calendar.MONTH,0);
+		myData.set(Calendar.YEAR,myData.get(Calendar.YEAR)-1);
+		return myData.getTime();
+	}
+
+	public static Date ultimoGiornoAnnoPrecedente(){
+		Calendar myData = Calendar.getInstance(Locale.ITALY);
+		myData.set(Calendar.DAY_OF_MONTH,31);
+		myData.set(Calendar.MONTH,11);
+		myData.set(Calendar.YEAR,myData.get(Calendar.YEAR)-1);
+		return myData.getTime();
+	}
+
+
 	/**
 	 * 
 	 * @param mese

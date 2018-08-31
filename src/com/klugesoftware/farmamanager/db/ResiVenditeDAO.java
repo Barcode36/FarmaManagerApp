@@ -59,7 +59,7 @@ public class ResiVenditeDAO {
 				logger.warn("Non è stato trovato nessun record con id: "+values[0]);
 				//throw new SQLException("Non è stata trovato nessun record.");
 			}catch(SQLException ex){
-				ex.printStackTrace();
+				logger.error(ex);
 		}finally {
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -79,7 +79,7 @@ public class ResiVenditeDAO {
 				elenco.add(DAOUtil.mapResiVendite(resultSet));
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -124,7 +124,7 @@ public class ResiVenditeDAO {
 				throw new SQLException("La creazione di un nuovo ResoVendita non è andata a buon fine: non è stato creato nessun record nel database!");
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement, generetedKey);
 		}
@@ -156,7 +156,7 @@ public class ResiVenditeDAO {
 			if (affectedRows == 0)
 				throw new SQLException("La modifica non è andata a buon fine: non è stato modifica nessun record!");
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement);
 		}
@@ -189,7 +189,7 @@ public class ResiVenditeDAO {
 				resultSet.close();
 				conn.close();
 			}catch(SQLException ex){
-				ex.printStackTrace();
+				logger.error(ex);
 			}
 		}
 		return reso;
@@ -232,11 +232,11 @@ public class ResiVenditeDAO {
 			conn.commit();
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(ex);
 			}
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
@@ -259,7 +259,7 @@ public class ResiVenditeDAO {
 			}
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
 		}
@@ -277,7 +277,7 @@ public class ResiVenditeDAO {
 			preparedStatement.executeUpdate();
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
 		}

@@ -16,5 +16,10 @@ public class ExampleDateUtility {
         myCal.set(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH),1);
         myCal.add(Calendar.MONTH,-4);
         System.out.println(DateUtility.converteDateToGUIStringDDMMYYYY(myCal.getTime()));
+
+        System.out.println("primo giorno..."+DateUtility.converteDateToGUIStringDDMMYYYY(DateUtility.primoGiornoAnnoCorrente()));
+        System.out.println("ultimo giorno..."+DateUtility.converteDateToGUIStringDDMMYYYY(DateUtility.ultimoGiornoAnnoCorrente()));
+        System.out.println("primo giorno..."+DateUtility.converteDateToGUIStringDDMMYYYY(DateUtility.primoGiornoAnnoPrecedente()));
+        System.out.println("ultimo giorno..."+DateUtility.converteDateToGUIStringDDMMYYYY(DateUtility.ultimoGiornoAnnoPrecedente()));
     }
 }

@@ -23,6 +23,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -33,6 +35,7 @@ import java.util.*;
 
 public class ConfrontoTotaliVenditeLibereController implements Initializable {
 
+    private final Logger logger = LogManager.getLogger(ConfrontoTotaliVenditeLibereController.class.getName());
     private final String annoPrecedente = "annoPrecedente";
     private final String mesePrecedente = "mesePrecedente";
     @FXML private BarChart<String,Number> graficoConfronto;
@@ -316,7 +319,7 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
             app_stage.setScene(scene);
             app_stage.show();
         }catch(IOException ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
     }
 

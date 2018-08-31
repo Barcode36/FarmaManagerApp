@@ -12,9 +12,12 @@ import com.klugesoftware.farmamanager.db.ResiDAOManager;
 import com.klugesoftware.farmamanager.db.VenditeDAOManager;
 import com.klugesoftware.farmamanager.db.VenditeLibereDAOMAnager;
 import com.klugesoftware.farmamanager.model.VenditeLibere;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class EstrazioneDatiGeneraliVendite {
-	
+
+	private final Logger logger = LogManager.getLogger(EstrazioneDatiGeneraliVendite.class.getName());
 	private final String PROPERTIES_FILE_NAME = "./resources/config/config.properties";
 	private final Properties propsFarmaManager = new Properties();
 	private Map<String, String> props;
@@ -23,7 +26,7 @@ public class EstrazioneDatiGeneraliVendite {
 			InputStream fileProps = new FileInputStream(PROPERTIES_FILE_NAME);
 			propsFarmaManager.load(fileProps);
 		}catch(Exception ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}
 	}
 
@@ -41,7 +44,7 @@ public class EstrazioneDatiGeneraliVendite {
 			}
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, "Si è verificato un errore ! ", "Error ", JOptionPane.ERROR_MESSAGE);
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			return datiVenditaEstratti; 
 		}
@@ -58,7 +61,7 @@ public class EstrazioneDatiGeneraliVendite {
 			}
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, "Il database è irrangiungibile ! ", "Error database connection", JOptionPane.ERROR_MESSAGE);
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			return elenco;
 		}		

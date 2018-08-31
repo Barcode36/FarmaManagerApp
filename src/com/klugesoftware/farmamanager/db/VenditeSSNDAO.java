@@ -9,8 +9,11 @@ import java.util.Date;
 
 import com.klugesoftware.farmamanager.model.VenditeLibere;
 import com.klugesoftware.farmamanager.model.VenditeSSN;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class VenditeSSNDAO {
+	private final Logger logger = LogManager.getLogger(VenditeSSNDAO.class.getName());
 	private static final String SQL_INSERT = "INSERT INTO VenditeSSN (idVenditaSSN,numreg,idVendita,"
 			+ "posizioneInVendita,valoreVenditaSSN,totaleIva,totalePezziVenduti,totaleScontoSSN,esenzione,"
 			+ "quotaAssistito,quotaRicetta,totaleRicetta,codiceFiscale,dataVenditaSSN) "
@@ -74,7 +77,7 @@ public class VenditeSSNDAO {
 				throw new SQLException("La creazione di una nuova venditaSSN non è andata a buon fine: non è stato creato nessun record nel database!");
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement, generetedKey);
 		}
@@ -97,7 +100,7 @@ public class VenditeSSNDAO {
 			else 
 				throw new SQLException("Non è stata trovato nessun record.");
 			}catch(SQLException ex){
-				ex.printStackTrace();
+				logger.error(ex);
 		}finally {
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -117,7 +120,7 @@ public class VenditeSSNDAO {
 				elenco.add(DAOUtil.mapVenditaSSN(resultSet));
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}

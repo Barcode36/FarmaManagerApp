@@ -23,6 +23,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -34,6 +36,7 @@ import java.util.function.Function;
 
 public class SituazioneVenditeEProfittiLibereController extends VenditeEProfittiController implements Initializable {
 
+    private final Logger logger = LogManager.getLogger(SituazioneVenditeEProfittiLibereController.class.getName());
     @FXML private BorderPane mainPanel;
     @FXML private AreaChart<String,Number> graficoVenditeEProfittiLibere;
     @FXML private CategoryAxis xAxis;
@@ -197,7 +200,7 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
     }
 
@@ -315,7 +318,7 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
     }
 
@@ -332,7 +335,7 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
     }
 
@@ -349,7 +352,7 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
 
     }

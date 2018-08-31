@@ -11,44 +11,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
+
+import com.klugesoftware.farmamanager.db.*;
+import com.klugesoftware.farmamanager.model.*;
+import javafx.concurrent.Task;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
-
-import com.klugesoftware.farmamanager.db.DAOFactory;
-import com.klugesoftware.farmamanager.db.GiacenzeDAOManager;
-import com.klugesoftware.farmamanager.db.ImportazioniDAOManager;
-import com.klugesoftware.farmamanager.db.ProdottiVenditaLiberaDAO;
-import com.klugesoftware.farmamanager.db.ProdottiVenditaLiberaDAOManager;
-import com.klugesoftware.farmamanager.db.ProdottiVenditaSSNDAO;
-import com.klugesoftware.farmamanager.db.ProdottiVenditaSSNDAOManager;
-import com.klugesoftware.farmamanager.db.ResiDAOManager;
-import com.klugesoftware.farmamanager.db.TotaliGeneraliVenditaEstrattiDAOManager;
-import com.klugesoftware.farmamanager.db.TotaliGeneraliVenditaEstrattiGiornalieriDAOManager;
-import com.klugesoftware.farmamanager.db.VenditeDAOManager;
-import com.klugesoftware.farmamanager.model.CustomRoundingAndScaling;
-import com.klugesoftware.farmamanager.model.Giacenze;
-import com.klugesoftware.farmamanager.model.ProdottiVenditaLibera;
-import com.klugesoftware.farmamanager.model.ProdottiVenditaSSN;
-import com.klugesoftware.farmamanager.model.ResiProdottiVenditaLibera;
-import com.klugesoftware.farmamanager.model.ResiProdottiVenditaSSN;
-import com.klugesoftware.farmamanager.model.ResiVendite;
-import com.klugesoftware.farmamanager.model.ResiVenditeLibere;
-import com.klugesoftware.farmamanager.model.ResiVenditeSSN;
-import com.klugesoftware.farmamanager.model.TipoCosto;
-import com.klugesoftware.farmamanager.model.Vendite;
-import com.klugesoftware.farmamanager.model.VenditeLibere;
-import com.klugesoftware.farmamanager.model.VenditeSSN;
 import com.klugesoftware.farmamanager.utility.DateUtility;
 
-public class ImportazioneVenditeFromDBF extends SwingWorker<Void, Void>{
+public class ImportazioneVenditeFromDBF extends Task {
 
 	private final Logger logger = LogManager.getLogger(ImportazioneVenditeFromDBF.class.getName());
 	private final boolean DEBUG = false;
@@ -61,26 +35,13 @@ public class ImportazioneVenditeFromDBF extends SwingWorker<Void, Void>{
 	private String dateFrom;
 	private String dateTo;
 	private boolean readDateFormFile = false;
-	private JDialog parentDialog;
 	private String dbfTabellaName;
-	
-	public ImportazioneVenditeFromDBF(){
-		readDateFormFile = true;
-		init();
-	}
-	
-	public ImportazioneVenditeFromDBF(String dateFrom,String dateTo){
+
+	public ImportazioneVenditeFromDBF(String dateFrom,String dateTo, String movimentiFileName){
 		this.dateFrom = DateUtility.converteGUIStringDDMMYYYYToSqlString(dateFrom);
 		this.dateTo = DateUtility.converteGUIStringDDMMYYYYToSqlString(dateTo);
-		dbfTabellaName = "MovMag"+DateUtility.getAnnoXX(DateUtility.converteGUIStringDDMMYYYYToDate(dateFrom))+".DBF";
+		dbfTabellaName = movimentiFileName;
 		readDateFormFile = false;
-
-		//TODO: confrontare con il codice di Eclipse...
-		/*
-		this.parentDialog = parentDialog;
-		this.parentFrame = parentFrame;
-		*/
-
 		init();
 	}
 	
@@ -88,17 +49,8 @@ public class ImportazioneVenditeFromDBF extends SwingWorker<Void, Void>{
 		try{
 			InputStream propertiesFile = new FileInputStream(PROPERTIES_FILE_NAME);				
 			propsFarmaManager.load(propertiesFile);
-			//Map<String, String> props = new HashMap<String, String>();
-			//props.put(propsFarmaManager.getProperty("persitenceDbUrlName"), propsFarmaManager.getProperty("persitenceDbUrlValue"));
-			//props.put(propsFarmaManager.getProperty("persistenceDbUserName"), propsFarmaManager.getProperty("persistenceDbUserValue"));
-			//props.put(propsFarmaManager.getProperty("persistenceDbPasswordName"), propsFarmaManager.getProperty("persistenceDbPasswordValue"));
-			//props.put(propsFarmaManager.getProperty("peristenceDbDriverName"), propsFarmaManager.getProperty("persistenceDbDriverValue"));
 			Class.forName(propsFarmaManager.getProperty("dbfDriverName"));
 			connection = DriverManager.getConnection(propsFarmaManager.getProperty("dbfUrlName"));
-			if(readDateFormFile){
-				dateFrom = DateUtility.converteGUIStringDDMMYYYYToSqlString(propsFarmaManager.getProperty("dateFrom"));
-				dateTo = DateUtility.converteGUIStringDDMMYYYYToSqlString(propsFarmaManager.getProperty("dateTo"));
-			}
 			percentualeCostoPresunto = new BigDecimal(propsFarmaManager.getProperty("percentualeCostoPresunto"));
 			if( propsFarmaManager.getProperty("importazioneIniziale").equals("true"))
 				importazioneIniziale = true;
@@ -110,44 +62,9 @@ public class ImportazioneVenditeFromDBF extends SwingWorker<Void, Void>{
 	}
 	
 	@Override
-	protected Void doInBackground() throws Exception{
-		//TODO: vedi codice in Eclipse...da sistemare le dipendenze fra Frame...
-
-		/*
-		int ret = 0;
-		if (parentFrame != null) { 
-			ret = JOptionPane.showConfirmDialog(parentDialog, "Importo anche le giacenze?", "Importazione", JOptionPane.YES_NO_OPTION);
-		}
-		if (ret == 0){
-			ImportazioneGiacenzeFromDBF w = new ImportazioneGiacenzeFromDBF(parentDialog);
-			w.execute();
-			while(true){
-				if (w.isDone()){
-					if (w.isCancelled()){
-						this.cancel(true);
-					}
-					logger.info("importazione giacenze terminata");
-					break;
-				}
-				try{
-					Thread.sleep(1);
-				}catch(InterruptedException ex){
-					ex.printStackTrace();
-				}
-			}
-		}
-		if (parentFrame != null) {
-			busyDialog = new BusyDialogImportazioniDBF(this);
-			busyDialog.setLocationRelativeTo(parentDialog);
-			busyDialog.setAlwaysOnTop(true);
-			busyDialog.setVisible(true);
-			busyDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			busyDialog.setLabelImportazione(BusyDialogImportazioniDBF.LABEL_IMPORTAZIONE_MOVIMENTI);
-		}
-		*/
-
-
+	protected Object call() throws Exception{
 		logger.info("importazione movimenti da "+dateFrom+" a "+dateTo);
+		updateMessage("importazione movimenti da "+dateFrom+" a "+dateTo);
 		Statement stmt = null;
 		ResultSet rs = null;
 		try{
@@ -167,6 +84,7 @@ public class ImportazioneVenditeFromDBF extends SwingWorker<Void, Void>{
 			String campoRicReso="";
 			boolean cambioReso = false;
 			while (rs.next() && !isCancelled()){
+				updateMessage("inserimento movimento num: "+rs.getInt("NUMREG"));
 				// filtra solo i movimenti relativi alle vendite a Contanti o SSN: i RESI cioè il campo RESO_FLG = R vengono gestiti a parte
 				String resoFlg = "";
 				if (rs.getString("RESO_FLG") != null)
@@ -285,24 +203,31 @@ public class ImportazioneVenditeFromDBF extends SwingWorker<Void, Void>{
 					}					
 				}				
 			}
-			// insert dell'ultimo movimento
-			if (venditaGenerale != null)
-				insertMovimento(venditaGenerale);
-			
-			//calcola i TotaliGeneraliResiVendite e li 
-			//decurto dai TotaliGeneraliVendite del mese corrispondente
-			List<ResiVendite> elencoResi = ResiDAOManager.elencoResiVenditeComposti(DateUtility.converteDBStringYYYMMDDToDate(dateFrom),DateUtility.converteDBStringYYYMMDDToDate(dateTo));
-			if (elencoResi != null){
-				Iterator<ResiVendite> iterResiVendite = elencoResi.iterator();
-				ResiVendite resoVenditaTemp;
-				while (iterResiVendite.hasNext()){
-					resoVenditaTemp = iterResiVendite.next();
-					TotaliGeneraliVenditaEstrattiDAOManager.aggiornaTotaliGenerali(resoVenditaTemp);
-					TotaliGeneraliVenditaEstrattiGiornalieriDAOManager.aggiornaTotaliGenerali(resoVenditaTemp);
+
+			if(isCancelled()){
+				updateMessage("importazione interrotta");
+			}else {
+
+				// insert dell'ultimo movimento
+				if (venditaGenerale != null)
+					insertMovimento(venditaGenerale);
+
+				//calcola i TotaliGeneraliResiVendite e li
+				//decurto dai TotaliGeneraliVendite del mese corrispondente
+				List<ResiVendite> elencoResi = ResiDAOManager.elencoResiVenditeComposti(DateUtility.converteDBStringYYYMMDDToDate(dateFrom), DateUtility.converteDBStringYYYMMDDToDate(dateTo));
+				if (elencoResi != null) {
+					Iterator<ResiVendite> iterResiVendite = elencoResi.iterator();
+					ResiVendite resoVenditaTemp;
+					while (iterResiVendite.hasNext()) {
+						resoVenditaTemp = iterResiVendite.next();
+						TotaliGeneraliVenditaEstrattiDAOManager.aggiornaTotaliGenerali(resoVenditaTemp);
+						TotaliGeneraliVenditaEstrattiGiornalieriDAOManager.aggiornaTotaliGenerali(resoVenditaTemp);
+					}
 				}
+				//aggiorno i LogImportazioni in Tabella Importazioni
+				aggiornaLogImportazioni();
+				updateMessage("importazione terminata");
 			}
-			//aggiorno i LogImportazioni in Tabella Importazioni
-			aggiornaLogImportazioni();
 		}catch(Exception ex){
 			logger.error("doInBackground(): I can't do a query",ex);
 		}finally{
@@ -318,20 +243,7 @@ public class ImportazioneVenditeFromDBF extends SwingWorker<Void, Void>{
 		return null;
 	}
 	
-	protected void done(){
-		logger.info("importazione movimenti terminata");
-		//TODO: da confrontare con il codice di Eclipse...
-		/*
-		if(parentFrame != null) {
-			busyDialog.dispose();
-			parentDialog.dispose();
-			if(!isCancelled())
-				JOptionPane.showMessageDialog(parentDialog, "Importazione Movimenti terminata", "Importazione movimenti", JOptionPane.INFORMATION_MESSAGE);
-			parentFrame.aggiornaLabelDataImportazioni();
-		}
-		*/
-	}
-	
+
 	// in questo metodo si fa il mapping fra il record presente in resultSet( da DBF) e l'oggetto ProdottiVenditaSSN  
 	private boolean mappingVenditaSsn(ResultSet resultSet,Vendite venditaGenerale, VenditeSSN venditaSSN, int posizioneProdottoInVendita,boolean cambioVendita){
 		try {
@@ -955,7 +867,7 @@ public class ImportazioneVenditeFromDBF extends SwingWorker<Void, Void>{
 	
 	/**
 	 * Riporta le quantità reso nella colonna quantitaReso del record Prodotti* 
-	 * @param prodotto
+	 * @param reso
 	 */
 	private static void aggiornaQuantitaResoProdotto(Object reso) {
 		
@@ -1058,12 +970,9 @@ public class ImportazioneVenditeFromDBF extends SwingWorker<Void, Void>{
 	 * Aggiorna la Tabella Importazioni: creando un record relativo all'importazione appena terminata
 	 */
 	public void aggiornaLogImportazioni(){
+
 		ImportazioniDAOManager.insertLogImportazione();
+
 	}
 	
-	public static void main(String[] args) {
-		ImportazioneVenditeFromDBF importazione = new ImportazioneVenditeFromDBF();
-		//importazione.testConnection();
-		importazione.execute();
-	}
 }

@@ -23,6 +23,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -35,6 +37,7 @@ import java.util.*;
 
 public class DettaglioVenditeEProfittiController extends VenditeEProfittiController implements Initializable {
 
+    private final Logger logger = LogManager.getLogger(DettaglioVenditeEProfittiController.class.getName());
     @FXML private DatePicker txtFldDataFrom;
     @FXML private DatePicker txtFldDataTo;
     @FXML private Button btnBack;
@@ -329,7 +332,7 @@ public class DettaglioVenditeEProfittiController extends VenditeEProfittiControl
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
     }
 }

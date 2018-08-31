@@ -165,7 +165,7 @@ public class ProdottiVenditaSSNDAO {
 			if (affectedRows == 0)
 				logger.warn("La modifica non è andata a buon fine: non è stato modifica nessun record!");
 		}catch(Exception ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement);
 		}

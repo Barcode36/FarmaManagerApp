@@ -12,9 +12,12 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 
 import com.klugesoftware.farmamanager.DTO.ElencoProdottiLiberaVenditaRowData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ElencoProdottiLiberaVenditaRowDataDAO {
-	
+
+	private final Logger logger = LogManager.getLogger(ElencoProdottiLiberaVenditaRowDataDAO.class.getName());
 	private static final String SQL_FIND_BETWEEN_DATE = ""
 			+ "SELECT p.idProdottoVenditaLibera,p.dataVendita,p.minsan,p.descrizione,(p.quantita-p.quantitaReso) as quantitaVendute,p.prezzoVendita,"
 			+ "p.totaleScontoUnitario,p.prezzoVenditaNetto,p.costoNettoIva,p.percentualeMargineUnitario,"
@@ -124,7 +127,7 @@ public class ElencoProdottiLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -154,7 +157,7 @@ public class ElencoProdottiLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -189,7 +192,7 @@ public class ElencoProdottiLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -224,7 +227,7 @@ public class ElencoProdottiLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -259,7 +262,7 @@ public class ElencoProdottiLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -294,7 +297,7 @@ public class ElencoProdottiLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -329,7 +332,7 @@ public class ElencoProdottiLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -364,7 +367,7 @@ public class ElencoProdottiLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -399,7 +402,7 @@ public class ElencoProdottiLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -434,7 +437,7 @@ public class ElencoProdottiLiberaVenditaRowDataDAO {
 				}
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex.getMessage());
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}

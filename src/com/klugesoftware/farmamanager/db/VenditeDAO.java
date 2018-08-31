@@ -54,7 +54,7 @@ public class VenditeDAO {
 			else 
 				throw new SQLException("Non è stata trovato nessun record.");
 			}catch(SQLException ex){
-				ex.printStackTrace();
+				logger.error(ex);
 		}finally {
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -74,7 +74,7 @@ public class VenditeDAO {
 				elenco.add(DAOUtil.mapVendita(resultSet));
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -123,7 +123,7 @@ public class VenditeDAO {
 				throw new SQLException("La creazione di una nuova Vendita non è andata a buon fine: non è stato creato nessun record nel database!");
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement, generetedKey);
 		}
@@ -145,13 +145,13 @@ public class VenditeDAO {
 			else 
 				throw new SQLException("Non è stata trovato nessun record.");
 			}catch(SQLException ex){
-				ex.printStackTrace();
+				logger.error(ex);;
 		}finally {
 			try{
 				resultSet.close();
 				conn.close();
 			}catch(SQLException ex){
-				ex.printStackTrace();
+				logger.error(ex);
 			}
 		}
 		return vendita;
@@ -229,11 +229,11 @@ public class VenditeDAO {
 			conn.commit();
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 			try {
 				conn.rollback();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				logger.error(ex);
 			}
 		}finally{
 			DAOUtil.close(conn, preparedStatement);

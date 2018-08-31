@@ -58,7 +58,7 @@ public class ResiVenditeSSNDAO {
 				logger.warn("Non è stato trovato nessun record con id: "+values[0]);
 				//throw new SQLException("Non è stata trovato nessun record.");
 			}catch(SQLException ex){
-				ex.printStackTrace();
+				logger.error(ex);
 		}finally {
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -78,7 +78,7 @@ public class ResiVenditeSSNDAO {
 				elenco.add(DAOUtil.mapResiVenditeSSN(resultSet));
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -133,7 +133,7 @@ public class ResiVenditeSSNDAO {
 				throw new SQLException("La creazione di un nuovo ResoVenditaSSN non è andata a buon fine: non è stato creato nessun record nel database!");
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement, generetedKey);
 		}
@@ -170,7 +170,7 @@ public class ResiVenditeSSNDAO {
 			if (affectedRows == 0)
 				throw new SQLException("La modifica non è andata a buon fine: non è stato modifica nessun record!");
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement);
 		}
@@ -192,7 +192,7 @@ public class ResiVenditeSSNDAO {
 			}
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
 		}
@@ -214,7 +214,7 @@ public class ResiVenditeSSNDAO {
 			}
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
 		}
@@ -232,7 +232,7 @@ public class ResiVenditeSSNDAO {
 			preparedStatement.executeUpdate();
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
 		}

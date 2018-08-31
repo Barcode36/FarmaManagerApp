@@ -117,7 +117,7 @@ public class ProdottiVenditaLiberaDAO {
 			System.out.println("NUMREG:"+prodottoVenditaLibera.getNumreg());
 			System.out.println("Costo Ivato:"+prodottoVenditaLibera.getCostoCompresoIva());
 			System.out.println("Costo Netto:"+prodottoVenditaLibera.getCostoNettoIva());
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement, generetedKey);
 		}
@@ -168,7 +168,7 @@ public class ProdottiVenditaLiberaDAO {
 			if (affectedRows == 0)
 				throw new SQLException("La modifica non è andata a buon fine: non è stato modifica nessun record!");
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement);
 		}

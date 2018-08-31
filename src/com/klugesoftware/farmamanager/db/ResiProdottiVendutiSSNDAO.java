@@ -62,7 +62,7 @@ public class ResiProdottiVendutiSSNDAO {
 				logger.warn("Non è stato trovato nessun record con id: "+values[0]);
 				//throw new SQLException("Non è stata trovato nessun record.");
 			}catch(SQLException ex){
-				ex.printStackTrace();
+				logger.error(ex);
 		}finally {
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -82,7 +82,7 @@ public class ResiProdottiVendutiSSNDAO {
 				elenco.add(DAOUtil.mapResiProdottiVenditaSSN(resultSet));
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
@@ -145,7 +145,7 @@ public class ResiProdottiVendutiSSNDAO {
 				throw new SQLException("La creazione di un nuovo reso prodottoSSN non è andata a buon fine: non è stato creato nessun record nel database!");
 			}
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement, generetedKey);
 		}
@@ -191,7 +191,7 @@ public class ResiProdottiVendutiSSNDAO {
 			if (affectedRows == 0)
 				throw new SQLException("La modifica non è andata a buon fine: non è stato modifica nessun record!");
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement);
 		}
@@ -213,7 +213,7 @@ public class ResiProdottiVendutiSSNDAO {
 			}
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
 		}
@@ -235,7 +235,7 @@ public class ResiProdottiVendutiSSNDAO {
 			}
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
 		}
@@ -253,7 +253,7 @@ public class ResiProdottiVendutiSSNDAO {
 			preparedStatement.executeUpdate();
 			ret = true;
 		}catch(SQLException ex){
-			ex.printStackTrace();
+			logger.error(ex);
 		}finally{
 			DAOUtil.close(conn, preparedStatement);
 		}

@@ -21,6 +21,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -32,6 +34,7 @@ import java.util.*;
 
 public class ConfrontoTotaliVenditeController implements Initializable {
 
+    private final Logger logger = LogManager.getLogger(ConfrontoTotaliVenditeController.class.getName());
     private final String annoPrecedente = "annoPrecedente";
     private final String mesePrecedente = "mesePrecedente";
     @FXML private TableColumn<ConfrontoTotaliVenditeRowData,String> colDescrizione;
@@ -162,8 +165,6 @@ public class ConfrontoTotaliVenditeController implements Initializable {
         tabellaTotali.getItems().clear();
         tabellaTotali.getItems().setAll(data);
         tabellaTotali.refresh();
-
-
 
     }
 
@@ -349,7 +350,7 @@ public class ConfrontoTotaliVenditeController implements Initializable {
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
     }
 
@@ -366,7 +367,7 @@ public class ConfrontoTotaliVenditeController implements Initializable {
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
 
     }
