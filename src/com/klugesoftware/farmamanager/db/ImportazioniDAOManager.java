@@ -25,23 +25,37 @@ public class ImportazioniDAOManager {
 		ImportazioniDAO importazioniDAO = daoFactory.getImportazioniDAO();
 		return importazioniDAO.findUltimoRecordInserito();
 	}
-	
+
+	public static void svuotaTabella(){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		ImportazioniDAO importazioniDAO = daoFactory.getImportazioniDAO();
+		importazioniDAO.deleteTable();
+	}
+
 	/**
 	 * insert di un record nella Tabella Importazione che contiene il maxNumreg e l'ultima dataMovimento
 	 */
-	public static void insertLogImportazione(){
+	public static void insertLogImportazione(String note){
 		Vendite vendita = VenditeDAOManager.lookupVenditaByMaxId();
 		ResiVendite reso = ResiDAOManager.lookupByMaxId();
 		Importazioni importazione = new Importazioni();
-		if (vendita.getNumreg().intValue() >= reso.getNumreg()){
-			importazione.setUltimoNumRegImportato(vendita.getNumreg());
-			importazione.setDataUltimoMovImportato(vendita.getDataVendita());
-		}else{
-			importazione.setUltimoNumRegImportato(reso.getNumreg());
-			importazione.setDataUltimoMovImportato(reso.getDataReso());
+
+		//escludo il caso iin cui la tabella mpvimenti sia vuota
+		if(vendita.getIdVendita() == null && reso.getIdResoVendita() == null){
+			ImportazioniDAOManager.svuotaTabella();
+		}else {
+
+			if (vendita.getNumreg().intValue() >= reso.getNumreg()) {
+				importazione.setUltimoNumRegImportato(vendita.getNumreg());
+				importazione.setDataUltimoMovImportato(vendita.getDataVendita());
+			} else {
+				importazione.setUltimoNumRegImportato(reso.getNumreg());
+				importazione.setDataUltimoMovImportato(reso.getDataReso());
+			}
+			importazione.setDataImportazione(DateUtility.getDataOdierna());
+			importazione.setNote(note);
+			importazione = insert(importazione);
 		}
-		importazione.setDataImportazione(DateUtility.getDataOdierna());
-		importazione = insert(importazione);
 	}
 
 }

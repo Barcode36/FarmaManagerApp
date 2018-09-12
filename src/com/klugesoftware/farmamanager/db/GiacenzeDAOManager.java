@@ -3,6 +3,15 @@ package com.klugesoftware.farmamanager.db;
 import com.klugesoftware.farmamanager.model.Giacenze;
 
 public class GiacenzeDAOManager {
+
+	/**
+	 * se ritorna un valore = 0 allora la tabella delle Giacenze è vuota e quindi va aggiornata
+	 */
+	public static int countGiacenze(){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		GiacenzeDAO giacenzaDAO = daoFactory.getGiacenzeDAO();
+		return giacenzaDAO.countTable();
+	}
 	
 	public static Giacenze insert(Giacenze giacenza){
 		DAOFactory daoFactory = DAOFactory.getInstance();

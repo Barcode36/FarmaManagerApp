@@ -62,6 +62,7 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
     @FXML private Label lblPeriodo;
     @FXML private Button btnBack;
     @FXML private Button btnForward;
+    @FXML private Button settingsButton;
     private ChangePeriodListener changePeriodListenerBack;
     private ChangePeriodListener changePeriodListenerForward;
     private ChangeDateAndViewListener changeDateAndViewListener;
@@ -296,27 +297,29 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
         Date fromDate;
 
         Importazioni importazione = ImportazioniDAOManager.findUltimoInsert();
-        toDate = importazione.getDataUltimoMovImportato();
-        Calendar myCal = Calendar.getInstance(Locale.ITALY);
-        myCal.setTime(toDate);
+        if (importazione.getIdImportazione() != null) {
+            toDate = importazione.getDataUltimoMovImportato();
+            Calendar myCal = Calendar.getInstance(Locale.ITALY);
+            myCal.setTime(toDate);
 
-        fromDate = DateUtility.primoGiornoDelMeseCorrente(toDate);
+            fromDate = DateUtility.primoGiornoDelMeseCorrente(toDate);
 
-        txtFldDataFrom.setOnAction(null);
-        txtFldDataTo.setOnAction(null);
+            txtFldDataFrom.setOnAction(null);
+            txtFldDataTo.setOnAction(null);
 
-        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
-        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
+            txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
+            txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
 
-        myCal.setTime(fromDate);
-        txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
-        myCal.setTime(toDate);
-        txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
+            myCal.setTime(fromDate);
+            txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
+            myCal.setTime(toDate);
+            txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
 
-        txtFldDataFrom.setOnAction(changeDateAndViewListener);
-        txtFldDataTo.setOnAction(changeDateAndViewListener);
+            txtFldDataFrom.setOnAction(changeDateAndViewListener);
+            txtFldDataTo.setOnAction(changeDateAndViewListener);
 
-        aggiornaTableAndScene(fromDate,toDate,false);
+            aggiornaTableAndScene(fromDate, toDate, false);
+        }
     }
 
     @Override
@@ -419,5 +422,21 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
             logger.error(ex.getMessage());
         }
 
+    }
+
+    @FXML
+    private void settingsClicked(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/Settings.fxml"));
+            Parent parent = (Parent)fxmlLoader.load();
+            SettingsController controller = fxmlLoader.getController();
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            app_stage.hide();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            logger.error(ex.getMessage());
+        }
     }
 }

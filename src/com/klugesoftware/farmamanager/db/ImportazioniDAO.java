@@ -25,7 +25,7 @@ public class ImportazioniDAO {
 			+ "idImportazione = (SELECT max(idImportazione) FROM Importazioni)";
 	private static final String SQL_FIND_ALL = "SELECT * FROM Importazioni";
 	private static final String SQL_FIND_BY_ID = "SELECT * FROM Importazioni WHERE idImportazione = ?";
-
+	private static final String SQL_TRUNCATE_TABLE = "TRUNCATE TABLE Importazioni";
 	private final Logger logger = LogManager.getLogger(ImportazioniDAO.class.getName());
 	private DAOFactory daoFactory;
 	
@@ -112,6 +112,28 @@ public class ImportazioniDAO {
 			DAOUtil.close(connection, preparedStatement, generetedKey);
 		}
 		return importazione;
+	}
+
+	/**
+	 * svuota tabella Importazioni
+	 */
+	public void deleteTable(){
+		Connection connection = null;
+		Statement stmt = null;
+		try{
+			connection = daoFactory.getConnetcion();
+			stmt = connection.createStatement();
+			stmt.executeUpdate(SQL_TRUNCATE_TABLE);
+		}catch(SQLException ex){
+			logger.error("ImportazioniDAO.truncate: I can't truncate table...",ex);
+		}finally{
+			try{
+				stmt.close();
+				connection.close();
+			}catch(SQLException ex){
+				logger.error("ImportazioniDAO.deleteTable(): I can't close db connection");
+			}
+		}
 	}
 
 	public Importazioni findUltimoRecordInserito(){

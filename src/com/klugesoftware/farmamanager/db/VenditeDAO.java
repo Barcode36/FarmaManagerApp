@@ -190,6 +190,7 @@ public class VenditeDAO {
 		int meseDaCancellare = tempCal.get(Calendar.MONTH) + 1;
 		int annoDaCancellare = tempCal.get(Calendar.YEAR);
 		String sqlDeleteTotaliGeneraliMensili = "DELETE FROM TotaliGeneraliMensili WHERE mese = "+meseDaCancellare+" AND anno = "+annoDaCancellare;
+		String sqlDeleteTotaliGeneraliGiornalieri = "DELETE FROM TotaliGeneraliGiornalieri WHERE data BETWEEN ? AND ?";
 		
 		ArrayList<String> sqlScript = new ArrayList<String>();
 		sqlScript.add(sqlDeleteProdottiLibere);
@@ -202,6 +203,7 @@ public class VenditeDAO {
 		sqlScript.add(sqlDeleteResiProdottiSSN);
 		sqlScript.add(sqlDeleteResiVenditeSSN);
 		sqlScript.add(sqlDeleteResiVendite);
+		sqlScript.add(sqlDeleteTotaliGeneraliGiornalieri);
 		Iterator<String> iter = sqlScript.iterator();
 		Connection conn = null;
 		PreparedStatement preparedStatement = null;

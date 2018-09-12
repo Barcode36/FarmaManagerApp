@@ -64,7 +64,7 @@ public class ImportazioneGiacenzeFromDBF extends Task {
             }
             logger.info("fine importazione giacenze");
         }catch(SQLException ex){
-            logger.error("doInbackground(): I can't create record...");
+            logger.error("call(): I can't create record...");
         }finally{
             try{
                 if (rs != null) rs.close();
@@ -79,6 +79,7 @@ public class ImportazioneGiacenzeFromDBF extends Task {
         if(isCancelled()) {
             updateMessage("Importazione giacenze interrotta");
             logger.info("importazione giacenze interrotta");
+
         }
         else
             updateMessage("Importazione giacenze terminata");

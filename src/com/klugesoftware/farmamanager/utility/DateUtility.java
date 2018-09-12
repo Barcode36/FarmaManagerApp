@@ -563,6 +563,20 @@ public class DateUtility {
 		dateTemp  = myCalTemp.getTime();
 		return converteDateToGUIStringDDMMYYYY(dateTemp);
 	}
+
+	/**
+	 *
+	 * @param dateFrom
+	 * @return String: ritorna una stringa della data del primo giorno del mese di dateFrom
+	 */
+	static public String inizioMese(Date dateFrom){
+		Calendar myCalTemp = Calendar.getInstance(Locale.ITALY);
+		myCalTemp.setTime(dateFrom);
+		Date dateTemp;
+		myCalTemp.set(myCalTemp.get(Calendar.YEAR), myCalTemp.get(Calendar.MONTH), myCalTemp.getActualMinimum(Calendar.DAY_OF_MONTH));
+		dateTemp  = myCalTemp.getTime();
+		return converteDateToGUIStringDDMMYYYY(dateTemp);
+	}
 	
 	/**
 	 * 

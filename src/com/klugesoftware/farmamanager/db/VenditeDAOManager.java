@@ -158,8 +158,11 @@ public class VenditeDAOManager {
 	public static boolean deleteVenditeBetweenDate(Date dateFrom,Date dateTo){
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		VenditeDAO venditaDAO = daoFactory.getVenditaDAO();
+		ResiVenditeDAO resoDao = daoFactory.getResiVenditeDAO();
 		boolean ret = venditaDAO.deleteBetweenDate(dateFrom, dateTo);
-		ImportazioniDAOManager.insertLogImportazione();
+		boolean ret2 = resoDao.deleteBetweenDate(dateFrom,dateTo);
+		ImportazioniDAOManager.insertLogImportazione("post-delete");
+
 		return ret;
 	}
 	

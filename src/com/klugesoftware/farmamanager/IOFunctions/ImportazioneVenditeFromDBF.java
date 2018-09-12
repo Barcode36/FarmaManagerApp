@@ -971,7 +971,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 	 */
 	public void aggiornaLogImportazioni(){
 
-		ImportazioniDAOManager.insertLogImportazione();
+		ImportazioniDAOManager.insertLogImportazione("insert");
 
 	}
 	

@@ -23,7 +23,7 @@ public class GiacenzeDAO {
 	private static final String SQL_UPDATE_BY_MINSAN = "UPDATE Giacenze SET "
 			+ "costoUltimoDeivato = ?,dataCostoUltimo = ?,descrizione = ?,giacenza = ?,venditeAnnoInCorso = ? "
 			+ "WHERE minsan = ?";
-
+	private static final String SQL_COUNT_TABLE = "SELECT count(*) FROM Giacenze";
 	private static final String SQL_FIND_ALL = "SELECT * FROM Giacenze";
 	private static final String SQL_FIND_BY_ID = "SELECT * FROM Giacenze WHERE idGiacenza = ?";
 	private static final String SQL_FIND_BY_MINSAN = "SELECT * FROM Giacenze WHERE minsan = ?";
@@ -147,6 +147,30 @@ public class GiacenzeDAO {
 			}
 			}catch(SQLException ex){
 				logger.error("GiacenzeDAO: I can't find record...",ex);
+		}finally {
+			DAOUtil.close(conn, preparedStatement, resultSet);
+		}
+		return ret;
+	}
+
+	public int countTable(){
+
+		Connection conn = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		int ret = -1;
+		try{
+			conn = daoFactory.getConnetcion();
+			preparedStatement = DAOUtil.prepareStatement(conn, SQL_COUNT_TABLE, false);
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()){
+				ret = resultSet.getInt(1);
+			}
+			else{
+				throw new SQLException("Non è stata trovato nessun record.");
+			}
+		}catch(SQLException ex){
+			logger.error("GiacenzeDAO: I can't find record...",ex);
 		}finally {
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
