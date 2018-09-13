@@ -1,9 +1,6 @@
 package com.klugesoftware.farmamanager.controller;
 
-import com.klugesoftware.farmamanager.IOFunctions.DeleteGiacenze;
-import com.klugesoftware.farmamanager.IOFunctions.DeleteMovimenti;
-import com.klugesoftware.farmamanager.IOFunctions.ImportazioneGiacenzeFromDBF;
-import com.klugesoftware.farmamanager.IOFunctions.ImportazioneVenditeFromDBF;
+import com.klugesoftware.farmamanager.IOFunctions.*;
 import com.klugesoftware.farmamanager.db.GiacenzeDAOManager;
 import com.klugesoftware.farmamanager.db.ImportazioniDAOManager;
 import com.klugesoftware.farmamanager.model.Importazioni;
@@ -23,9 +20,14 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -57,11 +59,19 @@ public class SettingsController implements Initializable {
     @FXML private RadioButton rdbtCancMovCorrente;
     @FXML private RadioButton rdbtCancMovPrev;
     @FXML private RadioButton rdbtCancBetweenDate;
+    @FXML private TextArea txtAreaInfoImportazione;
 
+    private boolean importazioneIniziale = false;
     private boolean cancellazioneAbilitata = false;
     private final Logger logger = LogManager.getLogger(SettingsController.class.getName());
     private ImportazioneVenditeFromDBF taskMovimenti;
     private ImportazioneGiacenzeFromDBF taskGiacenze;
+    private ImportazioneGiacenzeFromDBF taskGiacenzeTemp;
+    private ImportazioneVenditeFromDBF taskMovAnnoPrevTemp;
+    private ImportazioneVenditeFromDBF taskMovAnnoCorrenteTemp;
+    private InizializzaArchivi taskInizializzaArchivi;
+    private DeleteGiacenze taskGiac;
+    private DeleteMovimenti taskMov;
     private ObservableList<String> listaMessagi = FXCollections.observableArrayList();
     private Date dateFrom;
     private Date dateTo;
@@ -69,6 +79,7 @@ public class SettingsController implements Initializable {
     private ExecutorService executor;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         elencoMessaggi.setItems(listaMessagi);
         executor = Executors.newFixedThreadPool(1);
 
@@ -101,6 +112,9 @@ public class SettingsController implements Initializable {
             warnMovPanel.setVisible(true);
             aggiornaMovimenti.setDisable(true);
             importaAnnoCorrente.setSelected(true);
+            txtAreaInfoImportazione.setText("Archivi vuoti: seleziona un'opzione");
+        }else{
+            txtAreaInfoImportazione.setText("Archivi movimenti aggiornati al "+importazioni.getDataUltimoMovImportato());
         }
     }
 
@@ -124,8 +138,6 @@ public class SettingsController implements Initializable {
     private void importaClicked(ActionEvent event){
         // decido in base  ai radioButton l'intervallo  dei movimenti da importare
 
-
-        //TODO: controllare che sia selezionato almeno un'opzione
         GetDBFFileName dbfFileName = new GetDBFFileName();
         if (importaAnnoCorrente.isSelected()) {
             movimentiFileName = dbfFileName.getMovimentiFileNameAnnoCorrente();
@@ -152,10 +164,18 @@ public class SettingsController implements Initializable {
                         movimentiFileName = dbfFileName.getMovimentiFileName(dateFrom);
                     }
         runTask();
+        if (importaGiacenze.isSelected()) {
+            executor.execute(taskGiacenze);
+            executor.execute(taskMovimenti);
+        }else
+            executor.execute(taskMovimenti);
+
     }
 
     private void runTask(){
 
+        txtAreaInfoImportazione.setText("sto importando i movimenti da "+DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom)+" " +
+                " a "+DateUtility.converteDateToGUIStringDDMMYYYY(dateTo));
         btnCancellaImportazione.setVisible(true);
         warnMovPanel.setVisible(false);
         warnGiacPanel.setVisible(false);
@@ -176,15 +196,9 @@ public class SettingsController implements Initializable {
                 btnCancellaImportazione.setDisable(false);
             });
 
-            taskGiacenze.setOnSucceeded((succeededEvent) -> {
-                btnCancellaImportazione.setDisable(true);
-            });
-
-            taskGiacenze.setOnCancelled((eventCancelled) -> {
-            });
         }
 
-        taskMovimenti = new ImportazioneVenditeFromDBF(DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom),DateUtility.converteDateToGUIStringDDMMYYYY(dateTo),movimentiFileName);
+        taskMovimenti = new ImportazioneVenditeFromDBF(DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom),DateUtility.converteDateToGUIStringDDMMYYYY(dateTo),movimentiFileName,false);
 
         taskMovimenti.messageProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null ){
@@ -202,34 +216,58 @@ public class SettingsController implements Initializable {
         taskMovimenti.setOnSucceeded((succeededEvent)->{
             progressIndicator.setProgress(1);
             btnImportaMov.setDisable(false);
-            btnCancellaImportazione.setDisable(true);
         });
-
-        if (importaGiacenze.isSelected()) {
-            executor.execute(taskGiacenze);
-            executor.execute(taskMovimenti);
-        }else
-            executor.execute(taskMovimenti);
-
     }
 
     @FXML
     private void cancellaImportazione(ActionEvent event){
+        txtAreaInfoImportazione.setText("Cancellazione archivi");
+        InizializzaArchivi taskIni = new InizializzaArchivi();
+        if (importazioneIniziale){
+            importazioneIniziale=false;
+            taskGiacenzeTemp.cancel();
+            taskMovAnnoPrevTemp.cancel();
+            taskMovAnnoCorrenteTemp.cancel();
+            btnImportaMov.setDisable(false);
+            btnCancellaImportazione.setVisible(false);
+            taskIni.messageProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    listaMessagi.add(taskIni.getMessage());
+                    elencoMessaggi.scrollTo(elencoMessaggi.getItems().size());
+                }
+            });
+            taskIni.setOnSucceeded((succeededEvent) -> {
+                progressIndicator.setProgress(1);
+                btnImportaMov.setDisable(false);
+                btnCancMov.setDisable(true);
+                btnAbilita.setDisable(false);
+            });
+            executor.execute(taskIni);
+        }else {
 
-       if (importaGiacenze.isSelected()){
-           taskGiacenze.cancel();
-       }
-       taskMovimenti.cancel();
-       btnCancellaImportazione.setVisible(false);
-       rollBack();
+            if (importaGiacenze.isSelected()) {
+                taskGiacenze.cancel();
+            }
+            taskMovimenti.cancel();
+            btnCancellaImportazione.setVisible(false);
+            rollBack();
+            if (importaGiacenze.isSelected() || rdbtCancGiacenze.isSelected()) {
+                executor.execute(taskGiac);
+                executor.execute(taskMov);
+            } else
+                executor.execute(taskMov);
+        }
     }
 
     private void rollBack(){
 
+        txtAreaInfoImportazione.setText("sto cancellando i movimenti da "+DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom)+" " +
+                " a "+DateUtility.converteDateToGUIStringDDMMYYYY(dateTo));
+
         progressIndicator.setProgress(0);
         progressIndicator.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
 
-        DeleteGiacenze taskGiac = new DeleteGiacenze();
+        taskGiac = new DeleteGiacenze();
         if (importaGiacenze.isSelected() || rdbtCancGiacenze.isSelected()) {
             taskGiac.messageProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
@@ -247,11 +285,10 @@ public class SettingsController implements Initializable {
             taskGiac.setOnSucceeded((succeededEvent) -> {
                 progressIndicator.setProgress(1);
                 btnImportaMov.setDisable(false);
-                btnCancellaImportazione.setDisable(true);
             });
         }
 
-        DeleteMovimenti taskMov = new DeleteMovimenti(dateFrom,dateTo);
+        taskMov = new DeleteMovimenti(dateFrom,dateTo);
 
         taskMov.messageProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null ){
@@ -272,12 +309,6 @@ public class SettingsController implements Initializable {
             btnCancellaImportazione.setDisable(true);
         });
 
-        if(importaGiacenze.isSelected() || rdbtCancGiacenze.isSelected()){
-            executor.execute(taskGiac);
-            executor.execute(taskMov);
-        }
-        else
-            executor.execute(taskMov);
 
     }
 
@@ -319,6 +350,89 @@ public class SettingsController implements Initializable {
             dateTo = DateUtility.converteGUIStringDDMMYYYYToDate(cancDateTo.getEditor().getText());
         }
         rollBack();
+        if(importaGiacenze.isSelected() || rdbtCancGiacenze.isSelected()){
+            executor.execute(taskGiac);
+            executor.execute(taskMov);
+        }
+        else
+            executor.execute(taskMov);
     }
+
+    @FXML
+    private void importInizialeClicked(ActionEvent event){
+
+        txtAreaInfoImportazione.setText("sto importando i moviementi da "+DateUtility.converteDateToGUIStringDDMMYYYY(DateUtility.primoGiornoAnnoPrecedente())+" " +
+                " a "+DateUtility.converteDateToGUIStringDDMMYYYY(DateUtility.ultimoGiornoAnnoCorrente()));
+
+        btnCancellaImportazione.setVisible(true);
+        btnCancellaImportazione.setDisable(false);
+        importazioneIniziale = true;
+        btnImportaMov.setDisable(true);
+        btnAbilita.setDisable(true);
+        importaGiacenze.setSelected(true);
+        importaAnnoPrev.setSelected(true);
+
+        progressIndicator.setProgress(0);
+        progressIndicator.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+
+        taskInizializzaArchivi = new InizializzaArchivi();
+        taskInizializzaArchivi.messageProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                listaMessagi.add(taskInizializzaArchivi.getMessage());
+                elencoMessaggi.scrollTo(elencoMessaggi.getItems().size());
+            }
+        });
+
+        taskGiacenzeTemp = new ImportazioneGiacenzeFromDBF();
+        taskGiacenzeTemp.messageProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                listaMessagi.add(taskGiacenzeTemp.getMessage());
+                elencoMessaggi.scrollTo(elencoMessaggi.getItems().size());
+            }
+        });
+
+        GetDBFFileName dbfFileName = new GetDBFFileName();
+
+        String movimentiFileNameTemp = dbfFileName.getMovimentiFileNameAnnoPrecedente();
+        String dateFromTemp = DateUtility.converteDateToGUIStringDDMMYYYY(DateUtility.primoGiornoAnnoPrecedente());
+        String dateToTemp = DateUtility.converteDateToGUIStringDDMMYYYY(DateUtility.ultimoGiornoAnnoPrecedente());
+
+        taskMovAnnoPrevTemp = new ImportazioneVenditeFromDBF(dateFromTemp,dateToTemp,movimentiFileNameTemp,true);
+        taskMovAnnoPrevTemp.messageProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                listaMessagi.add(taskMovAnnoPrevTemp.getMessage());
+                elencoMessaggi.scrollTo(elencoMessaggi.getItems().size());
+            }
+        });
+        taskMovAnnoPrevTemp.setOnSucceeded((succeededEvent) -> {
+            importaAnnoCorrente.setSelected(true);
+        });
+
+
+        movimentiFileNameTemp = dbfFileName.getMovimentiFileNameAnnoCorrente();
+        dateFromTemp = DateUtility.converteDateToGUIStringDDMMYYYY(DateUtility.primoGiornoAnnoCorrente());
+        dateToTemp = DateUtility.converteDateToGUIStringDDMMYYYY(DateUtility.ultimoGiornoAnnoCorrente());
+
+        taskMovAnnoCorrenteTemp = new ImportazioneVenditeFromDBF(dateFromTemp,dateToTemp,movimentiFileNameTemp,true);
+        taskMovAnnoCorrenteTemp.messageProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                listaMessagi.add(taskMovAnnoCorrenteTemp.getMessage());
+                elencoMessaggi.scrollTo(elencoMessaggi.getItems().size());
+            }
+        });
+
+        taskMovAnnoCorrenteTemp.setOnSucceeded((succeededEvent) -> {
+            progressIndicator.setProgress(1);
+            btnImportaMov.setDisable(false);
+            btnCancellaImportazione.setDisable(true);
+            importazioneIniziale=false;
+        });
+
+        executor.execute(taskInizializzaArchivi);
+        executor.execute(taskGiacenzeTemp);
+        executor.execute(taskMovAnnoPrevTemp);
+        executor.execute(taskMovAnnoCorrenteTemp);
+        }
+
 
 }

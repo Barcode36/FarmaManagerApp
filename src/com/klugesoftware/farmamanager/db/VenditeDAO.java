@@ -31,7 +31,7 @@ public class VenditeDAO {
 	
 	private static final String SQL_FIND_BY_MAX_ID = "SELECT * FROM Vendite WHERE "
 			+ "idVendita = (SELECT max(idVendita) FROM Vendite)";
-	
+
 	private DAOFactory daoFactory;
 	private final Logger logger = LogManager.getLogger(VenditeDAO.class.getName());
 	VenditeDAO(DAOFactory daoFactory){

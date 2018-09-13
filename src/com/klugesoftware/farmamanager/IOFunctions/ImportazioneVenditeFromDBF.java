@@ -26,7 +26,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 
 	private final Logger logger = LogManager.getLogger(ImportazioneVenditeFromDBF.class.getName());
 	private final boolean DEBUG = false;
-	private boolean importazioneIniziale = true;
+	private boolean importazioneIniziale = false;
 	private BigDecimal percentualeCostoPresunto;
 	private final String PROPERTIES_FILE_NAME = "./resources/config/config.properties";
 	private final Properties propsFarmaManager = new Properties();
@@ -37,11 +37,12 @@ public class ImportazioneVenditeFromDBF extends Task {
 	private boolean readDateFormFile = false;
 	private String dbfTabellaName;
 
-	public ImportazioneVenditeFromDBF(String dateFrom,String dateTo, String movimentiFileName){
+	public ImportazioneVenditeFromDBF(String dateFrom,String dateTo, String movimentiFileName,boolean importazioneIniziale){
 		this.dateFrom = DateUtility.converteGUIStringDDMMYYYYToSqlString(dateFrom);
 		this.dateTo = DateUtility.converteGUIStringDDMMYYYYToSqlString(dateTo);
 		dbfTabellaName = movimentiFileName;
 		readDateFormFile = false;
+		this.importazioneIniziale = importazioneIniziale;
 		init();
 	}
 	
@@ -52,10 +53,6 @@ public class ImportazioneVenditeFromDBF extends Task {
 			Class.forName(propsFarmaManager.getProperty("dbfDriverName"));
 			connection = DriverManager.getConnection(propsFarmaManager.getProperty("dbfUrlName"));
 			percentualeCostoPresunto = new BigDecimal(propsFarmaManager.getProperty("percentualeCostoPresunto"));
-			if( propsFarmaManager.getProperty("importazioneIniziale").equals("true"))
-				importazioneIniziale = true;
-			else
-				importazioneIniziale = false;
 		}catch(Exception ex) {
 			logger.error(ex);
 		}

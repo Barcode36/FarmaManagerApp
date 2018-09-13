@@ -114,9 +114,9 @@ public class ProdottiVenditaLiberaDAO {
 				throw new SQLException("La creazione di un nuovo prodotto non è andata a buon fine: non è stato creato nessun record nel database!");
 			}
 		}catch(SQLException ex){
-			System.out.println("NUMREG:"+prodottoVenditaLibera.getNumreg());
-			System.out.println("Costo Ivato:"+prodottoVenditaLibera.getCostoCompresoIva());
-			System.out.println("Costo Netto:"+prodottoVenditaLibera.getCostoNettoIva());
+			logger.error("NUMREG:"+prodottoVenditaLibera.getNumreg());
+			logger.error("Costo Ivato:"+prodottoVenditaLibera.getCostoCompresoIva());
+			logger.error("Costo Netto:"+prodottoVenditaLibera.getCostoNettoIva());
 			logger.error(ex);
 		}finally{
 			DAOUtil.close(connection, preparedStatement, generetedKey);
