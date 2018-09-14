@@ -35,7 +35,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 
-public class DettaglioVenditeEProfittiController extends VenditeEProfittiController implements Initializable {
+public class  DettaglioVenditeEProfittiController extends VenditeEProfittiController implements Initializable {
 
     private final Logger logger = LogManager.getLogger(DettaglioVenditeEProfittiController.class.getName());
     @FXML private DatePicker txtFldDataFrom;
