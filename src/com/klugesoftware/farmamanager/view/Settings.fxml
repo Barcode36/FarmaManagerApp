@@ -74,7 +74,7 @@
                         <Image url="@/img/icons8-about-50.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="btnImportaMov" layoutX="105.0" layoutY="31.0" mnemonicParsing="false" onAction="#importaClicked" text="Importa&#10;Movimenti&#10;">
+                  <Button fx:id="btnImportaMov" layoutX="105.0" layoutY="31.0" mnemonicParsing="false" text="Importa&#10;Movimenti&#10;">
                      <font>
                         <Font size="18.0" />
                      </font></Button>

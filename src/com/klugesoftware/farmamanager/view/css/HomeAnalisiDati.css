@@ -40,6 +40,11 @@
     -fx-alignment: center;
 }
 
+#btnAggMov{
+    -fx-background-color: rgb(6, 128, 28);
+    -fx-text-fill: #eeeeee;
+}
+
 #txtFldDataFrom{
     -fx-font-size: 16 px;
 }

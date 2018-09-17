@@ -1,9 +1,6 @@
 package com.klugesoftware.farmamanager.IOFunctions;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,6 +15,7 @@ import java.util.Properties;
 import com.klugesoftware.farmamanager.db.*;
 import com.klugesoftware.farmamanager.model.*;
 import javafx.concurrent.Task;
+import javafx.scene.control.Alert;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.klugesoftware.farmamanager.utility.DateUtility;
@@ -48,14 +46,15 @@ public class ImportazioneVenditeFromDBF extends Task {
 	
 	private void init(){
 		try{
-			InputStream propertiesFile = new FileInputStream(PROPERTIES_FILE_NAME);				
-			propsFarmaManager.load(propertiesFile);
-			Class.forName(propsFarmaManager.getProperty("dbfDriverName"));
-			connection = DriverManager.getConnection(propsFarmaManager.getProperty("dbfUrlName"));
-			percentualeCostoPresunto = new BigDecimal(propsFarmaManager.getProperty("percentualeCostoPresunto"));
-		}catch(Exception ex) {
-			logger.error(ex);
-		}
+            InputStream propertiesFile = new FileInputStream(PROPERTIES_FILE_NAME);
+            propsFarmaManager.load(propertiesFile);
+            Class.forName(propsFarmaManager.getProperty("dbfDriverName"));
+            connection = DriverManager.getConnection(propsFarmaManager.getProperty("dbfUrlName"));
+            percentualeCostoPresunto = new BigDecimal(propsFarmaManager.getProperty("percentualeCostoPresunto"));
+
+        }catch(Exception ex) {
+            logger.error(ex);
+        }
 	}
 	
 	@Override

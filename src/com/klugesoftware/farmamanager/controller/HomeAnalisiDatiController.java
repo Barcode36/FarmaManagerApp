@@ -23,6 +23,7 @@ import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -63,6 +64,7 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
     @FXML private Button btnBack;
     @FXML private Button btnForward;
     @FXML private Button settingsButton;
+    @FXML private Button btnAggMov;
     private ChangePeriodListener changePeriodListenerBack;
     private ChangePeriodListener changePeriodListenerForward;
     private ChangeDateAndViewListener changeDateAndViewListener;
@@ -87,7 +89,6 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
         txtFldDataTo.setOnAction(changeDateAndViewListener);
         rdtBtnVistaSettimanale.setOnAction(changeDateAndViewListener);
         rdtBtnVistaMensile.setOnAction(changeDateAndViewListener);
-
 
         colMinsan1.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,String>("minsan"));
         colDescrizione1.setCellValueFactory(new PropertyValueFactory<ElencoMinsanLiberaVenditaRowData,String>("descrizione"));
@@ -288,9 +289,8 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
         });
 
         itemList(tableQuantita,tableHiProfitti,tableLowProfitti);
-
+        aggiornaMovimenti();
     }
-
 
     private void itemList(TableView tableQuantita,TableView tableHiProfitti, TableView tableLowProfitti){
         Date toDate;
@@ -319,6 +319,47 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
             txtFldDataTo.setOnAction(changeDateAndViewListener);
 
             aggiornaTableAndScene(fromDate, toDate, false);
+        }
+    }
+
+    private void aggiornaMovimenti(){
+        btnAggMov.setVisible(false);
+        Importazioni importazioni = ImportazioniDAOManager.findUltimoInsert();
+        if (importazioni.getIdImportazione()!= null) {
+            Calendar dateTo = Calendar.getInstance(Locale.ITALY);
+            Calendar dateFrom = Calendar.getInstance(Locale.ITALY);
+            dateFrom.setTime(importazioni.getDataUltimoMovImportato());
+            dateTo.set(Calendar.DAY_OF_MONTH, dateTo.get(Calendar.DAY_OF_MONTH) - 1);
+            if (dateFrom.before(dateTo)) {
+                btnAggMov.setVisible(true);
+            }
+        }
+    }
+
+    @FXML
+    private void aggMovimentiClicked(ActionEvent event){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma Importazione");
+        alert.setHeaderText("L'ultimo movimento importato risale al "+DateUtility.converteDateToGUIStringDDMMYYYY(ImportazioniDAOManager.findUltimoInsert().getDataUltimoMovImportato()));
+        alert.setContentText("Vuoi aggiornare i movimenti?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/Settings.fxml"));
+                Parent parent = (Parent)fxmlLoader.load();
+                SettingsController controller = fxmlLoader.getController();
+                controller.fireButton();
+                Scene scene = new Scene(parent);
+                Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                app_stage.hide();
+                app_stage.setScene(scene);
+                app_stage.show();
+            }catch(Exception ex){
+                logger.error(ex.getMessage());
+            }
+        } else {
+            ;
         }
     }
 

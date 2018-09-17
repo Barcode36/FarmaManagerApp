@@ -21,13 +21,11 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
 import java.net.URL;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
-import java.util.Properties;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -77,12 +75,12 @@ public class SettingsController implements Initializable {
     private Date dateTo;
     private String movimentiFileName;
     private ExecutorService executor;
+    private final String pathFileDBF  = "./resources/dbf/";
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         elencoMessaggi.setItems(listaMessagi);
         executor = Executors.newFixedThreadPool(1);
-
 
         cancDateFrom.valueProperty().addListener((ov,oldValue,newValue)->{
             cancDateFrom.setValue(newValue.with(TemporalAdjusters.firstDayOfMonth()));
@@ -103,6 +101,11 @@ public class SettingsController implements Initializable {
         btnCancellaImportazione.setVisible(false);
         warnMovPanel.setVisible(false);
         cancPane.setDisable(true);
+
+        btnImportaMov.setOnAction(event -> {
+            importaClicked();
+        });
+
         statoImportazioni();
     }
 
@@ -114,9 +117,10 @@ public class SettingsController implements Initializable {
             importaAnnoCorrente.setSelected(true);
             txtAreaInfoImportazione.setText("Archivi vuoti: seleziona un'opzione");
         }else{
-            txtAreaInfoImportazione.setText("Archivi movimenti aggiornati al "+importazioni.getDataUltimoMovImportato());
+            txtAreaInfoImportazione.setText("Archivi movimenti aggiornati al "+DateUtility.converteDateToGUIStringDDMMYYYY(importazioni.getDataUltimoMovImportato()));
         }
     }
+
 
     @FXML
     private void listenerEsciButton(ActionEvent event){
@@ -134,9 +138,38 @@ public class SettingsController implements Initializable {
         }
     }
 
-    @FXML
-    private void importaClicked(ActionEvent event){
-        // decido in base  ai radioButton l'intervallo  dei movimenti da importare
+    public void fireButton(){
+        btnImportaMov.fire();
+    }
+
+    private boolean existFileMovimentiDbf(){
+        File fileMovDbf = new File(pathFileDBF+movimentiFileName);
+        if(!fileMovDbf.exists()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Importazione non possibile.");
+            alert.setContentText("Non ho trovato il file " + movimentiFileName + " !");
+            alert.showAndWait();
+            return false;
+        }else
+            return true;
+    }
+
+    private boolean existFileGiacenzeDbf(){
+        GetDBFFileName getDbffileName = new GetDBFFileName();
+        File fileGiacDbf = new File(pathFileDBF+getDbffileName.getGiacenzeFileNameAnnoCorrente());
+        if(!fileGiacDbf.exists()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Importazione giacenze non possibile.");
+            alert.setContentText("Non ho trovato il file: "+getDbffileName.getGiacenzeFileNameAnnoCorrente()+"!");
+            alert.showAndWait();
+            return false;
+        }else
+            return true;
+    }
+
+    private void importaClicked(){
 
         GetDBFFileName dbfFileName = new GetDBFFileName();
         if (importaAnnoCorrente.isSelected()) {
@@ -163,61 +196,66 @@ public class SettingsController implements Initializable {
                         dateTo = DateUtility.sottraeGiorniADataOdierna(1);
                         movimentiFileName = dbfFileName.getMovimentiFileName(dateFrom);
                     }
-        runTask();
-        if (importaGiacenze.isSelected()) {
-            executor.execute(taskGiacenze);
-            executor.execute(taskMovimenti);
-        }else
-            executor.execute(taskMovimenti);
+        if (existFileMovimentiDbf()) {
+            runTask();
+
+            if (importaGiacenze.isSelected() && existFileGiacenzeDbf()) {
+                executor.execute(taskGiacenze);
+                executor.execute(taskMovimenti);
+            } else
+                executor.execute(taskMovimenti);
+        }
 
     }
 
     private void runTask(){
 
-        txtAreaInfoImportazione.setText("sto importando i movimenti da "+DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom)+" " +
-                " a "+DateUtility.converteDateToGUIStringDDMMYYYY(dateTo));
-        btnCancellaImportazione.setVisible(true);
-        warnMovPanel.setVisible(false);
-        warnGiacPanel.setVisible(false);
-        progressIndicator.setProgress(0);
-        progressIndicator.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+            txtAreaInfoImportazione.setText("sto importando i movimenti da " + DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom) + " " +
+                    " a " + DateUtility.converteDateToGUIStringDDMMYYYY(dateTo));
+            btnCancellaImportazione.setVisible(true);
+            warnMovPanel.setVisible(false);
+            warnGiacPanel.setVisible(false);
+            progressIndicator.setProgress(0);
+            progressIndicator.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
 
-        if (importaGiacenze.isSelected()) {
-            taskGiacenze = new ImportazioneGiacenzeFromDBF();
-            taskGiacenze.messageProperty().addListener((observable, oldValue, newValue) -> {
+            if (importaGiacenze.isSelected()) {
+                taskGiacenze = new ImportazioneGiacenzeFromDBF();
+                taskGiacenze.messageProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        listaMessagi.add(taskGiacenze.getMessage());
+                        elencoMessaggi.scrollTo(elencoMessaggi.getItems().size());
+                    }
+                });
+
+                taskGiacenze.setOnRunning((succeededEvent) -> {
+                    btnImportaMov.setDisable(true);
+                    btnCancellaImportazione.setDisable(false);
+                });
+
+            }
+
+            taskMovimenti = new ImportazioneVenditeFromDBF(DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom), DateUtility.converteDateToGUIStringDDMMYYYY(dateTo), movimentiFileName, false);
+
+            taskMovimenti.messageProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
-                    listaMessagi.add(taskGiacenze.getMessage());
+                    listaMessagi.add(taskMovimenti.getMessage());
                     elencoMessaggi.scrollTo(elencoMessaggi.getItems().size());
                 }
+
             });
 
-            taskGiacenze.setOnRunning((succeededEvent) -> {
+            taskMovimenti.setOnRunning((succeededEvent) -> {
                 btnImportaMov.setDisable(true);
                 btnCancellaImportazione.setDisable(false);
             });
 
+            taskMovimenti.setOnSucceeded((succeededEvent) -> {
+                progressIndicator.setProgress(1);
+                btnImportaMov.setDisable(false);
+                btnCancellaImportazione.setDisable(false);
+                btnCancellaImportazione.setVisible(false);
+            });
         }
-
-        taskMovimenti = new ImportazioneVenditeFromDBF(DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom),DateUtility.converteDateToGUIStringDDMMYYYY(dateTo),movimentiFileName,false);
-
-        taskMovimenti.messageProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null ){
-                listaMessagi.add(taskMovimenti.getMessage());
-                elencoMessaggi.scrollTo(elencoMessaggi.getItems().size());
-            }
-
-        });
-
-        taskMovimenti.setOnRunning((succeededEvent)->{
-            btnImportaMov.setDisable(true);
-            btnCancellaImportazione.setDisable(false);
-        });
-
-        taskMovimenti.setOnSucceeded((succeededEvent)->{
-            progressIndicator.setProgress(1);
-            btnImportaMov.setDisable(false);
-        });
-    }
 
     @FXML
     private void cancellaImportazione(ActionEvent event){

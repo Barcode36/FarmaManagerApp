@@ -143,6 +143,11 @@
                   <Tooltip text="setting importazione movimenti e giacenze" wrapText="true" />
                </tooltip>
             </Button>
+            <Button fx:id="btnAggMov" layoutX="12.0" layoutY="407.0" mnemonicParsing="false" onAction="#aggMovimentiClicked" prefHeight="101.0" prefWidth="77.0" text="ci sono &#10;dati da &#10;aggiornare&#10;&#10;&#10;">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </left>
