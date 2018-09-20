@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact name="FarmaManagerApp:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FarmaManagerApp_jar</output-path>
+    <root id="root">
+      <element id="archive" name="FarmaManagerApp.jar">
+        <element id="module-output" name="FarmaManagerApp" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/lib/dbfdriver.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/log4j-api-2.1.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/commons-io-2.5.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/log4j-core-2.1.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/SpiritIcons-1.0.0.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/mysql-connector-java-5.1.24-bin.jar" />
+    </root>
+  </artifact>
+</component>
