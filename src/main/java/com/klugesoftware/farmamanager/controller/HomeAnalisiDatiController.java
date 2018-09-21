@@ -348,7 +348,6 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
                 controller.fireButton();
                 Scene scene = new Scene(parent);
                 Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                app_stage.hide();
                 app_stage.setScene(scene);
                 app_stage.show();
             }catch(Exception ex){
@@ -436,7 +435,6 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
             SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
@@ -453,7 +451,6 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
             SituazioneVenditeEProfittiController controller = fxmlLoader.getController();
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            //app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
@@ -470,7 +467,6 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
             SettingsController controller = fxmlLoader.getController();
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){

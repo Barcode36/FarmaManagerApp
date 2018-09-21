@@ -335,7 +335,6 @@ public class ElencoProdottiVenditeLibereController extends ElencoMinsanControlle
             SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
@@ -361,7 +360,6 @@ public class ElencoProdottiVenditeLibereController extends ElencoMinsanControlle
             controller.aggiornaTable(getDateFrom(),getDateTo());
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){

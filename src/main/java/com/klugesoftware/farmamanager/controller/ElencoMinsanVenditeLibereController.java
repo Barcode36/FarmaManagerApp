@@ -226,7 +226,6 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
             SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
@@ -283,7 +282,6 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
             controller.aggiornaTable(getDateFrom(),getDateTo());
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
@@ -301,7 +299,6 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
             controller.aggiornaTable(getDateFrom(),getDateTo());
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
@@ -318,7 +315,6 @@ public class ElencoMinsanVenditeLibereController extends ElencoMinsanController 
             controller.aggiornaTableAndScene(DateUtility.primoGiornoDelMeseCorrente(getDateFrom()),DateUtility.ultimoGiornoDelMeseCorrente(getDateFrom()),false);
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){

@@ -195,7 +195,6 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             controller.aggiornaTable(data,data);
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ( mainPanel.getScene().getWindow());
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
@@ -313,7 +312,6 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             controller.aggiornaTable(getDateFrom(),getDateTo());
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
@@ -330,7 +328,6 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             HomeAnalisiDatiController controller = fxmlLoader.getController();
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
@@ -347,7 +344,6 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
             controller.setIntervalloMensile(getDateFrom(),getDateTo(),true);
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){

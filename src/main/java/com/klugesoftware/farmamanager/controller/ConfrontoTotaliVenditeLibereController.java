@@ -315,7 +315,6 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
             controller.aggiornaTableAndScene(DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText()), DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText()), vistaSettimanale);
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(IOException ex){

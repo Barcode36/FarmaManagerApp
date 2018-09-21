@@ -129,7 +129,6 @@ public class SettingsController implements Initializable {
             HomeAnalisiDatiController controller = fxmlLoader.getController();
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            app_stage.hide();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){

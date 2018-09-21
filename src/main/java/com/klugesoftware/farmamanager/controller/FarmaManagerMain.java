@@ -7,8 +7,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.nio.file.Paths;
 
 
 public class FarmaManagerMain extends Application{
@@ -18,11 +16,8 @@ public class FarmaManagerMain extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-
-
         BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/com/klugesoftware/farmamanager/view/HomeAnalisiDati.fxml"));
         Scene sceneSituazioneVenditeEProfitti = new Scene(root);
-
         primaryStage.setScene(sceneSituazioneVenditeEProfitti);
         primaryStage.show();
 
