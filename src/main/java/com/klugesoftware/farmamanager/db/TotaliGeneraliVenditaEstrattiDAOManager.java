@@ -1,12 +1,20 @@
 package com.klugesoftware.farmamanager.db;
 
+import com.klugesoftware.farmamanager.IOFunctions.ImportazioneVenditeFromDBF;
 import com.klugesoftware.farmamanager.model.ResiVendite;
 import com.klugesoftware.farmamanager.model.Vendite;
 import com.klugesoftware.farmamanager.IOFunctions.TotaliGeneraliResiVenditaEstratti;
 import com.klugesoftware.farmamanager.IOFunctions.TotaliGeneraliVenditaEstratti;
 import com.klugesoftware.farmamanager.utility.DateUtility;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public class TotaliGeneraliVenditaEstrattiDAOManager {
+
+	private static final Logger logger = LogManager.getLogger(TotaliGeneraliVenditaEstrattiDAOManager.class.getName());
 
 	public static TotaliGeneraliVenditaEstratti insert(TotaliGeneraliVenditaEstratti totaleGenerale){
 		DAOFactory daoFactory = DAOFactory.getInstance();
@@ -40,6 +48,9 @@ public class TotaliGeneraliVenditaEstrattiDAOManager {
 			totaleGenerale.aggiornaTotaliGenerali(vendita);
 			update(totaleGenerale);
 		}else{
+			Calendar tempCal = Calendar.getInstance(Locale.ITALY);
+			tempCal.setTime(vendita.getDataVendita());
+			logger.info("Importazione movimenti del mese di: "+tempCal.getDisplayName(Calendar.MONTH,Calendar.LONG,Locale.ITALY)+" "+tempCal.get(Calendar.YEAR));
 			totaleGenerale = new TotaliGeneraliVenditaEstratti();
 			totaleGenerale.aggiornaTotaliGenerali(vendita);
 			insert(totaleGenerale);
