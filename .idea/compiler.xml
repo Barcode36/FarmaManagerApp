@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="FarmaManagerApp" target="8" />
+      <module name="FarmaManagerApp" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
