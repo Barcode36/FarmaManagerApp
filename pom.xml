@@ -62,19 +62,41 @@
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-                        <!-- here the phase you need -->
-                        <phase>validate</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/logs</outputDirectory>
+                            <outputDirectory>${basedir}/target/FarmaManagerApp/resources/</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/logs</directory>
+                                    <directory>${basedir}/resources/</directory>
                                     <filtering>true</filtering>
+                                    <excludes>
+                                        <exclude>**/*.DBF</exclude>
+                                    </excludes>
                                 </resource>
                             </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>createDBFDirectory</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <delete dir="${basedir}/target/FarmaManagerApp/resources/dbf/"/>
+                                <mkdir dir="${basedir}/target/FarmaManagerApp/resources/dbf/"/>
+                            </tasks>
                         </configuration>
                     </execution>
                 </executions>
@@ -170,6 +192,43 @@
             </plugin>
             -->
 
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/target/FarmaManagerApp/lib/</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>
+                                com.klugesoftware.farmamanager.controller.FarmaManagerMain
+                            </mainClass>
+                        </manifest>
+                    </archive>
+                    <finalName>FarmaManagerApp/FarmaManagerApp-${version}</finalName>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
