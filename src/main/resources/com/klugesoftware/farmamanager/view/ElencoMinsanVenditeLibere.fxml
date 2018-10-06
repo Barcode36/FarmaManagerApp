@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -118,7 +119,7 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane prefHeight="603.0" prefWidth="719.0">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="603.0" prefWidth="719.0" vbarPolicy="NEVER">
                <content>
                   <TableView fx:id="tableElencoMinsan" prefHeight="600.0" prefWidth="717.0">
                     <columns>

@@ -2,9 +2,11 @@ package com.klugesoftware.farmamanager.controller;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 
@@ -19,6 +21,16 @@ public class FarmaManagerMain extends Application{
         BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/com/klugesoftware/farmamanager/view/HomeAnalisiDati.fxml"));
         Scene sceneSituazioneVenditeEProfitti = new Scene(root);
         primaryStage.setScene(sceneSituazioneVenditeEProfitti);
+
+        /*
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+        //set Stage boundaries to visible bounds of the main screen
+        primaryStage.setX(primaryScreenBounds.getMinX());
+        primaryStage.setY(primaryScreenBounds.getMinY());
+        primaryStage.setWidth(primaryScreenBounds.getWidth());
+        primaryStage.setHeight(primaryScreenBounds.getHeight());
+        */
         primaryStage.show();
 
     }

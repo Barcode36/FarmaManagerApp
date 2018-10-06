@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
@@ -144,7 +145,7 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane prefHeight="639.0" prefWidth="606.0">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="639.0" prefWidth="606.0" vbarPolicy="NEVER">
                <content>
                   <TableView fx:id="tableVenditeEProfittiLibere" prefHeight="600.0" prefWidth="604.0">
                     <columns>

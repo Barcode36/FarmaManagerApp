@@ -425,9 +425,9 @@ public class ImportazioneVenditeFromDBF extends Task {
 			
 			//TODO: e se è un prodotto per diabetici!!!! integrativa regionale?
 			//se c'è differenza fra PREZZO_F e PREZZO valorizzo lo sconto PayBack
-			BigDecimal prezzoNettoAifa = resultSet.getBigDecimal("PREZZO");
+			BigDecimal prezzoNettoAifa = resultSet.getBigDecimal("PREZZO_E");
 			BigDecimal scontoPayBack = new BigDecimal(0);
-			// se il campo PREZZO = 0 allora nn è un prodotto con  sconto AIFA
+			// se il campo PREZZO_E = 0 allora nn è un prodotto con  sconto AIFA
 			if (prezzoNettoAifa.doubleValue() > 0)
 			{
 				scontoPayBack = (prodotto.getPrezzoVendita()).subtract(prezzoNettoAifa);

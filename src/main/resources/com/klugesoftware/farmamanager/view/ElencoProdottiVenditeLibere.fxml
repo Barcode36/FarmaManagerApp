@@ -115,7 +115,7 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane prefHeight="603.0" prefWidth="1183.0">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="603.0" prefWidth="1183.0" vbarPolicy="NEVER">
                <content>
                   <TableView fx:id="tableElencoProdotti" prefHeight="600.0" prefWidth="1179.0">
                     <columns>
