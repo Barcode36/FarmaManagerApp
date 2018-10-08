@@ -7,6 +7,7 @@
     <groupId>com.klugesoftware</groupId>
     <artifactId>FarmaManagerApp</artifactId>
     <version>1.0.1</version>
+    <!-- -->
 
 
     <dependencies>
