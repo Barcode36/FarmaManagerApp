@@ -65,8 +65,9 @@ public class ImportazioneVenditeFromDBF extends Task {
 		ResultSet rs = null;
 		try{
 			stmt = connection.createStatement();
-			rs = stmt.executeQuery("select * from "+dbfTabellaName+"  where CLFR <> 'M'  AND STATO_VEN <> 'R' AND NUMCLMESE <> '0' AND ( (SEGNO = 'U'  AND DATAREG BETWEEN  '"+dateFrom+"' AND '"+dateTo+"') "
-					+ "OR (SEGNO = 'E' AND RESO_FLG='R' AND DATAREG BETWEEN  '"+dateFrom+"' AND '"+dateTo+"') ) ");
+			//rs = stmt.executeQuery("select * from "+dbfTabellaName+"  where CLFR <> 'M'  AND STATO_VEN <> 'R' AND NUMCLMESE <> '0' AND ( (SEGNO = 'U'  AND DATAREG BETWEEN  '"+dateFrom+"' AND '"+dateTo+"') "
+			//		+ "OR (SEGNO = 'E' AND RESO_FLG='R' AND DATAREG BETWEEN  '"+dateFrom+"' AND '"+dateTo+"') ) ");
+			rs = stmt.executeQuery("select * from "+dbfTabellaName+"  where NUMREG = '59696' ");
 			Vendite venditaGenerale = null;
 			VenditeSSN venditaSSN = null;
 			VenditeLibere venditaLibera = null;
@@ -779,6 +780,10 @@ public class ImportazioneVenditeFromDBF extends Task {
 								prodottoVenditaLibera.setPercentualeMargineUnitario(new BigDecimal(tempMargine).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 								prodottoVenditaLibera.setPercentualeRicaricoUnitario(new BigDecimal(tempRicarico).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 							}
+							else{
+									prodottoVenditaLibera.setPercentualeMargineUnitario(new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+									prodottoVenditaLibera.setPercentualeRicaricoUnitario(new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+								}
 						}	
 					}
 					
