@@ -330,9 +330,9 @@ public class ElencoProdottiVenditeLibereController extends ElencoMinsanControlle
     @FXML
     private void listenerEsciButton(ActionEvent event){
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfittiLibere.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/HomeAnalisiDati.fxml"));
             Parent parent = (Parent) fxmlLoader.load();
-            SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
+            HomeAnalisiDatiController controller = fxmlLoader.getController();
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             app_stage.setScene(scene);

@@ -297,7 +297,18 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
 
     @FXML
     private void listenerEsciButton(ActionEvent event) {
-        goBack(event);
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/HomeAnalisiDati.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            HomeAnalisiDatiController controller = fxmlLoader.getController();
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(IOException ex){
+            logger.error(ex.getMessage());
+        }
+        //goBack(event);
     }
 
 

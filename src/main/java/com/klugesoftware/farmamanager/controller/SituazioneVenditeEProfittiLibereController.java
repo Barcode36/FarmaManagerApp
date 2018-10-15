@@ -336,6 +336,22 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
     }
 
     @FXML
+    private void goBack(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfitti.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            SituazioneVenditeEProfittiController controller = fxmlLoader.getController();
+            controller.aggiornaTableAndScene(DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText()),DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText()),false);
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            logger.error(ex.getMessage());
+        }
+    }
+
+    @FXML
     private void dettagliEConfrontoClicked(ActionEvent event){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/ConfrontoTotaliVenditeLibere.fxml"));

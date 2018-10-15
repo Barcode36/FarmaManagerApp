@@ -309,15 +309,14 @@ public class ConfrontoTotaliVenditeController implements Initializable {
 
     @FXML
     private void listenerEsciButton(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfitti.fxml"));
-        Parent parent = (Parent)fxmlLoader.load();
-        SituazioneVenditeEProfittiController controller = fxmlLoader.getController();
-        boolean vistaSettimanale = false;
-        controller.aggiornaTableAndScene(DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText()),DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText()),vistaSettimanale);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/HomeAnalisiDati.fxml"));
+        Parent parent = (Parent) fxmlLoader.load();
+        HomeAnalisiDatiController controller = fxmlLoader.getController();
         Scene scene = new Scene(parent);
-        Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         app_stage.setScene(scene);
         app_stage.show();
+
     }
 
     @FXML
