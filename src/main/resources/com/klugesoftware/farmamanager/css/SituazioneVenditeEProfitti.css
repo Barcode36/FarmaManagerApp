@@ -60,7 +60,6 @@
 }
 
 
-
 #pnlTitle{
     -fx-background-color: rgb(43, 120, 228);
 }
@@ -86,6 +85,9 @@
     -fx-text-fill: #ff5d00;
 }
 
-
+#btnAggMov{
+    -fx-background-color: rgb(6, 128, 28);
+    -fx-text-fill: #eeeeee;
+}
 
 

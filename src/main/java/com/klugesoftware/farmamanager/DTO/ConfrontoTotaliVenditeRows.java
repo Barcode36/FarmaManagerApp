@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
-/*
-Questa classe l'elenco delle righe( ConfrontoTotaliVenditeRowData)
-della TabellaTotali della Scene ConfrontoTotaliVendita
+/**
+ * Questa classe è l'elenco delle righe( ConfrontoTotaliVenditeRowData)
+ * della TabellaTotali della Scene ConfrontoTotaliVendita
  */
 public class ConfrontoTotaliVenditeRows {
 
@@ -35,11 +35,21 @@ public class ConfrontoTotaliVenditeRows {
     private void makeRows(){
         TotaliGeneraliVenditaEstratti totaliGenerali = new TotaliGeneraliVenditaEstratti();
         ArrayList<TotaliGeneraliVenditaEstrattiGiornalieri> elencoTotaliGiornalieri = TotaliGeneraliVenditaEstrattiGiornalieriDAOManager.findbetweenDate(dateFrom,dateTo);
+        if(elencoTotaliGiornalieri.isEmpty()){
+            rows = null;
+            return;
+        }
+
         totaliGenerali.addElencoTotaliGeneraliVenditaEstrattiGiornalieri(elencoTotaliGiornalieri);
 
         TotaliGeneraliVenditaEstratti totaliGeneraliPrecedenti = new TotaliGeneraliVenditaEstratti();
         elencoTotaliGiornalieri.clear();
         elencoTotaliGiornalieri = TotaliGeneraliVenditaEstrattiGiornalieriDAOManager.findbetweenDate(dateFromPrec,dateToPrec);
+        if(elencoTotaliGiornalieri.isEmpty()) {
+            rows = null;
+            return;
+        }
+
         totaliGeneraliPrecedenti.addElencoTotaliGeneraliVenditaEstrattiGiornalieri(elencoTotaliGiornalieri);
 
         String[] descrizioni = {

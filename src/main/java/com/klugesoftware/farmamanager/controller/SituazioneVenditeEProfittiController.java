@@ -57,6 +57,7 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
     @FXML private Label lblTitle;
     @FXML private RadioButton rdtBtnVistaSettimanale;
     @FXML private RadioButton rdtBtnVistaMensile;
+    @FXML private Button btnAggMov;
     private ChangePeriodListener changePeriodListenerBack;
     private ChangePeriodListener changePeriodListenerNext;
     private ChangeDateAndViewListener changeDateListener;
@@ -138,6 +139,7 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
         tableVenditeEProfittiTotali.getItems().setAll(elencoRighe);
 
         aggiornaGrafico(graficoVenditeEProfitti,elencoRighe);
+        aggiornaMovimenti();
 
     }
 
@@ -183,52 +185,114 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
         Date fromDate;
 
         Importazioni importazione = ImportazioniDAOManager.findUltimoInsert();
-        toDate = importazione.getDataUltimoMovImportato();
-        Calendar myCal = Calendar.getInstance(Locale.ITALY);
-        myCal.setTime(toDate);
+        if (importazione.getIdImportazione() != null) {
+            toDate = importazione.getDataUltimoMovImportato();
+            Calendar myCal = Calendar.getInstance(Locale.ITALY);
+            myCal.setTime(toDate);
 
-        int diff = 0;
-        if (myCal.getFirstDayOfWeek() < myCal.get(Calendar.DAY_OF_WEEK))
-            diff = myCal.get(Calendar.DAY_OF_WEEK) - myCal.getFirstDayOfWeek();
+            int diff = 0;
+            if (myCal.getFirstDayOfWeek() < myCal.get(Calendar.DAY_OF_WEEK))
+                diff = myCal.get(Calendar.DAY_OF_WEEK) - myCal.getFirstDayOfWeek();
 
-        if (myCal.get(Calendar.DAY_OF_WEEK) == 1) {
-            myCal.add(Calendar.DAY_OF_YEAR, -6);
-            fromDate = myCal.getTime();
-        } else {
-            if (diff > 0)
-                diff = diff * (-1);
-            myCal.add(Calendar.DAY_OF_YEAR, diff);
-            fromDate = myCal.getTime();
-        }
-
-
-        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
-        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
-
-        myCal.setTime(fromDate);
-        txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
-        myCal.setTime(toDate);
-        txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
+            if (myCal.get(Calendar.DAY_OF_WEEK) == 1) {
+                myCal.add(Calendar.DAY_OF_YEAR, -6);
+                fromDate = myCal.getTime();
+            } else {
+                if (diff > 0)
+                    diff = diff * (-1);
+                myCal.add(Calendar.DAY_OF_YEAR, diff);
+                fromDate = myCal.getTime();
+            }
 
 
-        return FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate),(toDate)));
+            txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(fromDate));
+            txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(toDate));
+
+            myCal.setTime(fromDate);
+            txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
+            myCal.setTime(toDate);
+            txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
+
+
+            return FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((fromDate), (toDate)));
+        }else
+            return FXCollections.observableArrayList();
 
     }
 
+    private void aggiornaMovimenti(){
+        btnAggMov.setVisible(false);
+        Importazioni importazioni = ImportazioniDAOManager.findUltimoInsert();
+        if (importazioni.getIdImportazione()!= null) {
+            Calendar dateTo = Calendar.getInstance(Locale.ITALY);
+            Calendar dateFrom = Calendar.getInstance(Locale.ITALY);
+            dateFrom.setTime(importazioni.getDataUltimoMovImportato());
+            dateTo.set(Calendar.DAY_OF_MONTH, dateTo.get(Calendar.DAY_OF_MONTH) - 1);
+            if (dateFrom.before(dateTo)) {
+                btnAggMov.setVisible(true);
+            }
+        }
+    }
 
     @FXML
-    private void listenerEsciButton(ActionEvent event){
+    private void aggMovimentiClicked(ActionEvent event){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Conferma Importazione");
+        alert.setHeaderText("L'ultimo movimento importato risale al "+DateUtility.converteDateToGUIStringDDMMYYYY(ImportazioniDAOManager.findUltimoInsert().getDataUltimoMovImportato()));
+        alert.setContentText("Vuoi aggiornare i movimenti?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/Settings.fxml"));
+                Parent parent = (Parent)fxmlLoader.load();
+                SettingsController controller = fxmlLoader.getController();
+                controller.fireButton();
+                Scene scene = new Scene(parent);
+                Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                app_stage.setScene(scene);
+                app_stage.show();
+            }catch(Exception ex){
+                logger.error(ex.getMessage());
+            }
+        } else {
+            ;
+        }
+    }
+
+    @FXML
+    private void mostraProdottiClicked(ActionEvent event){
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/HomeAnalisiDati.fxml"));
-            Parent parent = (Parent) fxmlLoader.load();
-            HomeAnalisiDatiController controller = fxmlLoader.getController();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/ElencoProdottiEProfitti.fxml"));
+            Parent parent = (Parent)fxmlLoader.load();
+            ElencoProdottiEProfittiController controller = fxmlLoader.getController();
             Scene scene = new Scene(parent);
-            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
             logger.error(ex.getMessage());
         }
+    }
+
+    @FXML
+    private void settingsClicked(ActionEvent event){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/Settings.fxml"));
+            Parent parent = (Parent)fxmlLoader.load();
+            SettingsController controller = fxmlLoader.getController();
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            logger.error(ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void listenerEsciButton(ActionEvent event){
+        System.exit(0);
 
     }
 

@@ -55,6 +55,7 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
     private String periodoPrecedente;
     private String testoArea;
     private ConfrontoTotaliVenditeRows rows;
+    private boolean confrontabile = true;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -106,25 +107,37 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
 
     }
 
+    public boolean getConfrontabile(){
+        return confrontabile;
+    }
+
     private void intiTabella(Date dateFrom, Date dateTo, Date dateFromPrec, Date dateToPrec){
 
         rows = new ConfrontoTotaliVenditeRows(dateFrom,dateTo,dateFromPrec,dateToPrec);
-        ObservableList<ConfrontoTotaliVenditeRowData> data = FXCollections.observableList(rows.getRows());
+        if (rows.getRows() != null) {
+            ObservableList<ConfrontoTotaliVenditeRowData> data = FXCollections.observableList(rows.getRows());
 
-        periodoAttuale = DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom)+"-"+DateUtility.converteDateToGUIStringDDMMYYYY(dateTo);
-        periodoPrecedente = DateUtility.converteDateToGUIStringDDMMYYYY(dateFromPrec)+"-"+DateUtility.converteDateToGUIStringDDMMYYYY(dateToPrec);
-        testoArea = "Periodi confrontati:"+"\n\nprecedente: "+periodoPrecedente+"\n\nattuale:         "+periodoAttuale;
-        txtAreaPeriodiConfrontati.setText(testoArea);
+            periodoAttuale = DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom) + "-" + DateUtility.converteDateToGUIStringDDMMYYYY(dateTo);
+            periodoPrecedente = DateUtility.converteDateToGUIStringDDMMYYYY(dateFromPrec) + "-" + DateUtility.converteDateToGUIStringDDMMYYYY(dateToPrec);
+            testoArea = "Periodi confrontati:" + "\n\nprecedente: " + periodoPrecedente + "\n\nattuale:         " + periodoAttuale;
+            txtAreaPeriodiConfrontati.setText(testoArea);
 
-        tabellaTotali.getItems().clear();
-        tabellaTotali.getItems().setAll(data);
-        tabellaTotali.refresh();
+            tabellaTotali.getItems().clear();
+            tabellaTotali.getItems().setAll(data);
+            tabellaTotali.refresh();
 
-        initGrafico(rows);
+            initGrafico(rows);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Confronto Totali Vendita");
+            alert.setHeaderText(testoArea);
+            alert.setContentText("Sono presenti dei valori a zero NON confrontabili!");
+            Optional<ButtonType> result = alert.showAndWait();
+            confrontabile = false;
+        }
     }
 
     public void initGrafico(ConfrontoTotaliVenditeRows confrontoTotaliVenditeRows){
-
 
         String periodoAttuale = "periodo attuale: "+DateUtility.converteDateToGUIStringDDMMYYYY(confrontoTotaliVenditeRows.getDateFrom())+"-"+DateUtility.converteDateToGUIStringDDMMYYYY(confrontoTotaliVenditeRows.getDateTo());
         String periodoPrecedente = "periodo precedente: "+DateUtility.converteDateToGUIStringDDMMYYYY(confrontoTotaliVenditeRows.getDateFromPrec())+"-"+DateUtility.converteDateToGUIStringDDMMYYYY(confrontoTotaliVenditeRows.getDateToPrec());
@@ -298,9 +311,9 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
     @FXML
     private void listenerEsciButton(ActionEvent event) {
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/HomeAnalisiDati.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfitti.fxml"));
             Parent parent = (Parent) fxmlLoader.load();
-            HomeAnalisiDatiController controller = fxmlLoader.getController();
+            SituazioneVenditeEProfittiController controller = fxmlLoader.getController();
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             app_stage.setScene(scene);

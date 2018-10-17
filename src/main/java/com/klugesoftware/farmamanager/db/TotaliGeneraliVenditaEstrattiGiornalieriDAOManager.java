@@ -1,7 +1,9 @@
 package com.klugesoftware.farmamanager.db;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import com.klugesoftware.farmamanager.model.ResiVendite;
 import com.klugesoftware.farmamanager.model.Vendite;
@@ -48,6 +50,7 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAOManager {
 			totaleGenerale.aggiornaTotaliGenerali(vendita);
 			update(totaleGenerale);
 		}else{
+			aggiungeGiorniNonLavorativi(vendita.getDataVendita());
 			totaleGenerale = new TotaliGeneraliVenditaEstrattiGiornalieri();
 			totaleGenerale.aggiornaTotaliGenerali(vendita);
 			insert(totaleGenerale);
@@ -63,6 +66,7 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAOManager {
 			totaleGenerale.sottraiResi(totaleGeneraleReso);
 			update(totaleGenerale);
 		}else{
+			aggiungeGiorniNonLavorativi(resoVendita.getDataReso());
 			totaleGenerale = new TotaliGeneraliVenditaEstrattiGiornalieri();
 			totaleGenerale.sottraiResi(totaleGeneraleReso);
 			// inserimento Date
@@ -71,6 +75,30 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAOManager {
 			insert(totaleGenerale);
 		}
 		return totaleGenerale;
+	}
+
+	private static void aggiungeGiorniNonLavorativi(Date dataOperazione){
+		//lookup ultimo record in TotaliGeneraliGirnalieri
+		TotaliGeneraliVenditaEstrattiGiornalieri lastTotale = lastRecord();
+		if (lastTotale.getIdTotale() != null){
+			Calendar dataOp = Calendar.getInstance(Locale.ITALY);
+			Calendar dataUltTot = Calendar.getInstance(Locale.ITALY);
+			dataOp.setTime(dataOperazione);
+			dataUltTot.setTime(lastTotale.getData());
+			dataUltTot.add(Calendar.DAY_OF_MONTH,1);
+			while(dataUltTot.compareTo(dataOp) != 0){
+				TotaliGeneraliVenditaEstrattiGiornalieri totaleGiornoNonLavorrativo = new TotaliGeneraliVenditaEstrattiGiornalieri();
+				totaleGiornoNonLavorrativo.setData(dataUltTot.getTime());
+				insert(totaleGiornoNonLavorrativo);
+				dataUltTot.add(Calendar.DAY_OF_MONTH,1);
+			}
+		}
+	}
+
+	public static TotaliGeneraliVenditaEstrattiGiornalieri lastRecord(){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		TotaliGeneraliVenditaEstrattiGiornalieriDAO totaliGeneraliDAO = daoFactory.getTotaliGeneraliVenditaEstrattiGiornalieriDAO();
+		return totaliGeneraliDAO.findByMaxId();
 	}
 
 }

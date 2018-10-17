@@ -14,7 +14,7 @@
          <children>
             <Pane fx:id="pnlTitle" prefHeight="50.0">
                <children>
-                  <Label fx:id="lblTitle" layoutX="459.0" layoutY="8.0" text="Situazione Vendite e Profitti">
+                  <Label fx:id="lblTitle" layoutX="352.0" layoutY="8.0" text="FarmaManager: Situazione Vendite e Profitti">
                      <font>
                         <Font size="28.0" />
                      </font>
@@ -130,8 +130,30 @@
          <children>
             <VBox layoutX="7.0" layoutY="26.0" spacing="50.0" />
             <Button fx:id="btnDettaglioTotali" layoutX="12.0" layoutY="62.0" mnemonicParsing="false" onAction="#DettaglioVenditeClicked" prefHeight="64.0" prefWidth="77.0" text="Dettaglio&#10;Totali&#10;Vendite" />
-            <Button fx:id="btnVenditeSSN" disable="true" layoutX="12.0" layoutY="281.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;SSN" />
-            <Button fx:id="btnVenditeLibere" layoutX="12.0" layoutY="176.0" mnemonicParsing="false" onAction="#analisiLibereClicked" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Libere" />
+            <Button fx:id="btnVenditeSSN" disable="true" layoutX="12.0" layoutY="238.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;SSN" />
+            <Button fx:id="btnVenditeLibere" layoutX="12.0" layoutY="147.0" mnemonicParsing="false" onAction="#analisiLibereClicked" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Libere" />
+            <Button fx:id="btnClassificaProdotti" layoutX="12.0" layoutY="324.0" mnemonicParsing="false" onAction="#mostraProdottiClicked" prefHeight="70.0" prefWidth="77.0" text="Mostra i &#10;prodotti &#10;più  &#10;venduti&#10;">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnAggMov" layoutX="12.0" layoutY="423.0" mnemonicParsing="false" onAction="#aggMovimentiClicked" prefHeight="74.0" prefWidth="77.0" text="ci sono &#10;dati da &#10;aggiornare&#10;&#10;&#10;">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnSettings" layoutX="12.0" layoutY="527.0" mnemonicParsing="false" onAction="#settingsClicked" prefHeight="64.0" prefWidth="77.0">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="/com/klugesoftware/farmamanager/img/icons8-automatic.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="setting importazione movimenti e giacenze" wrapText="true" />
+               </tooltip>
+            </Button>
          </children>
       </Pane>
    </left>
@@ -162,9 +184,9 @@
                       <NumberAxis fx:id="yAxis" side="LEFT" tickLength="1.0" />
                     </yAxis>
                   </AreaChart>
-                  <GridPane layoutX="50.0" layoutY="23.0" prefHeight="87.0" prefWidth="459.0">
+                  <GridPane alignment="CENTER_LEFT" layoutX="50.0" layoutY="23.0" prefHeight="87.0" prefWidth="459.0">
                     <columnConstraints>
-                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
@@ -172,7 +194,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="lblTitleTotVendite" text="Totale Vendite" textAlignment="CENTER">
+                        <Label fx:id="lblTitleTotVendite" text="Totale Vendite" textAlignment="RIGHT">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -182,7 +204,7 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblTitleTotProfitti" text="Totale Profitti" textAlignment="CENTER" GridPane.rowIndex="1">
+                        <Label fx:id="lblTitleTotProfitti" text="Totale Profitti" textAlignment="RIGHT" GridPane.rowIndex="1">
                            <font>
                               <Font size="24.0" />
                            </font>

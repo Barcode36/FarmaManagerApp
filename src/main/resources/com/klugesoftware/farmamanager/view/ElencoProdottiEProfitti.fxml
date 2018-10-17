@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@../css/HomeAnalisiDati.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.HomeAnalisiDatiController">
+<BorderPane prefHeight="788.0" prefWidth="1285.0" stylesheets="@../css/ElencoProdottiEProfitti.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.ElencoProdottiEProfittiController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -128,25 +128,14 @@
       <Pane fx:id="panelLeft" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <VBox layoutX="7.0" layoutY="26.0" spacing="50.0" />
-            <Button fx:id="btnVenditeTotali" layoutX="12.0" layoutY="62.0" mnemonicParsing="false" onAction="#venditeTotaliClicked" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Totali" />
-            <Button fx:id="btnVenditeSSN" disable="true" layoutX="12.0" layoutY="281.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;SSN" />
-            <Button fx:id="btnVenditeLibere" layoutX="12.0" layoutY="176.0" mnemonicParsing="false" onAction="#venditeLibereClicked" prefHeight="64.0" prefWidth="77.0" text="Analisi&#10;Vendite&#10;Libere" />
-            <Button fx:id="btnSettings" layoutX="12.0" layoutY="525.0" mnemonicParsing="false" onAction="#settingsClicked" prefHeight="64.0" prefWidth="77.0">
+            <Button layoutX="15.0" layoutY="86.0" mnemonicParsing="false" onAction="#goBackClicked" prefHeight="77.0" prefWidth="72.0">
                <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="61.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="/com/klugesoftware/farmamanager/img/icons8-automatic.png" />
+                        <Image url="/com/klugesoftware/farmamanager/img/icons8-left_circular.png" />
                      </image>
                   </ImageView>
                </graphic>
-               <tooltip>
-                  <Tooltip text="setting importazione movimenti e giacenze" wrapText="true" />
-               </tooltip>
-            </Button>
-            <Button fx:id="btnAggMov" layoutX="12.0" layoutY="407.0" mnemonicParsing="false" onAction="#aggMovimentiClicked" prefHeight="101.0" prefWidth="77.0" text="ci sono &#10;dati da &#10;aggiornare&#10;&#10;&#10;">
-               <font>
-                  <Font size="12.0" />
-               </font>
             </Button>
          </children>
       </Pane>

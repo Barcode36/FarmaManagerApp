@@ -13,12 +13,11 @@ import javafx.stage.Stage;
 
 public class FarmaManagerMain extends Application{
 
-    @FXML private RadioButton rdtBtnVistaMensile;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/com/klugesoftware/farmamanager/view/HomeAnalisiDati.fxml"));
+        BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfitti.fxml"));
         Scene sceneSituazioneVenditeEProfitti = new Scene(root);
         primaryStage.setScene(sceneSituazioneVenditeEProfitti);
 

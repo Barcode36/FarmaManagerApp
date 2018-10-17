@@ -65,9 +65,8 @@ public class ImportazioneVenditeFromDBF extends Task {
 		ResultSet rs = null;
 		try{
 			stmt = connection.createStatement();
-			//rs = stmt.executeQuery("select * from "+dbfTabellaName+"  where CLFR <> 'M'  AND STATO_VEN <> 'R' AND NUMCLMESE <> '0' AND ( (SEGNO = 'U'  AND DATAREG BETWEEN  '"+dateFrom+"' AND '"+dateTo+"') "
-			//		+ "OR (SEGNO = 'E' AND RESO_FLG='R' AND DATAREG BETWEEN  '"+dateFrom+"' AND '"+dateTo+"') ) ");
-			rs = stmt.executeQuery("select * from "+dbfTabellaName+"  where NUMREG = '59696' ");
+			rs = stmt.executeQuery("select * from "+dbfTabellaName+"  where CLFR <> 'M'  AND STATO_VEN <> 'R' AND NUMCLMESE <> '0' AND ( (SEGNO = 'U'  AND DATAREG BETWEEN  '"+dateFrom+"' AND '"+dateTo+"') "
+					+ "OR (SEGNO = 'E' AND RESO_FLG='R' AND DATAREG BETWEEN  '"+dateFrom+"' AND '"+dateTo+"') ) ");
 			Vendite venditaGenerale = null;
 			VenditeSSN venditaSSN = null;
 			VenditeLibere venditaLibera = null;

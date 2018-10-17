@@ -42,7 +42,6 @@ public class  DettaglioVenditeEProfittiController extends VenditeEProfittiContro
     @FXML private Button btnBack;
     @FXML private Button btnForward;
     @FXML private Label lblPeriodo;
-    @FXML private Label lblTitle;
     @FXML private RadioButton rdtBtnVistaSettimanale;
     @FXML private RadioButton rdtBtnVistaMensile;
     @FXML private TableView<DettaglioTotaliVenditeRowData> tableDettaglioTotali;
@@ -220,9 +219,9 @@ public class  DettaglioVenditeEProfittiController extends VenditeEProfittiContro
 
     @FXML
     private void listenerEsciButton(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/HomeAnalisiDati.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfitti.fxml"));
         Parent parent = (Parent) fxmlLoader.load();
-        HomeAnalisiDatiController controller = fxmlLoader.getController();
+        SituazioneVenditeEProfittiController controller = fxmlLoader.getController();
         Scene scene = new Scene(parent);
         Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         app_stage.setScene(scene);
@@ -321,26 +320,11 @@ public class  DettaglioVenditeEProfittiController extends VenditeEProfittiContro
         Parent parent = (Parent)fxmlLoader.load();
         ConfrontoTotaliVenditeController controller = fxmlLoader.getController();
         controller.setIntervalloMensile(getDateFrom(),getDateTo(),true);
+        if(!controller.getConfrontabile()) return;
         Scene scene = new Scene(parent);
         Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         app_stage.setScene(scene);
         app_stage.show();
 
-    }
-
-    @FXML
-    private void analisiLibereClicked(ActionEvent event){
-
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfittiLibere.fxml"));
-            Parent parent = (Parent) fxmlLoader.load();
-            SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
-            Scene scene = new Scene(parent);
-            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            app_stage.setScene(scene);
-            app_stage.show();
-        }catch(Exception ex){
-            logger.error(ex.getMessage());
-        }
     }
 }

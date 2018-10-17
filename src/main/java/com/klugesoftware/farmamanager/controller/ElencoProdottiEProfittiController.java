@@ -27,10 +27,10 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.*;
 
-public class HomeAnalisiDatiController extends VenditeEProfittiController implements Initializable {
+public class ElencoProdottiEProfittiController extends VenditeEProfittiController implements Initializable {
 
 
-    private final Logger logger = LogManager.getLogger(HomeAnalisiDatiController.class.getName());
+    private final Logger logger = LogManager.getLogger(ElencoProdottiEProfittiController.class.getName());
     @FXML private TableView<ElencoMinsanLiberaVenditaRowData> tableQuantita;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,String> colMinsan1;
     @FXML private TableColumn<ElencoMinsanLiberaVenditaRowData,String> colDescrizione1;
@@ -266,7 +266,6 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
         });
 
         itemList(tableQuantita,tableHiProfitti,tableLowProfitti);
-        aggiornaMovimenti();
     }
 
     private void itemList(TableView tableQuantita,TableView tableHiProfitti, TableView tableLowProfitti){
@@ -299,45 +298,6 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
         }
     }
 
-    private void aggiornaMovimenti(){
-        btnAggMov.setVisible(false);
-        Importazioni importazioni = ImportazioniDAOManager.findUltimoInsert();
-        if (importazioni.getIdImportazione()!= null) {
-            Calendar dateTo = Calendar.getInstance(Locale.ITALY);
-            Calendar dateFrom = Calendar.getInstance(Locale.ITALY);
-            dateFrom.setTime(importazioni.getDataUltimoMovImportato());
-            dateTo.set(Calendar.DAY_OF_MONTH, dateTo.get(Calendar.DAY_OF_MONTH) - 1);
-            if (dateFrom.before(dateTo)) {
-                btnAggMov.setVisible(true);
-            }
-        }
-    }
-
-    @FXML
-    private void aggMovimentiClicked(ActionEvent event){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Conferma Importazione");
-        alert.setHeaderText("L'ultimo movimento importato risale al "+DateUtility.converteDateToGUIStringDDMMYYYY(ImportazioniDAOManager.findUltimoInsert().getDataUltimoMovImportato()));
-        alert.setContentText("Vuoi aggiornare i movimenti?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/Settings.fxml"));
-                Parent parent = (Parent)fxmlLoader.load();
-                SettingsController controller = fxmlLoader.getController();
-                controller.fireButton();
-                Scene scene = new Scene(parent);
-                Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                app_stage.setScene(scene);
-                app_stage.show();
-            }catch(Exception ex){
-                logger.error(ex.getMessage());
-            }
-        } else {
-            ;
-        }
-    }
 
     @Override
     public Date getDateFrom() {
@@ -404,50 +364,18 @@ public class HomeAnalisiDatiController extends VenditeEProfittiController implem
 
     @FXML
     private void esciClicked(ActionEvent event){
-        System.exit(0);
+        goBackClicked(event);
     }
 
     @FXML
-    private void venditeLibereClicked(ActionEvent event){
-        try {
-
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfittiLibere.fxml"));
-            Parent parent = (Parent)fxmlLoader.load();
-            SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
-            Scene scene = new Scene(parent);
-            Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            app_stage.setScene(scene);
-            app_stage.show();
-        }catch(Exception ex){
-            logger.error(ex.getMessage());
-        }
-
-    }
-
-    @FXML
-    private void venditeTotaliClicked(ActionEvent event){
+    private void goBackClicked(ActionEvent event){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfitti.fxml"));
-            Parent parent = (Parent)fxmlLoader.load();
+            Parent parent = (Parent) fxmlLoader.load();
             SituazioneVenditeEProfittiController controller = fxmlLoader.getController();
+            controller.aggiornaTableAndScene(DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText()),DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText()),false);
             Scene scene = new Scene(parent);
-            Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            app_stage.setScene(scene);
-            app_stage.show();
-        }catch(Exception ex){
-            logger.error(ex);
-        }
-
-    }
-
-    @FXML
-    private void settingsClicked(ActionEvent event){
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/Settings.fxml"));
-            Parent parent = (Parent)fxmlLoader.load();
-            SettingsController controller = fxmlLoader.getController();
-            Scene scene = new Scene(parent);
-            Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             app_stage.setScene(scene);
             app_stage.show();
         }catch(Exception ex){
