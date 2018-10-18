@@ -129,9 +129,9 @@
                   <Image url="/com/klugesoftware/farmamanager/img/icons8-left_circular.png" />
                </image>
             </ImageView>
-            <Button layoutX="15.0" layoutY="68.0" mnemonicParsing="false" onAction="#goBackClicked" prefHeight="64.0" prefWidth="77.0">
+            <Button layoutX="15.0" layoutY="68.0" mnemonicParsing="false" onAction="#goBackClicked" prefHeight="73.0" prefWidth="71.0">
                <graphic>
-                  <ImageView fitHeight="64.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="60.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="/com/klugesoftware/farmamanager/img/icons8-left_circular.png" />
                      </image>

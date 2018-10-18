@@ -151,24 +151,45 @@ public class ConfrontoTotaliVenditeRows {
         ConfrontoTotaliVenditeRowData row7 = new ConfrontoTotaliVenditeRowData();
         row7.setColDescrizione(descrizioni[6]);
 
+        double temp = 0;
+
         //margine vendite libere
-        double temp = totaliGenerali.getTotaleProfittiLibere().doubleValue() / totaliGenerali.getTotaleVenditeNetteLibere().doubleValue() * 100;
-        row7.setTotaleLibere(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
-        temp = totaliGeneraliPrecedenti.getTotaleProfittiLibere().doubleValue() / totaliGeneraliPrecedenti.getTotaleVenditeNetteLibere().doubleValue() * 100;
-        row7.setTotaleLiberePrec(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
+        if (totaliGenerali.getTotaleProfittiLibere().doubleValue() > 0 && totaliGenerali.getTotaleVenditeNetteLibere().doubleValue() > 0) {
+            temp = totaliGenerali.getTotaleProfittiLibere().doubleValue() / totaliGenerali.getTotaleVenditeNetteLibere().doubleValue() * 100;
+        }else
+            temp = 0;
+        row7.setTotaleLibere(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+
+        if (totaliGeneraliPrecedenti.getTotaleProfittiLibere().doubleValue() > 0 && totaliGeneraliPrecedenti.getTotaleVenditeNetteLibere().doubleValue() > 0) {
+            temp = totaliGeneraliPrecedenti.getTotaleProfittiLibere().doubleValue() / totaliGeneraliPrecedenti.getTotaleVenditeNetteLibere().doubleValue() * 100;
+        }else
+            temp = 0;
+        row7.setTotaleLiberePrec(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
         //row7.setDiffPercLibere(row7.getTotaleLibere(),row7.getTotaleLiberePrec());
 
         //margine vendite SSN
-        temp = totaliGenerali.getTotaleProfittiSSN().doubleValue()/totaliGenerali.getTotaleVenditeNetteSSN().doubleValue()*100;
-        row7.setTotaleSSN(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
-        temp = totaliGeneraliPrecedenti.getTotaleProfittiSSN().doubleValue()/totaliGeneraliPrecedenti.getTotaleVenditeNette().doubleValue()*100;
+        if (totaliGenerali.getTotaleProfittiSSN().doubleValue() > 0 && totaliGenerali.getTotaleVenditeNetteSSN().doubleValue() > 0) {
+            temp = totaliGenerali.getTotaleProfittiSSN().doubleValue() / totaliGenerali.getTotaleVenditeNetteSSN().doubleValue() * 100;
+        }else
+            temp = 0;
+        row7.setTotaleSSN(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        if (totaliGeneraliPrecedenti.getTotaleProfittiSSN().doubleValue() > 0 && totaliGeneraliPrecedenti.getTotaleVenditeNetteSSN().doubleValue() > 0) {
+            temp = totaliGeneraliPrecedenti.getTotaleProfittiSSN().doubleValue() / totaliGeneraliPrecedenti.getTotaleVenditeNette().doubleValue() * 100;
+        }else
+            temp = 0;
         row7.setTotaleSSNPrecedente(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
         //row7.setDiffPercSSN(row7.getTotaleSSN(),row7.getTotaleSSNPrecedente());
 
         //margine vendite totali
-        temp = totaliGenerali.getTotaleProfitti().doubleValue()/totaliGenerali.getTotaleVenditeNette().doubleValue()*100;
-        row7.setTotale(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
-        temp = totaliGeneraliPrecedenti.getTotaleProfitti().doubleValue()/totaliGeneraliPrecedenti.getTotaleVenditeNette().doubleValue()*100;
+        if(totaliGenerali.getTotaleProfitti().doubleValue() > 0 && totaliGenerali.getTotaleVenditeNette().doubleValue() > 0) {
+            temp = totaliGenerali.getTotaleProfitti().doubleValue() / totaliGenerali.getTotaleVenditeNette().doubleValue() * 100;
+        }else
+            temp = 0;
+        row7.setTotale(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        if(totaliGeneraliPrecedenti.getTotaleProfitti().doubleValue() > 0 && totaliGeneraliPrecedenti.getTotaleVenditeNette().doubleValue() > 0) {
+            temp = totaliGeneraliPrecedenti.getTotaleProfitti().doubleValue() / totaliGeneraliPrecedenti.getTotaleVenditeNette().doubleValue() * 100;
+        }else
+            temp = 0;
         row7.setTotalePrecedente(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
         //row7.setDiffPercTotale(row7.getTotale(),row7.getTotalePrecedente());
 
@@ -179,23 +200,40 @@ public class ConfrontoTotaliVenditeRows {
         row8.setColDescrizione(descrizioni[7]);
 
         //ricarico vendite libere
-        temp = totaliGenerali.getTotaleProfittiLibere().doubleValue()/totaliGenerali.getTotaleCostiNettiLibere().doubleValue()*100;
-        row8.setTotaleLibere(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
-        temp = totaliGeneraliPrecedenti.getTotaleProfittiLibere().doubleValue()/totaliGeneraliPrecedenti.getTotaleCostiNettiLibere().doubleValue()*100;
+        if (totaliGenerali.getTotaleProfittiLibere().doubleValue() > 0 && totaliGenerali.getTotaleCostiNettiLibere().doubleValue() > 0) {
+            temp = totaliGenerali.getTotaleProfittiLibere().doubleValue() / totaliGenerali.getTotaleCostiNettiLibere().doubleValue() * 100;
+        }else
+            temp = 0;
+        row8.setTotaleLibere(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        if (totaliGeneraliPrecedenti.getTotaleProfittiLibere().doubleValue() > 0 && totaliGeneraliPrecedenti.getTotaleCostiNettiLibere().doubleValue() > 0) {
+            temp = totaliGeneraliPrecedenti.getTotaleProfittiLibere().doubleValue() / totaliGeneraliPrecedenti.getTotaleCostiNettiLibere().doubleValue() * 100;
+        }else
+            temp = 0;
         row8.setTotaleLiberePrec(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
         //row8.setDiffPercLibere(row8.getTotaleLibere(),row8.getTotaleLiberePrec());
 
         //ricarico vendite ssn
-        temp = totaliGenerali.getTotaleProfittiSSN().doubleValue()/totaliGenerali.getTotaleCostiNettiSSN().doubleValue()*100;
+        if (totaliGenerali.getTotaleProfittiSSN().doubleValue() > 0 && totaliGenerali.getTotaleCostiNettiSSN().doubleValue() > 0) {
+            temp = totaliGenerali.getTotaleProfittiSSN().doubleValue() / totaliGenerali.getTotaleCostiNettiSSN().doubleValue() * 100;
+        }else
+            temp = 0;
         row8.setTotaleSSN(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
-        temp = totaliGeneraliPrecedenti.getTotaleProfittiSSN().doubleValue()/totaliGeneraliPrecedenti.getTotaleCostiNettiSSN().doubleValue()*100;
+        if (totaliGeneraliPrecedenti.getTotaleProfittiSSN().doubleValue() > 0 && totaliGeneraliPrecedenti.getTotaleCostiNettiSSN().doubleValue() > 0) {
+            temp = totaliGeneraliPrecedenti.getTotaleProfittiSSN().doubleValue() / totaliGeneraliPrecedenti.getTotaleCostiNettiSSN().doubleValue() * 100;
+        }
         row8.setTotaleSSNPrecedente(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
         //row8.setDiffPercSSN(row8.getTotaleSSN(),row8.getTotaleSSNPrecedente());
 
         //ricarico vendite totali
-        temp = totaliGenerali.getTotaleProfitti().doubleValue()/totaliGenerali.getTotaleCostiNetti().doubleValue()*100;
-        row8.setTotale(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
-        temp = totaliGeneraliPrecedenti.getTotaleProfitti().doubleValue()/totaliGeneraliPrecedenti.getTotaleCostiNetti().doubleValue()*100;
+        if (totaliGenerali.getTotaleProfitti().doubleValue() > 0 && totaliGenerali.getTotaleCostiNetti().doubleValue() > 0) {
+            temp = totaliGenerali.getTotaleProfitti().doubleValue() / totaliGenerali.getTotaleCostiNetti().doubleValue() * 100;
+        }else
+            temp = 0;
+        row8.setTotale(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+        if (totaliGeneraliPrecedenti.getTotaleProfitti().doubleValue() > 0 && totaliGeneraliPrecedenti.getTotaleCostiNetti().doubleValue() > 0) {
+            temp = totaliGeneraliPrecedenti.getTotaleProfitti().doubleValue()/totaliGeneraliPrecedenti.getTotaleCostiNetti().doubleValue()*100;
+        }else
+            temp = 0;
         row8.setTotalePrecedente(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
         //row8.setDiffPercTotale(row8.getTotale(),row8.getTotalePrecedente());
 

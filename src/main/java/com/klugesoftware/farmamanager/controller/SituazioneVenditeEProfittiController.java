@@ -303,6 +303,10 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfittiLibere.fxml"));
             Parent parent = (Parent) fxmlLoader.load();
             SituazioneVenditeEProfittiLibereController controller = fxmlLoader.getController();
+            boolean vistaSettimanale = false;
+            if (rdtBtnVistaSettimanale.isSelected())
+                vistaSettimanale = true;
+            controller.aggiornaTableAndScene(DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText()), DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText()), vistaSettimanale);
             Scene scene = new Scene(parent);
             Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             app_stage.setScene(scene);

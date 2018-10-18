@@ -33,10 +33,10 @@ public class ConfrontoTotaliVenditeRowData {
     private String diffPercTotale;
 
     private NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.ITALY);
-    private DecimalFormat df = (DecimalFormat)nf;
+    private DecimalFormat df = (DecimalFormat) nf;
 
 
-    public ConfrontoTotaliVenditeRowData(String colDescrizione, BigDecimal totaleLibere, BigDecimal totaleLiberePrec,  String diffPercLibere, BigDecimal totaleSSN, BigDecimal totaleSSNPrecedente, String diffPercSSN, BigDecimal totale, BigDecimal totalePrecedente, String diffPercTotale) {
+    public ConfrontoTotaliVenditeRowData(String colDescrizione, BigDecimal totaleLibere, BigDecimal totaleLiberePrec, String diffPercLibere, BigDecimal totaleSSN, BigDecimal totaleSSNPrecedente, String diffPercSSN, BigDecimal totale, BigDecimal totalePrecedente, String diffPercTotale) {
         this.colDescrizione = colDescrizione;
         this.totaleLibere = totaleLibere;
         this.totaleLiberePrec = totaleLiberePrec;
@@ -49,7 +49,8 @@ public class ConfrontoTotaliVenditeRowData {
         this.diffPercTotale = diffPercTotale;
     }
 
-    public ConfrontoTotaliVenditeRowData(){}
+    public ConfrontoTotaliVenditeRowData() {
+    }
 
     public String getColDescrizione() {
         return colDescrizione;
@@ -59,16 +60,15 @@ public class ConfrontoTotaliVenditeRowData {
         this.colDescrizione = colDescrizione;
     }
 
-    private String converteInPercentuale(BigDecimal temp){
-        String ret = temp.toString().replace(".",",");
-        return ret+" %";
+    private String converteInPercentuale(BigDecimal temp) {
+        String ret = temp.toString().replace(".", ",");
+        return ret + " %";
     }
 
     public String getTotaleLibere() {
-        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")) {
             return converteInPercentuale(totaleLibere);
-        }
-        else{
+        } else {
             return df.format(totaleLibere);
         }
 
@@ -79,10 +79,9 @@ public class ConfrontoTotaliVenditeRowData {
     }
 
     public String getTotaleLiberePrec() {
-        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")) {
             return converteInPercentuale(totaleLiberePrec);
-        }
-        else{
+        } else {
             return df.format(totaleLiberePrec);
         }
     }
@@ -105,15 +104,14 @@ public class ConfrontoTotaliVenditeRowData {
         this.diffPercLibere = diffPercLibere;
     }
 
-    public void setDiffPercLibere(BigDecimal valoreAttuale, BigDecimal valorePrecedente){
-        diffPercLibere = diffPercToString(valoreAttuale,valorePrecedente);
+    public void setDiffPercLibere(BigDecimal valoreAttuale, BigDecimal valorePrecedente) {
+        diffPercLibere = diffPercToString(valoreAttuale, valorePrecedente);
     }
 
     public String getTotaleSSN() {
-        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")) {
             return converteInPercentuale(totaleSSN);
-        }
-        else{
+        } else {
             return df.format(totaleSSN);
         }
     }
@@ -123,10 +121,9 @@ public class ConfrontoTotaliVenditeRowData {
     }
 
     public String getTotaleSSNPrecedente() {
-        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")) {
             return converteInPercentuale(totaleSSNPrecedente);
-        }
-        else{
+        } else {
             return df.format(totaleSSNPrecedente);
         }
     }
@@ -153,14 +150,13 @@ public class ConfrontoTotaliVenditeRowData {
      * formato diffPercSSN: es. 32,50%
      */
     public void setDiffPercSSN(BigDecimal valoreAttuale, BigDecimal valorePrecedente) {
-        this.diffPercSSN = diffPercToString(valoreAttuale,valorePrecedente);
+        this.diffPercSSN = diffPercToString(valoreAttuale, valorePrecedente);
     }
 
     public String getTotale() {
-        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")) {
             return converteInPercentuale(totale);
-        }
-        else{
+        } else {
             return df.format(totale);
         }
     }
@@ -170,10 +166,9 @@ public class ConfrontoTotaliVenditeRowData {
     }
 
     public String getTotalePrecedente() {
-        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")){
+        if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")) {
             return converteInPercentuale(totalePrecedente);
-        }
-        else{
+        } else {
             return df.format(totalePrecedente);
         }
     }
@@ -200,19 +195,23 @@ public class ConfrontoTotaliVenditeRowData {
      * formato diffPercTotale: es. 32,50%
      */
     public void setDiffPercTotale(BigDecimal valoreAttuale, BigDecimal valorePrecedente) {
-        this.diffPercTotale = diffPercToString(valoreAttuale,valorePrecedente);
+        this.diffPercTotale = diffPercToString(valoreAttuale, valorePrecedente);
     }
 
-    private String diffPercToString(BigDecimal valoreAttuale,BigDecimal valorePrecedente){
-        if(valoreAttuale.doubleValue() > 0 && valorePrecedente.doubleValue() > 0) {
+    private String diffPercToString(BigDecimal valoreAttuale, BigDecimal valorePrecedente) {
+        if (valoreAttuale.doubleValue() > 0 && valorePrecedente.doubleValue() > 0) {
             double temp = ((valoreAttuale.doubleValue() / valorePrecedente.doubleValue()) * 100) - 100;
             BigDecimal temp2 = new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
             if (temp2.doubleValue() > 0)
-                return ("+"+temp2.toString().replace(".", ",") + " %");
+                return ("+" + temp2.toString().replace(".", ",") + " %");
             else
                 return (temp2.toString().replace(".", ",") + " %");
-        }else
-            return "";
+        } else if (valoreAttuale.doubleValue() == 0 && valorePrecedente.doubleValue() != 0) {
+            return ("-100,00 %");
+        } else if (valorePrecedente.doubleValue() == 0 && valoreAttuale.doubleValue() != 0) {
+            return ("+ 100,00 %");
+        }
+        return "";
     }
 
     public BigDecimal getValTotaleLibere(){

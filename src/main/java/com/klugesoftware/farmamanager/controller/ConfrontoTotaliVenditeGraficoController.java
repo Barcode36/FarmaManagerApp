@@ -22,6 +22,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -31,6 +33,7 @@ import java.util.*;
 
 public class ConfrontoTotaliVenditeGraficoController implements Initializable{
 
+    private final Logger logger = LogManager.getLogger(ConfrontoTotaliVenditeGraficoController.class.getName());
     @FXML private BarChart<String,Number> graficoConfronto;
     @FXML private CategoryAxis xAxis;
     @FXML private NumberAxis yAxis;
@@ -317,9 +320,22 @@ public class ConfrontoTotaliVenditeGraficoController implements Initializable{
 
 
     @FXML
-    private void listenerEsciButton(ActionEvent event) throws IOException {
-        Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        app_stage.hide();
+    private void goBackClicked(ActionEvent event) throws IOException {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/ConfrontoTotaliVendite.fxml"));
+            Parent parent = (Parent) fxmlLoader.load();
+            ConfrontoTotaliVenditeController controller = fxmlLoader.getController();
+            if(rdtBtnAnnoPrecedente.isSelected())
+                controller.setIntervalloMensile(DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText()),DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText()),true);
+            else
+                controller.setIntervalloMensile(DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText()),DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText()),false);
+            Scene scene = new Scene(parent);
+            Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            app_stage.setScene(scene);
+            app_stage.show();
+        }catch(Exception ex){
+            logger.error(ex.getMessage());
+        }
     }
 
     class ListenerCambioPeriodoConfronto implements ChangeListener<Toggle> {

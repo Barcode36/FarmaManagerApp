@@ -43,18 +43,6 @@
                      <image>
                         <Image url="/com/klugesoftware/farmamanager/img/logo-temp.jpg" />
                      </image></ImageView>
-                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1107.0" layoutY="28.0" mnemonicParsing="false" onAction="#listenerEsciButton" text="Esci">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="/com/klugesoftware/farmamanager/img/icons8-home-filled-50.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
                   <VBox alignment="CENTER_LEFT" layoutX="575.0" layoutY="4.0" prefHeight="113.0" prefWidth="271.0" spacing="10.0">
                      <children>
                         <RadioButton fx:id="rdtBtnMesePrecedente" mnemonicParsing="false" text="confronta con mese precedente">
@@ -74,6 +62,15 @@
                   </VBox>
                   <ComboBox fx:id="comboMeseDaConfrontare" layoutX="316.0" layoutY="48.0" onAction="#clickedMeseDaConfrontare" prefHeight="27.0" prefWidth="246.0" promptText="seleziona il mese da confrontare" visibleRowCount="13" />
                   <TextArea fx:id="txtAreaPeriodiConfrontati" layoutX="847.0" layoutY="11.0" prefHeight="97.0" prefWidth="251.0" text="&#10;" />
+                  <Button layoutX="1168.0" layoutY="25.0" mnemonicParsing="false" onAction="#goBackClicked" prefHeight="64.0" prefWidth="77.0">
+                     <graphic>
+                        <ImageView fitHeight="64.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="/com/klugesoftware/farmamanager/img/icons8-left_circular.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                </children>
                <opaqueInsets>
                   <Insets />

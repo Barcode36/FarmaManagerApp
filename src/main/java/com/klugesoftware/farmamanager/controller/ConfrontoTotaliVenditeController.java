@@ -344,7 +344,7 @@ public class ConfrontoTotaliVenditeController implements Initializable {
         controller.init(anno,comboMeseDaConfrontare.getSelectionModel().getSelectedIndex(),rows);
         Scene scene = new Scene(parent);
         //Stage this_app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        Stage app_stage = new Stage();
+        Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         app_stage.setScene(scene);
         app_stage.show();
     }
