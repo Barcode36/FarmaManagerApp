@@ -54,6 +54,7 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAOManager {
 			totaleGenerale = new TotaliGeneraliVenditaEstrattiGiornalieri();
 			totaleGenerale.aggiornaTotaliGenerali(vendita);
 			insert(totaleGenerale);
+			TotaliGeneraliVenditaEstrattiDAOManager.addGiornoLavorativo(vendita.getDataVendita());
 		}
 		return totaleGenerale;
 	}
@@ -90,6 +91,7 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAOManager {
 				TotaliGeneraliVenditaEstrattiGiornalieri totaleGiornoNonLavorrativo = new TotaliGeneraliVenditaEstrattiGiornalieri();
 				totaleGiornoNonLavorrativo.setData(dataUltTot.getTime());
 				insert(totaleGiornoNonLavorrativo);
+				TotaliGeneraliVenditaEstrattiDAOManager.addGiornoFestivo(dataOperazione);
 				dataUltTot.add(Calendar.DAY_OF_MONTH,1);
 			}
 		}

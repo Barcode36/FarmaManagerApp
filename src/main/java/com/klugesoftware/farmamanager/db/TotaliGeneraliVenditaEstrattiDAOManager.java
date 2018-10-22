@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class TotaliGeneraliVenditaEstrattiDAOManager {
@@ -47,7 +48,7 @@ public class TotaliGeneraliVenditaEstrattiDAOManager {
 		if (totaleGenerale.getIdTotale() != null){
 			totaleGenerale.aggiornaTotaliGenerali(vendita);
 			update(totaleGenerale);
-		}else{
+		}else{//cambio mese
 			Calendar tempCal = Calendar.getInstance(Locale.ITALY);
 			tempCal.setTime(vendita.getDataVendita());
 			logger.info("Importazione movimenti del mese di: "+tempCal.getDisplayName(Calendar.MONTH,Calendar.LONG,Locale.ITALY)+" "+tempCal.get(Calendar.YEAR));
@@ -56,6 +57,27 @@ public class TotaliGeneraliVenditaEstrattiDAOManager {
 			insert(totaleGenerale);
 		}
 		return totaleGenerale;
+	}
+
+	public static void addGiornoLavorativo(Date data){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		TotaliGeneraliVenditaEstrattiDAO totaliGeneraliDAO = daoFactory.getTotaliGeneraliVenditaEstrattiDAO();
+		TotaliGeneraliVenditaEstratti totaleGenerale = findByDate(DateUtility.getMese(data), DateUtility.getAnno(data));
+		if(totaleGenerale != null){
+			totaleGenerale.addGiornoLavorativo();
+			update(totaleGenerale);
+		}
+
+	}
+
+	public static void addGiornoFestivo(Date data){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		TotaliGeneraliVenditaEstrattiDAO totaliGeneraliDAO = daoFactory.getTotaliGeneraliVenditaEstrattiDAO();
+		TotaliGeneraliVenditaEstratti totaleGenerale = findByDate(DateUtility.getMese(data), DateUtility.getAnno(data));
+		if(totaleGenerale != null){
+			totaleGenerale.addGiornoFestivo();
+			update(totaleGenerale);
+		}
 	}
 	
 	public static TotaliGeneraliVenditaEstratti aggiornaTotaliGenerali(ResiVendite resoVendita){

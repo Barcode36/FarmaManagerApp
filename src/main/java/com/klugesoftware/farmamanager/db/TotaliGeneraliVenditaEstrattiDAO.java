@@ -21,9 +21,9 @@ public class TotaliGeneraliVenditaEstrattiDAO {
 			+ "totaleVenditeNettoScontiLibere,totaleVenditeNettoScontiEIvaLibere,totaleCostiNettiIvaLibere,"
 			+ "totaleProfittiLibere,margineMedioLibere,ricaricoMedioLibere,totaleVenditeLordeSSN,"
 			+ "totaleScontiSSN,totaleVenditeNettoScontiSSN,totaleVenditeNettoScontiEIvaSSN,"
-			+ "totaleCostiNettiIvaSSN,totaleProfittiSSN,margineMedioSSN,ricaricoMedioSSN,"
+			+ "totaleCostiNettiIvaSSN,totaleProfittiSSN,margineMedioSSN,ricaricoMedioSSN,giorniLavorativi,giorniFestivi,"
 			+ "mese,anno,costiPresunti,dataUltimoAggiornamento)"
-			+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	static final String SQL_UPDATE = "UPDATE TotaliGeneraliMensili SET "
 			+ "totaleVenditeLorde = ?,totaleSconti = ?,totaleVenditeNettoSconti = ?,"
 			+ "totaleVenditeNettoScontiEIva = ?,totaleCostiNettoIva = ?,totaleProfitti = ?,"
@@ -32,14 +32,14 @@ public class TotaliGeneraliVenditaEstrattiDAO {
 			+ "totaleProfittiLibere = ?,margineMedioLibere = ?,ricaricoMedioLibere = ?,totaleVenditeLordeSSN = ?,"
 			+ "totaleScontiSSN = ?,totaleVenditeNettoScontiSSN = ?,totaleVenditeNettoScontiEIvaSSN = ?,"
 			+ "totaleCostiNettiIvaSSN = ?,totaleProfittiSSN = ?,margineMedioSSN = ?,ricaricoMedioSSN = ?,"
-			+ "mese = ?,anno = ?,costiPresunti = ?,dataUltimoAggiornamento = ? WHERE idTotale = ?";
+			+ "giorniLavorativi = ?, giorniFestivi = ?, mese = ?,anno = ?,costiPresunti = ?,dataUltimoAggiornamento = ? WHERE idTotale = ?";
  
 	static final String SQL_FIND_BY_ID = "SELECT * FROM TotaliGeneraliMensili WHERE idTotale = ?";
 	
 	static final String SQL_FIND_BY_MESE_ANNO = "SELECT * FROM TotaliGeneraliMensili WHERE mese = ? AND anno = ? ";
 	
 	static final String SQL_FIND_COUNT_BY_MESE_ANNO = "SELECT COUNT(*) FROM TotaliGeneraliMensili WHERE mese = ? AND anno = ? ";
-	
+
 	private final Logger logger = LogManager.getLogger(TotaliGeneraliVenditaEstrattiDAO.class.getName());
 	
 	private DAOFactory daoFactory;
@@ -125,6 +125,8 @@ public class TotaliGeneraliVenditaEstrattiDAO {
 				totaleGenerale.getTotaleProfittiSSN(),
 				totaleGenerale.getMargineMedioSSN(),
 				totaleGenerale.getRicaricoMedioSSN(),
+				totaleGenerale.getGiorniLavorativi(),
+				totaleGenerale.getGiorniFestivi(),
 				totaleGenerale.getMese(),
 				totaleGenerale.getAnno(),
 				totaleGenerale.isCostiPresunti(),
@@ -185,6 +187,8 @@ public class TotaliGeneraliVenditaEstrattiDAO {
 				totaleGenerale.getTotaleProfittiSSN(),
 				totaleGenerale.getMargineMedioSSN(),
 				totaleGenerale.getRicaricoMedioSSN(),
+				totaleGenerale.getGiorniLavorativi(),
+				totaleGenerale.getGiorniFestivi(),
 				totaleGenerale.getMese(),
 				totaleGenerale.getAnno(),
 				totaleGenerale.isCostiPresunti(),

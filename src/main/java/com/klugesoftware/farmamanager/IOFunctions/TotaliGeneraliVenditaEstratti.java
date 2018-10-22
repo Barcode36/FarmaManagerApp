@@ -43,6 +43,8 @@ public class TotaliGeneraliVenditaEstratti {
 	private BigDecimal ricaricoMedio;
 	private BigDecimal ricaricoMedioLibere;
 	private BigDecimal ricaricoMedioSSN;
+	private Integer giorniLavorativi;
+	private Integer giorniFestivi;
 	private boolean costiPresunti;
 	private int mese;
 	private int anno;
@@ -73,6 +75,8 @@ public class TotaliGeneraliVenditaEstratti {
 		ricaricoMedio = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
 		ricaricoMedioLibere = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
 		ricaricoMedioSSN = new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode());
+		giorniLavorativi = 0;
+		giorniFestivi = 0;
 		costiPresunti = false;
 	}
 
@@ -102,6 +106,8 @@ public class TotaliGeneraliVenditaEstratti {
 			BigDecimal ricaricoMedio,
 			BigDecimal ricaricoMedioLibere,
 			BigDecimal ricaricoMedioSSN,
+			Integer giorniLavorativi,
+			Integer giorniFestivi,
 			boolean costiPresunti,
 			int mese,
 			int anno,
@@ -131,7 +137,9 @@ public class TotaliGeneraliVenditaEstratti {
 		this.margineMedioSSN = margineMedioSSN;
 		this.ricaricoMedio = ricaricoMedio;
 		this.ricaricoMedioLibere = ricaricoMedioLibere;
-		this.ricaricoMedioSSN = ricaricoMedioSSN;		
+		this.ricaricoMedioSSN = ricaricoMedioSSN;
+		this.giorniLavorativi = giorniLavorativi;
+		this.giorniFestivi = giorniFestivi;
 		this.costiPresunti = costiPresunti;
 		this.mese = mese;
 		this.anno = anno;
@@ -398,6 +406,10 @@ public class TotaliGeneraliVenditaEstratti {
             totaleProfitti = totaleProfitti.add(totaleGenerale.getTotaleProfitti());
             totaleProfittiLibere = totaleProfittiLibere.add(totaleGenerale.getTotaleProfittiLibere());
             totaleProfittiSSN = totaleProfittiSSN.add(totaleGenerale.getTotaleProfittiSSN());
+            if(totaleGenerale.getTotaleVenditeLorde().doubleValue() > 0)
+            	addGiornoLavorativo();
+            else
+            	addGiornoFestivo();
             if (totaleGenerale.isCostiPresunti())
                 costiPresunti = true;
         }
@@ -430,7 +442,23 @@ public class TotaliGeneraliVenditaEstratti {
 
     }
 
-    public void addTotaleEstrattoGiornaliero(TotaliGeneraliVenditaEstrattiGiornalieri totaleGenerale){
+	public Integer getGiorniLavorativi() {
+		return giorniLavorativi;
+	}
+
+	public void setGiorniLavorativi(Integer giorniLavorativi) {
+		this.giorniLavorativi = giorniLavorativi;
+	}
+
+	public Integer getGiorniFestivi() {
+		return giorniFestivi;
+	}
+
+	public void setGiorniFestivi(Integer giorniFestivi) {
+		this.giorniFestivi = giorniFestivi;
+	}
+
+	public void addTotaleEstrattoGiornaliero(TotaliGeneraliVenditaEstrattiGiornalieri totaleGenerale){
         totaleVenditeLorde = totaleVenditeLorde.add(totaleGenerale.getTotaleVenditeLorde());
         totaleVenditeLordeLibere = totaleVenditeLordeLibere.add(totaleGenerale.getTotaleVenditeLordeLibere());
         totaleVenditeLordeSSN = totaleVenditeLordeSSN.add(totaleGenerale.getTotaleVenditeLordeSSN());
@@ -715,4 +743,11 @@ public class TotaliGeneraliVenditaEstratti {
 		this.totaleVenditeNettoScontiSSN = totaleVenditeNettoScontiSSN;
 	}
 
+	public void addGiornoLavorativo(){
+		this.giorniLavorativi++;
+	}
+
+	public void addGiornoFestivo(){
+		this.giorniFestivi++;
+	}
 }

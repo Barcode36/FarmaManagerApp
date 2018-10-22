@@ -107,8 +107,8 @@
             <TableView fx:id="tabellaTotali" prefHeight="603.0" prefWidth="603.0">
               <columns>
                  <TableColumn fx:id="colDescrizione" prefWidth="199.0" sortable="false" />
-                  <TableColumn fx:id="colTotaleLiberePrecedente" prefWidth="149.0" sortable="false" text="Totali&#10;Vendite&#10;Libere&#10;Periodo&#10;Precedente" />
-                 <TableColumn fx:id="colTotaleLibere" minWidth="0.0" prefWidth="150.0" sortable="false" text="Totali&#10;Vendite&#10;Libere&#10;Periodo &#10;Attuale&#10;" />
+                  <TableColumn fx:id="colTotaleLiberePrecedente" prefWidth="149.0" sortable="false" text="Totali&#10;Riferiti al&#10;Periodo&#10;Precedente" />
+                 <TableColumn fx:id="colTotaleLibere" minWidth="0.0" prefWidth="150.0" sortable="false" text="Totali&#10;Riferiti al&#10;Periodo &#10;Attuale&#10;&#10;" />
                   <TableColumn fx:id="colDiffPercLibere" prefWidth="102.0" sortable="false" text="Differenza&#10;%" />
               </columns>
             </TableView>

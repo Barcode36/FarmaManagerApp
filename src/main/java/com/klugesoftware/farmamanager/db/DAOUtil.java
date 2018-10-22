@@ -307,6 +307,8 @@ public final class DAOUtil {
 				rs.getBigDecimal("ricaricoMedio"),
 				rs.getBigDecimal("ricaricoMedioLibere"),
 				rs.getBigDecimal("ricaricoMedioSSN"),
+				rs.getInt("giorniLavorativi"),
+				rs.getInt("giorniFestivi"),
 				rs.getBoolean("costiPresunti"),
 				rs.getInt("mese"),
 				rs.getInt("anno"),

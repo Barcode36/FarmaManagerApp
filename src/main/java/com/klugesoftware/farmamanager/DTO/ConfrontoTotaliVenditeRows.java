@@ -60,7 +60,9 @@ public class ConfrontoTotaliVenditeRows {
                 "Totale Costi\nal netto di iva",
                 "Totale Profitti",
                 "Margine",
-                "Ricarico"
+                "Ricarico",
+                "Giorni lavorativi",
+                "Giorni festivi"
         };
 
         //Valori Vendita Lordi
@@ -238,6 +240,13 @@ public class ConfrontoTotaliVenditeRows {
         //row8.setDiffPercTotale(row8.getTotale(),row8.getTotalePrecedente());
 
         rows.add(row8);
+
+        //Giorni lavorativi
+        ConfrontoTotaliVenditeRowData row9 = new ConfrontoTotaliVenditeRowData();
+        row9.setColDescrizione(descrizioni[8]);
+        row9.setTotaleLibere(new BigDecimal(totaliGenerali.getGiorniLavorativi()));
+        row9.setTotaleLiberePrec(new BigDecimal(totaliGeneraliPrecedenti.getGiorniLavorativi()));
+        rows.add(row9);
 
     }
 
