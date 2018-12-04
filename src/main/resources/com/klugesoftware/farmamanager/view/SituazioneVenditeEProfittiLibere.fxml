@@ -174,7 +174,7 @@
                   </TableView>
                </content>
             </ScrollPane>
-            <Pane>
+            <Pane fx:id="pnlgrafico">
                <children>
                   <AreaChart fx:id="graficoVenditeEProfittiLibere" layoutX="-6.0" layoutY="141.0" prefHeight="400.0" prefWidth="571.0" title="Vendite Libere e Profitti">
                     <xAxis>

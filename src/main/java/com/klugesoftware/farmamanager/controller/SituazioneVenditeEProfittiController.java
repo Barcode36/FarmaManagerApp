@@ -28,6 +28,7 @@ import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -41,6 +42,7 @@ import java.util.concurrent.Executors;
 public class SituazioneVenditeEProfittiController extends VenditeEProfittiController implements Initializable {
 
     private final Logger logger = LogManager.getLogger(SituazioneVenditeEProfittiController.class.getName());
+    private final String FTP_PROPERTIES_FILE = "./resources/config/configFtp.properties";
     @FXML private Button btnVenditeLibere;
     @FXML private TableView<ElencoTotaliGiornalieriRowData> tableVenditeEProfittiTotali;
     @FXML private TableColumn<ElencoTotaliGiornalieriRowData,String> colData;
@@ -66,12 +68,10 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
     private ChangePeriodListener changePeriodListenerBack;
     private ChangePeriodListener changePeriodListenerNext;
     private ChangeDateAndViewListener changeDateListener;
-    private ExecutorService executor;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        executor = Executors.newFixedThreadPool(1);
         btnUpdate.setVisible(false);
         rdtBtnVistaMensile.setUserData("vistaMensile");
         rdtBtnVistaSettimanale.setUserData("vistaSettimanale");
@@ -153,38 +153,17 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
     }
 
     private void verifyUpdate(){
-        FTPConnector ftpClient = new FTPConnector();
-        boolean ret = ftpClient.isEmptyFolderUpdate();
-        if (!ret){
-            btnUpdate.setVisible(true);
-            btnUpdate.setTooltip(new Tooltip("C'è un'aggiornamento versione. Clicca per aggiornare."));
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Aggiornamento Versione FarmaManager");
-            alert.setHeaderText("C'è una nuova versione di FarmaManager.");
-            alert.setContentText("Vuoi aggiornare?");
+        try {
+            Properties prop = new Properties();
+            prop.load(new FileInputStream(FTP_PROPERTIES_FILE));
 
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
-                try {
-                    /*
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/Settings.fxml"));
-                    Parent parent = (Parent)fxmlLoader.load();
-                    SettingsController controller = fxmlLoader.getController();
-                    controller.fireButton();
-                    Scene scene = new Scene(parent);
-                    Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    app_stage.setScene(scene);
-                    app_stage.show();
-                    */
-                }catch(Exception ex){
-                    logger.error(ex.getMessage());
-                }
-            } else {
-                ;
+            if ( prop.getProperty("updating").equals("true")){
+                btnUpdate.setVisible(true);
+                btnUpdate.setTooltip(new Tooltip("C'è un'aggiornamento versione. Clicca per aggiornare."));
             }
-
+        }catch (IOException ex){
+            logger.error(ex.getMessage());
         }
-
     }
 
     private void aggiornaGrafico(AreaChart<String,Number> graficoVenditeEProfitti,ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe){
@@ -342,7 +321,30 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
 
     @FXML
     private void btnUpdateClicked(ActionEvent event){
-        //TODO: da terminare...
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Aggiornamento Versione FarmaManager");
+        alert.setHeaderText("C'è una nuova versione di FarmaManager.");
+        alert.setContentText("Vuoi aggiornare?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            try {
+                    /*
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/Settings.fxml"));
+                    Parent parent = (Parent)fxmlLoader.load();
+                    SettingsController controller = fxmlLoader.getController();
+                    controller.fireButton();
+                    Scene scene = new Scene(parent);
+                    Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    app_stage.setScene(scene);
+                    app_stage.show();
+                    */
+            }catch(Exception ex){
+                logger.error(ex.getMessage());
+            }
+        } else {
+            ;
+        }
     }
 
     @FXML

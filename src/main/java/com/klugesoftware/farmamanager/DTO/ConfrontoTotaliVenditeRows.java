@@ -20,6 +20,8 @@ public class ConfrontoTotaliVenditeRows {
     private Date dateTo;
     private Date dateFromPrec;
     private Date dateToPrec;
+    private Integer giorniLavoratiPrec;
+    private Integer giorniLavorati;
 
     public ConfrontoTotaliVenditeRows(Date dateFrom, Date dateTo, Date dateFromPrec, Date dateToPrec) {
         this.dateFrom = dateFrom;
@@ -52,6 +54,10 @@ public class ConfrontoTotaliVenditeRows {
 
         totaliGeneraliPrecedenti.addElencoTotaliGeneraliVenditaEstrattiGiornalieri(elencoTotaliGiornalieri);
 
+        giorniLavorati = totaliGenerali.getGiorniLavorativi();
+
+        giorniLavoratiPrec = totaliGeneraliPrecedenti.getGiorniLavorativi();
+
         String[] descrizioni = {
                 "Totale Vendite\nLorde",
                 "Totale Sconti",
@@ -61,8 +67,6 @@ public class ConfrontoTotaliVenditeRows {
                 "Totale Profitti",
                 "Margine",
                 "Ricarico",
-                "Giorni lavorativi",
-                "Giorni festivi"
         };
 
         //Valori Vendita Lordi
@@ -241,25 +245,18 @@ public class ConfrontoTotaliVenditeRows {
 
         rows.add(row8);
 
-        //Giorni lavorativi
-        ConfrontoTotaliVenditeRowData row9 = new ConfrontoTotaliVenditeRowData();
-        row9.setColDescrizione(descrizioni[8]);
-        row9.setTotaleLibere(new BigDecimal(totaliGenerali.getGiorniLavorativi()));
-        row9.setTotaleLiberePrec(new BigDecimal(totaliGeneraliPrecedenti.getGiorniLavorativi()));
-        rows.add(row9);
-
-        //Giorni festivi
-        ConfrontoTotaliVenditeRowData row10 = new ConfrontoTotaliVenditeRowData();
-        row10.setColDescrizione(descrizioni[9]);
-        row10.setTotaleLibere(new BigDecimal(totaliGenerali.getGiorniFestivi()));
-        row10.setTotaleLiberePrec(new BigDecimal(totaliGeneraliPrecedenti.getGiorniFestivi()));
-        rows.add(row10);
-
-
     }
 
     public ArrayList<ConfrontoTotaliVenditeRowData> getRows(){
         return rows;
+    }
+
+    public Integer getGiorniLavorati(){
+        return giorniLavorati;
+    }
+
+    public Integer getGiorniLavoratiPrec(){
+        return giorniLavoratiPrec;
     }
 
     public Date getDateFrom() {

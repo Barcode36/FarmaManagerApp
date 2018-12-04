@@ -46,7 +46,7 @@
     -fx-font-size: 16 px;
  }
 
-#pnlHeader{
+#pnlHeader,#graficoComposizioneProfitto{
     -fx-background-color: rgb(238, 238, 238);
 }
 #panelLeft{

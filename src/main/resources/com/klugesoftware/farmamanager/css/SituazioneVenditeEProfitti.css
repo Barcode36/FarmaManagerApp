@@ -48,7 +48,7 @@
     -fx-font-size: 16 px;
  }
 
-#pnlHeader{
+#pnlHeader,#pnlgrafico{
     -fx-background-color: rgb(238, 238, 238);
 }
 #panelLeft{

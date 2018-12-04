@@ -51,6 +51,9 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
     @FXML private ToggleGroup periodoDiConfronto;
     @FXML private ComboBox<String> comboMeseDaConfrontare;
     @FXML private TextArea txtAreaPeriodiConfrontati;
+    @FXML private Label lblNumDayLavoratiPrec;
+    @FXML private Label lblNumDayLavoratiAttuale;
+    @FXML private Label lblNumDayLavoratiDiff;
     private String periodoAttuale;
     private String periodoPrecedente;
     private String testoArea;
@@ -119,7 +122,7 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
 
             periodoAttuale = DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom) + "-" + DateUtility.converteDateToGUIStringDDMMYYYY(dateTo);
             periodoPrecedente = DateUtility.converteDateToGUIStringDDMMYYYY(dateFromPrec) + "-" + DateUtility.converteDateToGUIStringDDMMYYYY(dateToPrec);
-            testoArea = "Periodi confrontati:" + "\n\nprecedente: " + periodoPrecedente + "\n\nattuale:         " + periodoAttuale;
+            testoArea = "Periodi confrontati:" + "\n\nattuale:         " + periodoAttuale + "\n\nprecedente: " + periodoPrecedente ;
             txtAreaPeriodiConfrontati.setText(testoArea);
 
             tabellaTotali.getItems().clear();
@@ -127,6 +130,11 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
             tabellaTotali.refresh();
 
             initGrafico(rows);
+
+            lblNumDayLavoratiAttuale.setText(rows.getGiorniLavorati().toString());
+            lblNumDayLavoratiPrec.setText(rows.getGiorniLavoratiPrec().toString());
+            int diff = rows.getGiorniLavorati().intValue() - rows.getGiorniLavoratiPrec();
+            lblNumDayLavoratiDiff.setText(Integer.toString(diff));
         }else{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Confronto Totali Vendita");

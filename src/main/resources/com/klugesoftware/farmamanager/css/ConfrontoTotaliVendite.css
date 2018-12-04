@@ -44,7 +44,7 @@
     -fx-font-size: 16 px;
  }
 
-#pnlHeader{
+#pnlHeader,#pnlDayLav,#graficoConfronto{
     -fx-background-color: rgb(238, 238, 238);
 }
 #panelLeft{
@@ -75,6 +75,17 @@
 
     -fx-text-fill: #ff0000;
 }
+
+#pnlLblGiorniFeriali{
+    -fx-background-color: rgb(6, 128, 28);
+}
+
+
+#lblGiorniFeriali
+{
+    -fx-text-fill: white;
+}
+
 
 
 

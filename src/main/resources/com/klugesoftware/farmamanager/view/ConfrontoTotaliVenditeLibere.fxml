@@ -104,14 +104,76 @@
    <center>
       <HBox prefHeight="603.0" prefWidth="791.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="tabellaTotali" prefHeight="603.0" prefWidth="603.0">
-              <columns>
-                 <TableColumn fx:id="colDescrizione" prefWidth="199.0" sortable="false" />
-                  <TableColumn fx:id="colTotaleLiberePrecedente" prefWidth="149.0" sortable="false" text="Totali&#10;Riferiti al&#10;Periodo&#10;Precedente" />
-                 <TableColumn fx:id="colTotaleLibere" minWidth="0.0" prefWidth="150.0" sortable="false" text="Totali&#10;Riferiti al&#10;Periodo &#10;Attuale&#10;&#10;" />
-                  <TableColumn fx:id="colDiffPercLibere" prefWidth="102.0" sortable="false" text="Differenza&#10;%" />
-              </columns>
-            </TableView>
+            <VBox>
+               <children>
+                  <TableView fx:id="tabellaTotali" prefHeight="603.0" prefWidth="603.0">
+                    <columns>
+                       <TableColumn fx:id="colDescrizione" prefWidth="199.0" sortable="false" />
+                       <TableColumn fx:id="colTotaleLibere" minWidth="0.0" prefWidth="150.0" sortable="false" text="Totali&#10;Riferiti al&#10;Periodo &#10;Attuale&#10;&#10;" />
+                        <TableColumn fx:id="colTotaleLiberePrecedente" prefWidth="149.0" sortable="false" text="Totali&#10;Riferiti al&#10;Periodo&#10;Precedente" />
+                        <TableColumn fx:id="colDiffPercLibere" prefWidth="102.0" sortable="false" text="Differenza&#10;%" />
+                    </columns>
+                  </TableView>
+                  <Pane fx:id="pnlDayLav" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <GridPane gridLinesVisible="true" layoutX="22.0" layoutY="7.0" prefHeight="86.0" prefWidth="560.0">
+                           <children>
+                              <Pane />
+                              <Label prefHeight="23.0" prefWidth="113.0" text="periodo attuale" GridPane.columnIndex="1">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label prefHeight="23.0" prefWidth="132.0" text="periodo precedente" GridPane.columnIndex="2">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblNumDayLavoratiAttuale" text="23" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Pane fx:id="pnlLblGiorniFeriali" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label fx:id="lblGiorniFeriali" layoutX="19.0" layoutY="11.0" text="Giorni lavorati">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                              <Label prefHeight="23.0" prefWidth="72.0" text="differenza" GridPane.columnIndex="3">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblNumDayLavoratiDiff" text="23" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblNumDayLavoratiPrec" text="23" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="159.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="269.0" minWidth="10.0" prefWidth="139.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="216.0" minWidth="10.0" prefWidth="149.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="216.0" minWidth="10.0" prefWidth="114.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                     </children>
+                  </Pane>
+               </children>
+            </VBox>
             <BarChart fx:id="graficoConfronto" prefHeight="603.0" prefWidth="579.0">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />

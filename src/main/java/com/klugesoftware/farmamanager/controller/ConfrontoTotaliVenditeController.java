@@ -55,6 +55,10 @@ public class ConfrontoTotaliVenditeController implements Initializable {
     @FXML private ToggleGroup periodoDiConfronto;
     @FXML private ComboBox<String> comboMeseDaConfrontare;
     @FXML private TextArea txtAreaPeriodiConfrontati;
+    @FXML private Label lblNumDayLavoratiDiff;
+    @FXML private Label lblNumDayLavoratiPrec;
+    @FXML private Label lblNumDayLavoratiAttuale;
+
     private String periodoAttuale;
     private String periodoPrecedente;
     private String testoArea;
@@ -153,6 +157,11 @@ public class ConfrontoTotaliVenditeController implements Initializable {
 
     }
 
+    /**
+     *
+     * @return true se ci sono valori relativi al periodo di riferimento e quindi si può fare un confronto,
+     * altrimenti ritorna false e non si apro la gui relativa al confronto.
+     */
     public boolean getConfrontabile(){
         return confrontabile;
     }
@@ -165,12 +174,18 @@ public class ConfrontoTotaliVenditeController implements Initializable {
 
             periodoAttuale = DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom) + "-" + DateUtility.converteDateToGUIStringDDMMYYYY(dateTo);
             periodoPrecedente = DateUtility.converteDateToGUIStringDDMMYYYY(dateFromPrec) + "-" + DateUtility.converteDateToGUIStringDDMMYYYY(dateToPrec);
-            testoArea = "Periodi confrontati:" + "\n\nprecedente: " + periodoPrecedente + "\n\nattuale:         " + periodoAttuale;
+            testoArea = "Periodi confrontati:" + "\n\nattuale:         " + periodoAttuale + "\n\nprecedente: " + periodoPrecedente ;
             txtAreaPeriodiConfrontati.setText(testoArea);
 
             tabellaTotali.getItems().clear();
             tabellaTotali.getItems().setAll(data);
             tabellaTotali.refresh();
+
+            //valorizzo lblGiorni Lavorativi
+            lblNumDayLavoratiAttuale.setText(rows.getGiorniLavorati().toString());
+            lblNumDayLavoratiPrec.setText(rows.getGiorniLavoratiPrec().toString());
+            int diff = rows.getGiorniLavorati().intValue() - rows.getGiorniLavoratiPrec().intValue();
+            lblNumDayLavoratiDiff.setText(Integer.toString(diff));
         }else{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Confronto Totali Vendita");
