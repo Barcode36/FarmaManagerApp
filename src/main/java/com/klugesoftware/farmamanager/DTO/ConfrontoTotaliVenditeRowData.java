@@ -65,13 +65,20 @@ public class ConfrontoTotaliVenditeRowData {
         return ret + " %";
     }
 
+    private String converteGiorni(BigDecimal temp){
+        String ret  = temp.toString().replace(".","");
+        return  ret;
+    }
+
     public String getTotaleLibere() {
         if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")) {
             return converteInPercentuale(totaleLibere);
         } else {
-            return df.format(totaleLibere);
+            if(colDescrizione.equals("Giorni lavorativi") || colDescrizione.equals("Giorni festivi")){
+                return converteGiorni(totaleLibere);
+            }else
+                return df.format(totaleLibere);
         }
-
     }
 
     public void setTotaleLibere(BigDecimal totaleLibere) {
@@ -82,7 +89,10 @@ public class ConfrontoTotaliVenditeRowData {
         if (colDescrizione.equals("Margine") || colDescrizione.equals("Ricarico")) {
             return converteInPercentuale(totaleLiberePrec);
         } else {
-            return df.format(totaleLiberePrec);
+            if (colDescrizione.equals("Giorni lavorativi") || colDescrizione.equals("Giorni festivi") ){
+                return converteGiorni(totaleLiberePrec);
+            }else
+                return df.format(totaleLiberePrec);
         }
     }
 

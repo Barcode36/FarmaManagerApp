@@ -1,4 +1,4 @@
-package com.klugesoftware.farmamanager.controller;
+package com.klugesoftware.farmamanager.main;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

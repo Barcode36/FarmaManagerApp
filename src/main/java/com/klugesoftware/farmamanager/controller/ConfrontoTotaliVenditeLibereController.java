@@ -146,7 +146,6 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
         String sconti = "Sconti";
         String costi = "Costi";
 
-
         ArrayList<ConfrontoTotaliVenditeRowData> rowsData = confrontoTotaliVenditeRows.getRows();
         XYChart.Series seriesPeriodoAttuale = new XYChart.Series();
         seriesPeriodoAttuale.setName(periodoAttuale);
@@ -154,7 +153,6 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
         seriesPeriodoAttuale.getData().add(new XYChart.Data<>(sconti,rowsData.get(1).getValTotaleLibere()));
         seriesPeriodoAttuale.getData().add(new XYChart.Data<>(costi,rowsData.get(4).getValTotaleLibere()));
         seriesPeriodoAttuale.getData().add(new XYChart.Data<>(profitto,rowsData.get(5).getValTotaleLibere()));
-
 
         XYChart.Series seriesPeriodoPrecedente = new XYChart.Series();
         seriesPeriodoPrecedente.setName(periodoPrecedente);

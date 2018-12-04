@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
 Class-Path: dbfdriver.jar log4j-api-2.1.jar commons-io-2.5.jar log4j-c
  ore-2.1.jar SpiritIcons-1.0.0.jar mysql-connector-java-5.1.24-bin.jar
-Main-Class: com.klugesoftware.farmamanager.controller.FarmaManagerMain
+Main-Class: com.klugesoftware.farmamanager.main.FarmaManagerMain
 

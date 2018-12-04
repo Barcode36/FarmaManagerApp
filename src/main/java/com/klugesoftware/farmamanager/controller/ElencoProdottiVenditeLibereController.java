@@ -46,6 +46,7 @@ public class ElencoProdottiVenditeLibereController extends ElencoMinsanControlle
     @FXML private DatePicker txtFldDataFrom;
     @FXML private DatePicker txtFldDataTo;
     @FXML private TextField txtSearch;
+
     private ChangeDateListener changeDateListener;
 
     @Override
@@ -56,6 +57,7 @@ public class ElencoProdottiVenditeLibereController extends ElencoMinsanControlle
         txtFldDataTo.setUserData("dataTo");
         txtFldDataFrom.setOnAction(changeDateListener);
         txtFldDataTo.setOnAction(changeDateListener);
+
 
 
         colData.setCellValueFactory(new PropertyValueFactory<ElencoProdottiLiberaVenditaRowData,String>("data"));

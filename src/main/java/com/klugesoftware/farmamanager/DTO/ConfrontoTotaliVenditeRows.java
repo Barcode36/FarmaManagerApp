@@ -248,6 +248,14 @@ public class ConfrontoTotaliVenditeRows {
         row9.setTotaleLiberePrec(new BigDecimal(totaliGeneraliPrecedenti.getGiorniLavorativi()));
         rows.add(row9);
 
+        //Giorni festivi
+        ConfrontoTotaliVenditeRowData row10 = new ConfrontoTotaliVenditeRowData();
+        row10.setColDescrizione(descrizioni[9]);
+        row10.setTotaleLibere(new BigDecimal(totaliGenerali.getGiorniFestivi()));
+        row10.setTotaleLiberePrec(new BigDecimal(totaliGeneraliPrecedenti.getGiorniFestivi()));
+        rows.add(row10);
+
+
     }
 
     public ArrayList<ConfrontoTotaliVenditeRowData> getRows(){

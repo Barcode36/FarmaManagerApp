@@ -1,5 +1,6 @@
 package com.klugesoftware.farmamanager.controller;
 
+import com.klugesoftware.FarmaManagerUpdating.ftp.FTPConnector;
 import com.klugesoftware.farmamanager.DTO.ElencoTotaliGiornalieriRowData;
 import com.klugesoftware.farmamanager.db.ElencoTotaliGiornalieriRowDataManager;
 import com.klugesoftware.farmamanager.db.ImportazioniDAOManager;
@@ -7,6 +8,7 @@ import com.klugesoftware.farmamanager.model.Importazioni;
 import com.klugesoftware.farmamanager.utility.DateUtility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +35,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.*;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SituazioneVenditeEProfittiController extends VenditeEProfittiController implements Initializable {
 
@@ -58,13 +62,17 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
     @FXML private RadioButton rdtBtnVistaSettimanale;
     @FXML private RadioButton rdtBtnVistaMensile;
     @FXML private Button btnAggMov;
+    @FXML private Button btnUpdate;
     private ChangePeriodListener changePeriodListenerBack;
     private ChangePeriodListener changePeriodListenerNext;
     private ChangeDateAndViewListener changeDateListener;
+    private ExecutorService executor;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        executor = Executors.newFixedThreadPool(1);
+        btnUpdate.setVisible(false);
         rdtBtnVistaMensile.setUserData("vistaMensile");
         rdtBtnVistaSettimanale.setUserData("vistaSettimanale");
         txtFldDataFrom.setUserData("dataFrom");
@@ -140,6 +148,42 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
 
         aggiornaGrafico(graficoVenditeEProfitti,elencoRighe);
         aggiornaMovimenti();
+        verifyUpdate();
+
+    }
+
+    private void verifyUpdate(){
+        FTPConnector ftpClient = new FTPConnector();
+        boolean ret = ftpClient.isEmptyFolderUpdate();
+        if (!ret){
+            btnUpdate.setVisible(true);
+            btnUpdate.setTooltip(new Tooltip("C'è un'aggiornamento versione. Clicca per aggiornare."));
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Aggiornamento Versione FarmaManager");
+            alert.setHeaderText("C'è una nuova versione di FarmaManager.");
+            alert.setContentText("Vuoi aggiornare?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                try {
+                    /*
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/Settings.fxml"));
+                    Parent parent = (Parent)fxmlLoader.load();
+                    SettingsController controller = fxmlLoader.getController();
+                    controller.fireButton();
+                    Scene scene = new Scene(parent);
+                    Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+                    app_stage.setScene(scene);
+                    app_stage.show();
+                    */
+                }catch(Exception ex){
+                    logger.error(ex.getMessage());
+                }
+            } else {
+                ;
+            }
+
+        }
 
     }
 
@@ -297,6 +341,11 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
     }
 
     @FXML
+    private void btnUpdateClicked(ActionEvent event){
+        //TODO: da terminare...
+    }
+
+    @FXML
     private void analisiLibereClicked(ActionEvent event){
 
         try {
@@ -399,6 +448,5 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
     public RadioButton getRdbtVistaSettimanale(){
         return rdtBtnVistaSettimanale;
     }
-
 
 }
