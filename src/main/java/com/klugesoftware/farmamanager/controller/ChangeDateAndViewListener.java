@@ -3,14 +3,15 @@ package com.klugesoftware.farmamanager.controller;
 import com.klugesoftware.farmamanager.utility.DateUtility;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
+
 /**
  * Questa classe si occupa di intercettare gli eventi dei
  * - DatePicker dataFrome e dataTo
@@ -40,11 +41,12 @@ public class ChangeDateAndViewListener implements EventHandler<ActionEvent> {
 
         if(event.getSource() instanceof  DatePicker){
             DatePicker dateControl = (DatePicker)event.getSource();
-            if(dateControl.getUserData().equals("dataFrom")){
+            if (dateControl.getUserData().equals("dataFrom")) {
                 setDataFrom();
-            }else{
+            } else {
                 setDataTo();
             }
+
         }else
             if (event.getSource() instanceof RadioButton){
                 RadioButton rdbt = (RadioButton)event.getSource();
@@ -58,7 +60,7 @@ public class ChangeDateAndViewListener implements EventHandler<ActionEvent> {
 
     }
 
-    private void setDataFrom(){
+    protected void setDataFrom(){
         Calendar myCal = Calendar.getInstance(Locale.ITALY);
         Date fromDate = controller.getDateFrom();
         Date toDate = controller.getDateTo();
@@ -74,19 +76,20 @@ public class ChangeDateAndViewListener implements EventHandler<ActionEvent> {
         controller.aggiornaTable(fromDate,toDate);
     }
 
-    private void setDataTo(){
+    protected void setDataTo(){
         Calendar myCal = Calendar.getInstance(Locale.ITALY);
         Date fromDate = controller.getDateFrom();
         Date toDate = controller.getDateTo();
         myCal.setTime(toDate);
         if (controller.getRdbtVistaSettimanale().isSelected()){
-            myCal.set(Calendar.DAY_OF_WEEK,myCal.getActualMinimum(Calendar.DAY_OF_WEEK));
+            myCal.set(Calendar.DAY_OF_WEEK,myCal.getFirstDayOfWeek());
             fromDate = myCal.getTime();
         }else
         if (controller.getRdbtVistaMensile().isSelected()){
             myCal.set(Calendar.DAY_OF_MONTH,myCal.getActualMinimum(Calendar.DAY_OF_MONTH));
             fromDate = myCal.getTime();
         }
+
         controller.aggiornaTable(fromDate,toDate);
     }
 

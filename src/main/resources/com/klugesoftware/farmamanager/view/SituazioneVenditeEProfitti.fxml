@@ -137,12 +137,12 @@
                   <Font size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnAggMov" layoutX="12.0" layoutY="426.0" mnemonicParsing="false" onAction="#aggMovimentiClicked" prefHeight="74.0" prefWidth="77.0" text="ci sono &#10;dati da &#10;aggiornare&#10;&#10;&#10;">
+            <Button fx:id="btnAggMov" layoutX="12.0" layoutY="426.0" mnemonicParsing="false" onAction="#aggMovimentiClicked" prefHeight="74.0" prefWidth="77.0" text="ci sono &#10;dati da &#10;aggiornare&#10;&#10;&#10;" visible="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Button>
-            <Button fx:id="btnSettings" layoutX="9.0" layoutY="524.0" mnemonicParsing="false" onAction="#settingsClicked" prefHeight="74.0" prefWidth="80.0">
+            <Button fx:id="btnSettings" layoutX="9.0" layoutY="524.0" mnemonicParsing="false" onAction="#settingsClicked" prefHeight="74.0" prefWidth="80.0" visible="false">
                <graphic>
                   <ImageView fitHeight="51.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -234,6 +234,11 @@
       <Pane fx:id="panelBottom" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="lblBottom" layoutX="1220.0" layoutY="2.0" text="Cifarma srl">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblBottom2" layoutX="9.0" layoutY="2.0" onMouseClicked="#versionInfoClicked" text="FarmaManager - Versione Beta Gratuita">
                <font>
                   <Font size="10.0" />
                </font>

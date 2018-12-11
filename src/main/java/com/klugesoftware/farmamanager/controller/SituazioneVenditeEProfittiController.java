@@ -23,6 +23,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
@@ -147,7 +148,7 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
         tableVenditeEProfittiTotali.getItems().setAll(elencoRighe);
 
         aggiornaGrafico(graficoVenditeEProfitti,elencoRighe);
-        aggiornaMovimenti();
+        //aggiornaMovimenti();
         verifyUpdate();
 
     }
@@ -250,6 +251,7 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
             Calendar dateTo = Calendar.getInstance(Locale.ITALY);
             Calendar dateFrom = Calendar.getInstance(Locale.ITALY);
             dateFrom.setTime(importazioni.getDataUltimoMovImportato());
+            dateFrom.set(Calendar.DAY_OF_MONTH,dateFrom.get(Calendar.DAY_OF_MONTH)+1);
             dateTo.set(Calendar.DAY_OF_MONTH, dateTo.get(Calendar.DAY_OF_MONTH) - 1);
             if (dateFrom.before(dateTo)) {
                 btnAggMov.setVisible(true);
@@ -259,18 +261,22 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
 
     @FXML
     private void aggMovimentiClicked(ActionEvent event){
+        Calendar dateFrom = Calendar.getInstance(Locale.ITALY);
+        Calendar dateTo = Calendar.getInstance(Locale.ITALY);
+        dateFrom.setTime((ImportazioniDAOManager.findUltimoInsert().getDataUltimoMovImportato()));
+        dateFrom.set(Calendar.DAY_OF_MONTH,dateFrom.get(Calendar.DAY_OF_MONTH)+1);
+        dateTo.set(Calendar.DAY_OF_MONTH,dateTo.get(Calendar.DAY_OF_MONTH)-1);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Conferma Importazione");
         alert.setHeaderText("L'ultimo movimento importato risale al "+DateUtility.converteDateToGUIStringDDMMYYYY(ImportazioniDAOManager.findUltimoInsert().getDataUltimoMovImportato()));
-        alert.setContentText("Vuoi aggiornare i movimenti?");
-
+        alert.setContentText("Vuoi aggiornare i movimenti dal "+DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom.getTime())+" al "+DateUtility.converteDateToGUIStringDDMMYYYY(dateTo.getTime())+" ?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/Settings.fxml"));
                 Parent parent = (Parent)fxmlLoader.load();
                 SettingsController controller = fxmlLoader.getController();
-                controller.fireButton();
+                controller.fireAggiornaMovimentiButton();
                 Scene scene = new Scene(parent);
                 Stage app_stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                 app_stage.setScene(scene);
@@ -369,6 +375,18 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
     }
 
     @FXML
+    private void versionInfoClicked(MouseEvent event){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("Questa è una versione beta, quindi potrebbero esserci errori o funzionalità dell'applicazione che non sono stati ancora perfezionati." +
+                "\nSi tratta di una versione preliminare. Se ci sono funzioni che vorresti aggiungere faccelo sapere." +
+                "\nGrazie.\nBuon Lavoro");
+
+        alert.showAndWait();
+    }
+
+    @FXML
     private void DettaglioVenditeClicked(ActionEvent event) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/DettagliVenditeEProfitti.fxml"));
@@ -443,6 +461,7 @@ public class SituazioneVenditeEProfittiController extends VenditeEProfittiContro
     public Date getDateTo(){
         return DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
     }
+
 
     public RadioButton getRdbtVistaMensile(){
         return rdtBtnVistaMensile;

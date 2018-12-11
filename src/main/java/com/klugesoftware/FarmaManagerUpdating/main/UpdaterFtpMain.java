@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class UpdaterMain extends Application {
+public class UpdaterFtpMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/com/klugesoftware/FarmaManagerUpdating/view/Updater.fxml"));

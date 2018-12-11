@@ -282,7 +282,7 @@ public class SituazioneVenditeEProfittiLibereController extends VenditeEProfitti
     public void aggiornaTable(Date dateFrom, Date dateTo) {
         ObservableList<ElencoTotaliGiornalieriRowData> elencoRighe = FXCollections.observableArrayList(ElencoTotaliGiornalieriRowDataManager.lookUpElencoTotaliGiornalieriBetweenDate((dateFrom),(dateTo)));
         if(!elencoRighe.isEmpty()) {
-            //TODO: messsaggio se movimenti mancanti....
+            //TODO: messaggio se movimenti mancanti....
             aggiornaTable(elencoRighe, dateFrom, dateTo);
         }
     }

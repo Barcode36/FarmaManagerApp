@@ -1,5 +1,6 @@
 package com.klugesoftware.farmamanager.main;
 import com.klugesoftware.FarmaManagerUpdating.ftp.FTPConnector;
+import com.klugesoftware.farmamanager.utility.GetDBFFileName;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,13 +10,11 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FilterInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 
 
@@ -31,18 +30,19 @@ public class FarmaManagerMain extends Application{
             FTPConnector ftpClient = new FTPConnector();
             boolean ret = ftpClient.isEmptyFolderUpdate();
             String nomeFile = "./resources/config/configFtp.properties";
-            Properties properties = new Properties();
-            properties.load(new FileInputStream(nomeFile));
+            Properties propertiesFtp = new Properties();
+            propertiesFtp.load(new FileInputStream(nomeFile));
             if(ret)
-                properties.setProperty("updating","false");
+                propertiesFtp.setProperty("updating","false");
             else
-                properties.setProperty("updating","true");
-            properties.store(new FileOutputStream(nomeFile),null);
+                propertiesFtp.setProperty("updating","true");
+            propertiesFtp.store(new FileOutputStream(nomeFile),null);
+
 
         }catch(IOException ex){
             logger.error(ex.getMessage());
         }
-            BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfitti.fxml"));
+        BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfitti.fxml"));
         Scene sceneSituazioneVenditeEProfitti = new Scene(root);
         primaryStage.setScene(sceneSituazioneVenditeEProfitti);
 

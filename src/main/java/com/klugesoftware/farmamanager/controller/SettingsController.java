@@ -60,6 +60,7 @@ public class SettingsController implements Initializable {
 
     private boolean importazioneIniziale = false;
     private boolean cancellazioneAbilitata = false;
+    private boolean visible = false;
     private final Logger logger = LogManager.getLogger(SettingsController.class.getName());
     private ImportazioneVenditeFromDBF taskMovimenti;
     private ImportazioneGiacenzeFromDBF taskGiacenze;
@@ -123,6 +124,7 @@ public class SettingsController implements Initializable {
 
     @FXML
     private void listenerEsciButton(ActionEvent event){
+        /*
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfitti.fxml"));
             Parent parent = (Parent)fxmlLoader.load();
@@ -134,9 +136,11 @@ public class SettingsController implements Initializable {
         }catch(Exception ex){
             logger.error(ex);
         }
+        */
+        System.exit(0);
     }
 
-    public void fireButton(){
+    public void fireAggiornaMovimentiButton(){
         btnImportaMov.fire();
     }
 
@@ -252,6 +256,8 @@ public class SettingsController implements Initializable {
                 btnImportaMov.setDisable(false);
                 btnCancellaImportazione.setDisable(false);
                 btnCancellaImportazione.setVisible(false);
+                if(!visible)
+                    System.exit(0);
             });
         }
 
@@ -470,5 +476,11 @@ public class SettingsController implements Initializable {
         executor.execute(taskMovAnnoCorrenteTemp);
         }
 
+    /**
+     * @param visible Se visible è True allora verrrà visualizzata la GUI utente e disabilitato l'uscita dalla procedura al termine dell'importazione
+     */
+    public void setVisible(boolean visible){
+        this.visible = visible;
+        }
 
 }

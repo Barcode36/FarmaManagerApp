@@ -309,6 +309,7 @@ public class ElencoProdottiEProfittiController extends VenditeEProfittiControlle
         return DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
     }
 
+
     @Override
     public RadioButton getRdbtVistaMensile() {
         return rdtBtnVistaMensile;

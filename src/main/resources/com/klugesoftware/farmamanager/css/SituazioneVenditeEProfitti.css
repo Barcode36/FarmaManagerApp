@@ -67,7 +67,7 @@
 #lblTitle{
     -fx-text-fill: white;
 }
-#lblBottom{
+#lblBottom,#lblBottom2{
     -fx-text-fill: rgb(43, 120, 228);
 }
 

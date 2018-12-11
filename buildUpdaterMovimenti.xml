@@ -1,0 +1,85 @@
+<project name="UpdaterMovimenti" default="dist" basedir="." >
+	<description>		
+		UpdaterMovimenti
+	</description >
+	<property name="src" location="src/main"/>
+	<property name="lib" location="lib"/>
+	<property name="resources" location="resources"/>
+	<property name="build" location="build"/>
+	<property name="dist" location="dist"/>
+	<property name="dist.dir" location="${build}/dist"/>
+	<property name="version.jar.file" value="1.0.0"/>
+	<property name="jar.file" value="UpdaterMovimenti-${version.jar.file}.jar"/>
+
+
+	<target name="init" depends="clean">
+		<echo>Java/JVM version:${ant.java.version}</echo>
+		<echo>Java/JVM detail version:${java.version}</echo>
+		<mkdir dir="${build}/classes"/>
+		<mkdir dir="${build}/src"/>
+		<mkdir dir="${build}/lib"/>
+		<mkdir dir="${build}/resources"/>
+		<mkdir dir="${build}/dist"/>
+		<copy todir="${build}/src">
+			<fileset dir="src"></fileset>
+		</copy>
+		<copy todir="${build}/lib">
+					<fileset dir="lib"></fileset>
+				</copy>
+		<copy todir="${build}/resources">
+			<fileset  dir="resources">
+				<exclude name="./resources/dbf/*.DBF"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="compile" depends="init" description="compile the source">
+		<path id="class.path">
+			<fileset dir="${build}/lib" >
+			    <include name="*.jar"/>
+			</fileset>
+		</path>
+		<javac   srcdir="${build}/src" destdir="${build}/classes" debug="off" includeantruntime="false" classpathref="class.path" >
+			<compilerarg value="-Xlint:unchecked" />
+			<compilerarg line="-encoding utf-8"/>
+			<classpath>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="dist" depends="compile">		
+		
+		<mkdir dir="${dist.dir}/lib"/>
+		<mkdir dir="${dist.dir}/classes"/>
+		<mkdir dir="${dist.dir}/resources"/>
+		<copy todir="${dist.dir}/lib">
+			<fileset dir="${build}/lib"></fileset>
+		</copy>
+		<copy todir="${dist.dir}/classes">
+			<fileset dir="${build}/classes"></fileset>
+		</copy>
+		<copy todir="${dist.dir}/resources">
+			<fileset dir="${build}/resources"></fileset>
+		</copy>
+		<jar jarfile="${dist.dir}/${jar.file}" basedir="${dist.dir}" >		
+			<manifest  >				 
+				<attribute name="Implemention-Version" value="${version.jar.file}"/>
+				<attribute name="Main-Class" value="com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiVisibleMain"/>
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+		</jar>
+		<mkdir dir="${dist.dir}/release"/>
+		<move todir="${dist.dir}/release">
+		    <fileset dir="${dist.dir}">
+		      <include name="${jar.file}"/>
+		    </fileset>
+		  </move>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build}">	
+		</delete>
+
+	</target>	
+	
+</project>	

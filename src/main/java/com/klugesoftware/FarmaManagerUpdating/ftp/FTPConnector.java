@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class FTPConnector {
 
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
     private final String FTP_HOST_NAME="ftp.klugesoftware.com";
     private final String FTP_USER_NAME="farmamanager@klugesoftware.com";
     private final String FTP_PASSWORD="builder163";

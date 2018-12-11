@@ -6,7 +6,7 @@
 
     <groupId>com.klugesoftware</groupId>
     <artifactId>FarmaManagerApp</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3_alphatest</version>
 
 
     <dependencies>
@@ -242,9 +242,21 @@
                             <mainClass>
                                 com.klugesoftware.farmamanager.main.FarmaManagerMain
                             </mainClass>
+                            <!--
+                            <mainClass>
+                                com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiVisibleMain
+                            </mainClass>
+                            <mainClass>
+                                com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiVisibleMain
+                            </mainClass>
+                            -->
                         </manifest>
                     </archive>
                     <finalName>FarmaManagerApp/FarmaManagerApp-${version}</finalName>
+                    <!--
+                    <finalName>FarmaManagerApp/FarmaManagerUpdaterMovimentiVisible-${version}</finalName>
+                    <finalName>FarmaManagerApp/FarmaManagerUpdaterMovimentiNotVisible-${version}</finalName>
+                    -->
                 </configuration>
             </plugin>
         </plugins>
