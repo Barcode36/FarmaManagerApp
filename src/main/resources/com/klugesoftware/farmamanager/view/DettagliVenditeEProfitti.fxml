@@ -96,7 +96,7 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Label fx:id="lblPeriodo" layoutX="383.0" layoutY="49.0" text=" Settimana" textAlignment="CENTER">
+                  <Label fx:id="lblPeriodo" layoutX="376.0" layoutY="48.0" text=" Settimana" textAlignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>

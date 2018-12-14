@@ -24,14 +24,14 @@
                <children>
                   <Pane layoutX="546.0" layoutY="26.0">
                      <children>
-                        <Label layoutX="7.0" layoutY="40.0" text=" a:">
+                        <Label fx:id="lblDateTo" layoutX="14.0" layoutY="46.0" text=" a:">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
                         <DatePicker fx:id="txtFldDataTo" editable="false" layoutX="44.0" layoutY="40.0" prefHeight="32.0" prefWidth="150.0" />
                         <DatePicker fx:id="txtFldDataFrom" editable="false" layoutX="44.0" prefHeight="32.0" prefWidth="150.0" />
-                        <Label layoutY="3.0" text="da:">
+                        <Label fx:id="lblDateFrom" layoutX="11.0" layoutY="6.0" prefHeight="17.0" prefWidth="24.0" text="da:">
                            <font>
                               <Font size="20.0" />
                            </font>

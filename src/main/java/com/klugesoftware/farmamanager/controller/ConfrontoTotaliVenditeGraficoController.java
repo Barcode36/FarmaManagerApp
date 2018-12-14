@@ -91,7 +91,7 @@ public class ConfrontoTotaliVenditeGraficoController implements Initializable{
 
         periodoAttuale = DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom)+"-"+DateUtility.converteDateToGUIStringDDMMYYYY(dateTo);
         periodoPrecedente = DateUtility.converteDateToGUIStringDDMMYYYY(rows.getDateFromPrec())+"-"+DateUtility.converteDateToGUIStringDDMMYYYY(rows.getDateToPrec());
-        testoArea = "Periodi confrontati:"+"\n\nattuale:         "+periodoAttuale+"\n\nprecedente: "+periodoPrecedente;
+        testoArea = "Periodi confrontati:"+"\n\nprecedente: "+periodoPrecedente+"\n\nattuale:         "+periodoAttuale;
         txtAreaPeriodiConfrontati.setText(testoArea);
 
         comboMeseDaConfrontare.getSelectionModel().select(meseDaConfrontare);

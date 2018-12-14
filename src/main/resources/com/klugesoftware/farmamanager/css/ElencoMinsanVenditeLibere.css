@@ -1,17 +1,23 @@
-
+.root * {
+     -fx-font-family: "Calibri";
+ }
 
 .button{
     -fx-background-color: rgb(201, 201, 201);
     -fx-text-fill: black;
+    -fx-font-size: 12;
 }
 
 .button:hover{
     -fx-background-color: rgb(43, 120, 228);
     -fx-text-fill: white;
+    -fx-font-family: "Calibri";
 }
 
 .text-area {
     -fx-background-color: rgb(255, 229, 153);
+    -fx-font-family: Calibri;
+    -fx-font-size: 14;
 }
 
 .text-area .scroll-pane {
@@ -29,37 +35,34 @@
 
 .table-view .column-header .label {
     -fx-font-size: 10pt;
-
-    -fx-text-fill: black;
     -fx-alignment: center;
     -fx-opacity: 1;
 }
 
 .table-cell{
-    -fx-font-size: 12;
-    -fx-alignment: center;
+    -fx-font-size: 14;
+    -fx-alignment: CENTER_RIGHT;
 }
 
-#txtFldDataFrom{
+#colDescrizione,#colMinsan{
+    -fx-alignment: CENTER_LEFT;
+}
+
+#btnEsci{
+    -fx-font-size: 24 ;
+}
+
+#txtFldDataTo,#txtFldDataFrom{
     -fx-font-size: 16 px;
 }
 
-#txtFldDataTo{
+#lblDataFrom,#lblDataTo{
     -fx-font-size: 16 px;
- }
-
-#pnlHeader,#graficoComposizioneRicarico{
-    -fx-background-color: rgb(238, 238, 238);
-}
-#panelLeft{
-    -fx-background-color: rgb(238, 238, 238);
 }
 
-#panelBottom{
+#panelBottom,#panelLeft,#pnlHeader,#graficoComposizioneRicarico{
     -fx-background-color: rgb(238, 238, 238);
 }
-
-
 
 #pnlTitle{
     -fx-background-color: rgb(43, 120, 228);
@@ -67,6 +70,7 @@
 
 #lblTitle{
     -fx-text-fill: white;
+    -fx-font-size: 28;
 }
 #lblBottom{
     -fx-text-fill: rgb(43, 120, 228);

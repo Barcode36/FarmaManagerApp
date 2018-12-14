@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@../css/SituazioneVenditeEProfitti.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.SettingsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@../css/Settings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.SettingsController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -117,12 +118,12 @@
                            </font>
                         </RadioButton>
                         <DatePicker fx:id="fldDateFrom" layoutX="156.0" layoutY="271.0" prefHeight="27.0" prefWidth="153.0" />
-                        <Label layoutX="127.0" layoutY="274.0" text="da">
+                        <Label fx:id="lblDataFrom" layoutX="127.0" layoutY="274.0" text="da">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label layoutX="348.0" layoutY="274.0" text="a">
+                        <Label fx:id="lblDataTo" layoutX="348.0" layoutY="274.0" text="a">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -172,12 +173,12 @@
                            </font>
                         </CheckBox>
                         <DatePicker fx:id="cancDateTo" layoutX="372.0" layoutY="210.0" prefHeight="27.0" prefWidth="153.0" />
-                        <Label layoutX="349.0" layoutY="213.0" text="a">
+                        <Label fx:id="lblCancTo" layoutX="349.0" layoutY="213.0" text="a">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label layoutX="122.0" layoutY="213.0" text="da">
+                        <Label fx:id="lblCancFrom" layoutX="122.0" layoutY="213.0" text="da">
                            <font>
                               <Font size="16.0" />
                            </font>

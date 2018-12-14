@@ -1,27 +1,35 @@
-
+.root * {
+    -fx-font-family: "Calibri";
+}
 
 .button{
     -fx-background-color: rgb(201, 201, 201);
     -fx-text-fill: black;
+    -fx-font-size: 12;
 }
 
 .button:hover{
     -fx-background-color: rgb(43, 120, 228);
     -fx-text-fill: white;
+    -fx-font-family: "Calibri";
 }
+
 
 .text-area {
     -fx-background-color: rgb(255, 229, 153);
+    -fx-font-family: Calibri;
+    -fx-font-size: 14;
 }
 
 .text-area .scroll-pane {
     -fx-background-color: transparent;
+
 }
 
 .text-area .scroll-pane .viewport{
     -fx-background-color: transparent;
-}
 
+}
 
 .text-area .scroll-pane .content{
     -fx-background-color: transparent;
@@ -29,65 +37,62 @@
 
 .table-view .column-header .label {
     -fx-font-size: 16pt;
-
-    -fx-text-fill: black;
     -fx-alignment: center;
     -fx-opacity: 1;
 }
 
 .table-cell{
-    -fx-font-size: 18;
-    -fx-alignment: center;
+    -fx-font-size: 16;
 }
 
-#txtFldDataFrom{
+#colTotaleVendite,#colTotaleProfitti{
+    -fx-alignment: CENTER_RIGHT;
+}
+
+#btnEsci{
+    -fx-font-size: 24 ;
+}
+
+#lblPeriodo,#rdtBtnVistaSettimanale,#rdtBtnVistaMensile{
+    -fx-font-size: 20;
+}
+
+
+#txtFldDataFrom,#txtFldDataTo{
     -fx-font-size: 16 px;
+
 }
 
-#txtFldDataTo{
-    -fx-font-size: 16 px;
- }
-
-#pnlHeader,#pnlgrafico{
+#pnlHeader,#pnlgrafico,#panelLeft,#panelBottom{
     -fx-background-color: rgb(238, 238, 238);
-}
-#panelLeft{
-    -fx-background-color: rgb(238, 238, 238);
-}
 
-#panelBottom{
-    -fx-background-color: rgb(238, 238, 238);
 }
-
 
 #pnlTitle{
     -fx-background-color: rgb(43, 120, 228);
+
 }
 
 #lblTitle{
     -fx-text-fill: white;
+    -fx-font-size: 28;
 }
+
 #lblBottom,#lblBottom2{
     -fx-text-fill: rgb(43, 120, 228);
+
 }
 
-#lblTotProfitti{
+#lblTotProfitti,#lblTotVendite,#lblTitleTotProfitti,#lblTitleTotVendite{
     -fx-text-fill: #ff5d00;
-}
-#lblTotVendite{
-    -fx-text-fill: #ff5d00;
+    -fx-font-size: 24;
 }
 
-#lblTitleTotProfitti{
-    -fx-text-fill: #ff5d00;
-}
-#lblTitleTotVendite{
-    -fx-text-fill: #ff5d00;
-}
 
 #btnAggMov{
     -fx-background-color: rgb(6, 128, 28);
     -fx-text-fill: #eeeeee;
+
 }
 
 

@@ -1,13 +1,17 @@
-
+.root * {
+    -fx-font-family: "Calibri";
+}
 
 .button{
     -fx-background-color: rgb(201, 201, 201);
     -fx-text-fill: black;
+    -fx-font-size: 12;
 }
 
 .button:hover{
     -fx-background-color: rgb(43, 120, 228);
     -fx-text-fill: white;
+    -fx-font-family: "Calibri";
 }
 
 .text-area {
@@ -29,36 +33,33 @@
 
 .table-view .column-header .label {
     -fx-font-size: 16pt;
-    -fx-text-fill: black;
     -fx-alignment: center;
     -fx-opacity: 1;
 }
 
 .table-cell{
-    -fx-font-size: 18;
+    -fx-font-size: 16;
+    -fx-alignment: CENTER_RIGHT;
 }
-
-#txtFldDataFrom{
-    -fx-font-size: 16 px;
-}
-
-#txtFldDataTo{
-    -fx-font-size: 16 px;
+#colDescrizione{
+     -fx-alignment: CENTER_LEFT;
  }
 
-#pnlHeader,#graficoComposizioneProfitto{
-    -fx-background-color: rgb(238, 238, 238);
-}
-#panelLeft{
-    -fx-background-color: rgb(238, 238, 238);
+#btnEsci{
+    -fx-font-size: 24 ;
 }
 
-#panelBottom{
-    -fx-background-color: rgb(238, 238, 238);
+#lblPeriodo,#rdtBtnVistaSettimanale,#rdtBtnVistaMensile{
+    -fx-font-size: 20;
 }
 
+#txtFldDataTo,#txtFldDataFrom{
+    -fx-font-size: 16 px;
+}
 
-
+#panelBottom,#panelLeft,#pnlHeader,#graficoComposizioneProfitto{
+    -fx-background-color: rgb(238, 238, 238);
+}
 
 #pnlTitle{
     -fx-background-color: rgb(43, 120, 228);
@@ -66,6 +67,7 @@
 
 #lblTitle{
     -fx-text-fill: white;
+    -fx-font-size: 28;
 }
 #lblBottom{
     -fx-text-fill: rgb(43, 120, 228);

@@ -122,7 +122,7 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
 
             periodoAttuale = DateUtility.converteDateToGUIStringDDMMYYYY(dateFrom) + "-" + DateUtility.converteDateToGUIStringDDMMYYYY(dateTo);
             periodoPrecedente = DateUtility.converteDateToGUIStringDDMMYYYY(dateFromPrec) + "-" + DateUtility.converteDateToGUIStringDDMMYYYY(dateToPrec);
-            testoArea = "Periodi confrontati:" + "\n\nattuale:         " + periodoAttuale + "\n\nprecedente: " + periodoPrecedente ;
+            testoArea = "Periodi confrontati:" + "\n\nprecedente: " + periodoPrecedente  + "\n\nattuale:         " + periodoAttuale ;
             txtAreaPeriodiConfrontati.setText(testoArea);
 
             tabellaTotali.getItems().clear();

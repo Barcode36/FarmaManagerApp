@@ -5,13 +5,21 @@
 .button{
     -fx-background-color: rgb(201, 201, 201);
     -fx-text-fill: black;
-    -fx-font-size: 12;
+    -fx-font-size: 18;
+}
+
+.radio-button,.check-box{
+    -fx-font-size: 16;
 }
 
 .button:hover{
     -fx-background-color: rgb(43, 120, 228);
     -fx-text-fill: white;
     -fx-font-family: "Calibri";
+}
+
+.list-view{
+    -fx-font-size: 14;
 }
 
 .text-area {
@@ -22,59 +30,50 @@
 
 .text-area .scroll-pane {
     -fx-background-color: transparent;
+
 }
 
 .text-area .scroll-pane .viewport{
     -fx-background-color: transparent;
-}
 
+}
 
 .text-area .scroll-pane .content{
     -fx-background-color: transparent;
 }
 
 .table-view .column-header .label {
-    -fx-font-size: 10pt;
+    -fx-font-size: 16pt;
     -fx-alignment: center;
     -fx-opacity: 1;
 }
 
 .table-cell{
-    -fx-font-size: 12;
-    -fx-alignment: CENTER_RIGHT;
+    -fx-font-size: 16;
 }
 
-#colMinsan1,#colMinsan2,#colMinsan3,#colDescrizione1,#colDescrizione2,#colDescrizione3{
-    -fx-alignment: CENTER_LEFT;
+#colTotaleVendite,#colTotaleProfitti{
+    -fx-alignment: CENTER_RIGHT;
 }
 
 #btnEsci{
     -fx-font-size: 24 ;
 }
 
-#btnAggMov{
-    -fx-background-color: rgb(6, 128, 28);
-    -fx-text-fill: #eeeeee;
-}
 
-#txtFldDataTo,#txtFldDataFrom{
+#fldDateFrom,#fldDateTo,#cancDateFrom,#cancDateTo,#lblDataFrom,#lblDataTo,#lblCancFrom,#lblCancTo{
     -fx-font-size: 16 px;
+
 }
 
-#lblDateFrom,#lblDateTo{
-    -fx-font-size: 16;
-}
-
-#pnlHeader,#panelLeft,#panelBottom,#pnlSeparatore{
+#pnlHeader,#pnlgrafico,#panelLeft,#panelBottom{
     -fx-background-color: rgb(238, 238, 238);
+
 }
 
-#pnlTitle,#pnlTitleTable1,#pnlTitleTable2,#pnlTitleTable3  {
+#pnlTitle{
     -fx-background-color: rgb(43, 120, 228);
-}
 
-#lblPeriodo,#rdtBtnVistaSettimanale,#rdtBtnVistaMensile{
-    -fx-font-size: 20;
 }
 
 #lblTitle{
@@ -82,23 +81,21 @@
     -fx-font-size: 28;
 }
 
-#lblTable1,#lblTable2,#lblTable3 {
-    -fx-text-fill: white;
+#lblBottom,#lblBottom2{
+    -fx-text-fill: rgb(43, 120, 228);
+
+}
+
+#lblTotProfitti,#lblTotVendite,#lblTitleTotProfitti,#lblTitleTotVendite{
+    -fx-text-fill: #ff5d00;
     -fx-font-size: 24;
 }
 
-#lblBottom{
-    -fx-text-fill: rgb(43, 120, 228);
+
+#btnAggMov{
+    -fx-background-color: rgb(6, 128, 28);
+    -fx-text-fill: #eeeeee;
+
 }
-
-#lblTitleTotVendite,#lblTitleTotProfitti,#lblTotVendite,#lblTotProfitti{
-    -fx-text-fill: #ff5d00;
-}
-
-.clnProfitto{
-    -fx-background-color: rgb(201, 201, 201);
-}
-
-
 
 

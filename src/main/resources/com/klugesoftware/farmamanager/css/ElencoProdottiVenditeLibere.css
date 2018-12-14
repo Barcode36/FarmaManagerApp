@@ -1,4 +1,6 @@
-
+.root * {
+    -fx-font-family: "Calibri";
+}
 
 .button{
     -fx-background-color: rgb(201, 201, 201);
@@ -29,36 +31,31 @@
 
 .table-view .column-header .label {
     -fx-font-size: 10pt;
-
-    -fx-text-fill: black;
     -fx-alignment: center;
     -fx-opacity: 1;
 }
 
 .table-cell{
-    -fx-font-size: 12;
-    -fx-alignment: center;
+    -fx-font-size: 14;
+    -fx-alignment: CENTER_RIGHT;
 }
 
-#txtFldDataFrom{
+#colData,#colDescrizione,#colMinsan{
+    -fx-alignment: CENTER_LEFT;
+}
+
+#btnEsci{
+    -fx-font-size: 24 ;
+}
+
+#txtFldDataTo,#txtFldDataFrom{
     -fx-font-size: 16 px;
 }
 
-#txtFldDataTo{
-    -fx-font-size: 16 px;
- }
 
-#pnlHeader{
+#panelBottom,#panelLeft,#pnlHeader{
     -fx-background-color: rgb(238, 238, 238);
 }
-#panelLeft{
-    -fx-background-color: rgb(238, 238, 238);
-}
-
-#panelBottom{
-    -fx-background-color: rgb(238, 238, 238);
-}
-
 
 
 #pnlTitle{
@@ -67,6 +64,7 @@
 
 #lblTitle{
     -fx-text-fill: white;
+    -fx-font-size: 28;
 }
 #lblBottom{
     -fx-text-fill: rgb(43, 120, 228);
