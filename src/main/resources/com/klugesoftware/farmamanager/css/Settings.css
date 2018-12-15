@@ -5,11 +5,11 @@
 .button{
     -fx-background-color: rgb(201, 201, 201);
     -fx-text-fill: black;
-    -fx-font-size: 18;
+    -fx-font-size: 16;
 }
 
 .radio-button,.check-box{
-    -fx-font-size: 16;
+    -fx-font-size: 14;
 }
 
 .button:hover{

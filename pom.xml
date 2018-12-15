@@ -248,22 +248,21 @@
                             <mainClass>
                                 com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiVisibleMain
                             </mainClass>
-
-                            <mainClass>
-                                com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiVisibleMain
+-->
+<!--                            <mainClass>
+                                com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiNotVisibleMain
                             </mainClass>
-                            -->
-
+-->
                         </manifest>
                     </archive>
 
                     <finalName>FarmaManagerApp/FarmaManagerApp-${version}</finalName>
 
-                    <!--
+<!--
                     <finalName>FarmaManagerApp/FarmaManagerUpdaterMovimentiVisible-${version}</finalName>
 
                     <finalName>FarmaManagerApp/FarmaManagerUpdaterMovimentiNotVisible-${version}</finalName>
-                    -->
+-->
                 </configuration>
             </plugin>
         </plugins>

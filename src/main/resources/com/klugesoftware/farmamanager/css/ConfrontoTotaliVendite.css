@@ -40,7 +40,7 @@
 }
 
 .table-cell{
-    -fx-font-size: 16;
+    -fx-font-size: 14;
     -fx-alignment: CENTER_RIGHT;
 }
 
@@ -101,5 +101,5 @@
 }
 
 #pnlDayLav{
-    -fx-font-size: 18;
+    -fx-font-size: 14;
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@../css/SituazioneVenditeEProfitti.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.SituazioneVenditeEProfittiController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1250.0" stylesheets="@../css/SituazioneVenditeEProfitti.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.SituazioneVenditeEProfittiController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -43,7 +43,7 @@
                      <image>
                         <Image url="@../img/logo-temp.jpg" />
                      </image></ImageView>
-                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1107.0" layoutY="28.0" mnemonicParsing="false" onAction="#listenerEsciButton" text="Esci">
+                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1072.0" layoutY="28.0" mnemonicParsing="false" onAction="#listenerEsciButton" prefHeight="66.0" prefWidth="161.0" text="Esci">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -72,12 +72,12 @@
                         </RadioButton>
                      </children>
                   </VBox>
-                  <TextArea fx:id="txtAreaInfo" editable="false" layoutX="865.0" layoutY="21.0" prefHeight="81.0" prefWidth="222.0" text="I totali si riferiscono alla somma delle vendite libere e delle vendite ssn" wrapText="true">
+                  <TextArea fx:id="txtAreaInfo" editable="false" layoutX="851.0" layoutY="17.0" prefHeight="86.0" prefWidth="199.0" text="I totali si riferiscono alla somma delle vendite libere e delle vendite ssn" wrapText="true">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </TextArea>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="815.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="801.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="/com/klugesoftware/farmamanager/img/icons8-about-50.png" />
                      </image>
@@ -168,7 +168,7 @@
          <children>
             <ScrollPane hbarPolicy="NEVER" prefHeight="639.0" prefWidth="606.0" vbarPolicy="NEVER">
                <content>
-                  <TableView fx:id="tableVenditeEProfittiTotali" prefHeight="600.0" prefWidth="604.0">
+                  <TableView fx:id="tableVenditeEProfittiTotali" prefHeight="454.0" prefWidth="602.0">
                     <columns>
                       <TableColumn fx:id="colData" editable="false" prefWidth="160.0" text="Data" />
                       <TableColumn fx:id="colTotaleVendite" editable="false" prefWidth="241.0" text="Totale &#10;Vendite" />
@@ -180,9 +180,9 @@
                   </TableView>
                </content>
             </ScrollPane>
-            <Pane fx:id="pnlgrafico">
+            <Pane fx:id="pnlgrafico" prefHeight="457.0" prefWidth="544.0">
                <children>
-                  <AreaChart fx:id="graficoVenditeEProfitti" layoutX="-6.0" layoutY="141.0" prefHeight="400.0" prefWidth="571.0" title="Vendite e Profitti">
+                  <AreaChart fx:id="graficoVenditeEProfitti" layoutY="143.0" prefHeight="313.0" prefWidth="536.0" title="Vendite e Profitti">
                     <xAxis>
                       <CategoryAxis gapStartAndEnd="false" side="BOTTOM" tickLength="1.0" fx:id="xAxis" />
                     </xAxis>
@@ -228,9 +228,9 @@
       </HBox>
    </center>
    <bottom>
-      <Pane fx:id="panelBottom" BorderPane.alignment="CENTER">
+      <Pane fx:id="panelBottom" prefHeight="23.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="lblBottom" layoutX="1220.0" layoutY="2.0" text="Cifarma srl">
+            <Label fx:id="lblBottom" layoutX="1175.0" layoutY="1.0" prefHeight="17.0" prefWidth="71.0" text="Cifarma srl">
                <font>
                   <Font size="10.0" />
                </font>

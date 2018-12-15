@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@../css/ConfrontoTotaliVendite.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.ConfrontoTotaliVenditeLibereController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1250.0" stylesheets="@../css/ConfrontoTotaliVendite.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.ConfrontoTotaliVenditeLibereController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -43,7 +43,7 @@
                      <image>
                         <Image url="/com/klugesoftware/farmamanager/img/logo-temp.jpg" />
                      </image></ImageView>
-                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1107.0" layoutY="28.0" mnemonicParsing="false" onAction="#listenerEsciButton" text="Esci">
+                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1093.0" layoutY="28.0" mnemonicParsing="false" onAction="#listenerEsciButton" prefHeight="66.0" prefWidth="149.0" text="Esci">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -73,7 +73,7 @@
                      </children>
                   </VBox>
                   <ComboBox fx:id="comboMeseDaConfrontare" layoutX="316.0" layoutY="48.0" onAction="#clickedMeseDaConfrontare" prefHeight="27.0" prefWidth="246.0" promptText="seleziona il mese da confrontare" visibleRowCount="13" />
-                  <TextArea fx:id="txtAreaPeriodiConfrontati" layoutX="847.0" layoutY="11.0" prefHeight="97.0" prefWidth="251.0" text="&#10;" />
+                  <TextArea fx:id="txtAreaPeriodiConfrontati" layoutX="847.0" layoutY="11.0" prefHeight="97.0" prefWidth="236.0" text="&#10;" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -106,25 +106,25 @@
          <children>
             <VBox>
                <children>
-                  <TableView fx:id="tabellaTotali" prefHeight="603.0" prefWidth="603.0">
+                  <TableView fx:id="tabellaTotali" prefHeight="535.0" prefWidth="572.0">
                     <columns>
-                       <TableColumn fx:id="colDescrizione" prefWidth="199.0" sortable="false" />
-                       <TableColumn fx:id="colTotaleLibere" minWidth="0.0" prefWidth="150.0" sortable="false" text="Totali&#10;Riferiti al&#10;Periodo &#10;Attuale&#10;&#10;" />
-                        <TableColumn fx:id="colTotaleLiberePrecedente" prefWidth="149.0" sortable="false" text="Totali&#10;Riferiti al&#10;Periodo&#10;Precedente" />
-                        <TableColumn fx:id="colDiffPercLibere" prefWidth="102.0" sortable="false" text="Differenza&#10;%" />
+                       <TableColumn fx:id="colDescrizione" prefWidth="179.0" sortable="false" />
+                       <TableColumn fx:id="colTotaleLibere" minWidth="0.0" prefWidth="138.0" sortable="false" text="Totali&#10;Riferiti al&#10;Periodo &#10;Attuale&#10;&#10;" />
+                        <TableColumn fx:id="colTotaleLiberePrecedente" prefWidth="140.0" sortable="false" text="Totali&#10;Riferiti al&#10;Periodo&#10;Precedente" />
+                        <TableColumn fx:id="colDiffPercLibere" prefWidth="112.0" sortable="false" text="Differenza&#10;%" />
                     </columns>
                   </TableView>
                   <Pane fx:id="pnlDayLav" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <GridPane gridLinesVisible="true" layoutX="7.0" layoutY="6.0" prefHeight="86.0" prefWidth="589.0">
+                        <GridPane gridLinesVisible="true" layoutX="7.0" layoutY="6.0" prefHeight="52.0" prefWidth="547.0">
                            <children>
                               <Pane prefHeight="43.0" prefWidth="153.0" />
-                              <Label prefHeight="23.0" prefWidth="131.0" text="periodo attuale" GridPane.columnIndex="1">
+                              <Label prefHeight="18.0" prefWidth="104.0" text="periodo attuale" GridPane.columnIndex="1">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <Label prefHeight="23.0" prefWidth="168.0" text="periodo precedente" GridPane.columnIndex="2">
+                              <Label prefHeight="23.0" prefWidth="144.0" text="periodo precedente" GridPane.columnIndex="2">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -136,14 +136,14 @@
                               </Label>
                               <Pane fx:id="pnlLblGiorniFeriali" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                  <children>
-                                    <Label fx:id="lblGiorniFeriali" layoutX="18.0" layoutY="10.0" text="Giorni lavorati">
+                                    <Label fx:id="lblGiorniFeriali" layoutX="19.0" layoutY="4.0" text="Giorni lavorati">
                                        <font>
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
                                  </children>
                               </Pane>
-                              <Label prefHeight="23.0" prefWidth="89.0" text="differenza" GridPane.columnIndex="3">
+                              <Label prefHeight="23.0" prefWidth="68.0" text="differenza" GridPane.columnIndex="3">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -174,7 +174,7 @@
                   </Pane>
                </children>
             </VBox>
-            <BarChart fx:id="graficoConfronto" prefHeight="603.0" prefWidth="579.0">
+            <BarChart fx:id="graficoConfronto" prefHeight="462.0" prefWidth="577.0">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>
@@ -188,7 +188,7 @@
    <bottom>
       <Pane fx:id="panelBottom" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="lblBottom" layoutX="1220.0" layoutY="2.0" text="Cifarma srl">
+            <Label fx:id="lblBottom" layoutX="1166.0" layoutY="1.0" prefHeight="17.0" prefWidth="70.0" text="Cifarma srl">
                <font>
                   <Font size="10.0" />
                </font>

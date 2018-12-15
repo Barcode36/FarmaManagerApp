@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1285.0" stylesheets="@../css/Settings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.SettingsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1250.0" stylesheets="@../css/Settings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.SettingsController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -27,7 +27,7 @@
                      <image>
                         <Image url="/com/klugesoftware/farmamanager/img/logo-temp.jpg" />
                      </image></ImageView>
-                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1107.0" layoutY="28.0" mnemonicParsing="false" onAction="#listenerEsciButton" text="Esci">
+                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1074.0" layoutY="29.0" mnemonicParsing="false" onAction="#listenerEsciButton" text="Esci">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -40,12 +40,12 @@
                      </graphic>
                   </Button>
                   <VBox alignment="CENTER_LEFT" layoutX="575.0" layoutY="28.0" spacing="10.0" />
-                  <TextArea fx:id="txtAreaInfo" editable="false" layoutX="865.0" layoutY="21.0" prefHeight="81.0" prefWidth="222.0" text="Configurazioni tabelle relative a  Giacenze e Movimenti" wrapText="true">
+                  <TextArea fx:id="txtAreaInfo" editable="false" layoutX="822.0" layoutY="21.0" prefHeight="81.0" prefWidth="222.0" text="Configurazioni tabelle relative a  Giacenze e Movimenti" wrapText="true">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </TextArea>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="815.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="773.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="/com/klugesoftware/farmamanager/img/icons8-about-50.png" />
                      </image>
@@ -90,9 +90,9 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox>
+            <VBox prefHeight="461.0" prefWidth="720.0">
                <children>
-                  <Pane fx:id="importaPane" prefHeight="334.0" prefWidth="631.0">
+                  <Pane fx:id="importaPane" prefHeight="252.0" prefWidth="716.0">
                      <children>
                         <CheckBox fx:id="importaGiacenze" layoutX="29.0" layoutY="28.0" mnemonicParsing="false" text="Importa Giacenze Attuali">
                            <font>
@@ -117,18 +117,18 @@
                               <Font size="16.0" />
                            </font>
                         </RadioButton>
-                        <DatePicker fx:id="fldDateFrom" layoutX="156.0" layoutY="271.0" prefHeight="27.0" prefWidth="153.0" />
-                        <Label fx:id="lblDataFrom" layoutX="127.0" layoutY="274.0" text="da">
+                        <DatePicker fx:id="fldDateFrom" layoutX="367.0" layoutY="208.0" prefHeight="27.0" prefWidth="153.0" />
+                        <Label fx:id="lblDataFrom" layoutX="339.0" layoutY="214.0" text="da">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblDataTo" layoutX="348.0" layoutY="274.0" text="a">
+                        <Label fx:id="lblDataTo" layoutX="527.0" layoutY="214.0" text="a">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="fldDateTo" layoutX="372.0" layoutY="271.0" prefHeight="27.0" prefWidth="153.0" />
+                        <DatePicker fx:id="fldDateTo" layoutX="549.0" layoutY="208.0" prefHeight="27.0" prefWidth="153.0" />
                         <RadioButton fx:id="aggiornaMovimenti" layoutX="29.0" layoutY="76.0" mnemonicParsing="false" selected="true" text="Aggiorna movimenti" toggleGroup="$movRadioButtons">
                            <font>
                               <Font size="16.0" />
@@ -141,7 +141,7 @@
                                     <Image url="/com/klugesoftware/farmamanager/img/icons8-error.png" />
                                  </image>
                               </ImageView>
-                              <TextArea fx:id="warnGiacTxtAreaInfo" editable="false" layoutX="42.0" prefHeight="51.0" prefWidth="373.0" text="è obbligatoria l'importazione delle giacenze perchè la tabella risulta vuota" wrapText="true">
+                              <TextArea fx:id="warnGiacTxtAreaInfo" editable="false" layoutX="42.0" prefHeight="51.0" prefWidth="349.0" text="è obbligatoria l'importazione delle giacenze perchè la tabella risulta vuota" wrapText="true">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -155,7 +155,7 @@
                                     <Image url="/com/klugesoftware/farmamanager/img/icons8-error.png" />
                                  </image>
                               </ImageView>
-                              <TextArea fx:id="warnMovTxtAreaInfo" editable="false" layoutX="42.0" prefHeight="51.0" prefWidth="373.0" text="non risultano precedenti importazioni: l'archivio movimenti potrebbe essere vuoto" wrapText="true">
+                              <TextArea fx:id="warnMovTxtAreaInfo" editable="false" layoutX="42.0" prefHeight="51.0" prefWidth="349.0" text="non risultano precedenti importazioni: l'archivio movimenti potrebbe essere vuoto" wrapText="true">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -164,26 +164,25 @@
                         </Pane>
                      </children>
                   </Pane>
-                  <Separator prefWidth="300.0" />
-                  <Pane fx:id="cancPane" prefHeight="262.0" prefWidth="744.0">
+                  <Pane fx:id="cancPane" prefHeight="208.0" prefWidth="716.0">
                      <children>
                         <CheckBox fx:id="rdbtCancGiacenze" layoutX="30.0" layoutY="34.0" mnemonicParsing="false" text="Cancella Giacenze Attuali">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </CheckBox>
-                        <DatePicker fx:id="cancDateTo" layoutX="372.0" layoutY="210.0" prefHeight="27.0" prefWidth="153.0" />
-                        <Label fx:id="lblCancTo" layoutX="349.0" layoutY="213.0" text="a">
+                        <DatePicker fx:id="cancDateTo" layoutX="549.0" layoutY="113.0" prefHeight="27.0" prefWidth="153.0" />
+                        <Label fx:id="lblCancTo" layoutX="526.0" layoutY="119.0" text="a">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblCancFrom" layoutX="122.0" layoutY="213.0" text="da">
+                        <Label fx:id="lblCancFrom" layoutX="339.0" layoutY="119.0" text="da">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="cancDateFrom" layoutX="157.0" layoutY="209.0" prefHeight="27.0" prefWidth="153.0" />
+                        <DatePicker fx:id="cancDateFrom" layoutX="364.0" layoutY="113.0" prefHeight="27.0" prefWidth="153.0" />
                         <RadioButton fx:id="rdbtCancBetweenDate" layoutX="30.0" layoutY="161.0" mnemonicParsing="false" selected="true" text="Cancella movimenti da intervallo date:">
                            <toggleGroup>
                               <ToggleGroup fx:id="cancRadioButtons" />
@@ -204,19 +203,20 @@
                         </RadioButton>
                      </children>
                   </Pane>
+                  <Separator prefWidth="300.0" />
                </children>
             </VBox>
-            <Pane prefHeight="603.0" prefWidth="533.0">
+            <Pane prefHeight="532.0" prefWidth="526.0">
                <children>
-                  <TextArea fx:id="txtAreaInfoImportazione" editable="false" layoutX="88.0" layoutY="38.0" prefHeight="81.0" prefWidth="360.0" text="sto importando i movimenti da ....a ....." wrapText="true">
+                  <TextArea fx:id="txtAreaInfoImportazione" editable="false" layoutX="88.0" layoutY="26.0" prefHeight="81.0" prefWidth="360.0" text="sto importando i movimenti da ....a ....." wrapText="true">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </TextArea>
-                  <ProgressIndicator fx:id="progressIndicator" layoutX="96.0" layoutY="165.0" prefHeight="90.0" prefWidth="171.0" progress="0.0" />
-                  <ListView fx:id="elencoMessaggi" layoutX="76.0" layoutY="322.0" prefHeight="238.0" prefWidth="372.0" />
+                  <ProgressIndicator fx:id="progressIndicator" layoutX="97.0" layoutY="141.0" prefHeight="90.0" prefWidth="171.0" progress="0.0" />
+                  <ListView fx:id="elencoMessaggi" layoutX="82.0" layoutY="249.0" prefHeight="200.0" prefWidth="372.0" />
                   <ProgressBar fx:id="progressBar" layoutX="209.0" layoutY="260.0" prefWidth="200.0" progress="0.0" visible="false" />
-                  <Button fx:id="btnCancellaImportazione" layoutX="307.0" layoutY="179.0" mnemonicParsing="false" onAction="#cancellaImportazione" text="Interrompi&#10;Importazione&#10;&#10;" />
+                  <Button fx:id="btnCancellaImportazione" layoutX="309.0" layoutY="150.0" mnemonicParsing="false" onAction="#cancellaImportazione" text="Interrompi&#10;Importazione&#10;&#10;" />
                </children>
             </Pane>
          </children>
@@ -225,7 +225,7 @@
    <bottom>
       <Pane fx:id="panelBottom" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="lblBottom" layoutX="1220.0" layoutY="2.0" text="Cifarma srl">
+            <Label fx:id="lblBottom" layoutX="1172.0" layoutY="1.0" prefHeight="17.0" prefWidth="73.0" text="Cifarma srl">
                <font>
                   <Font size="10.0" />
                </font>

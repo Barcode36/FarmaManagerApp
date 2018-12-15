@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="788.0" prefWidth="1285.0" stylesheets="@../css/ElencoProdottiEProfitti.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.ElencoProdottiEProfittiController">
+<BorderPane prefHeight="650.0" prefWidth="1250.0" stylesheets="@../css/ElencoProdottiEProfitti.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.klugesoftware.farmamanager.controller.ElencoProdottiEProfittiController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -42,7 +42,7 @@
                      <image>
                         <Image url="@../img/logo-temp.jpg" />
                      </image></ImageView>
-                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1107.0" layoutY="28.0" mnemonicParsing="false" onAction="#esciClicked" text="Esci">
+                  <Button fx:id="btnEsci" graphicTextGap="30.0" layoutX="1087.0" layoutY="29.0" mnemonicParsing="false" onAction="#esciClicked" text="Esci">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -71,12 +71,12 @@
                         </RadioButton>
                      </children>
                   </VBox>
-                  <TextArea fx:id="txtAreaInfo" editable="false" layoutX="865.0" layoutY="21.0" prefHeight="81.0" prefWidth="222.0" text="I valori si rifeiriscono alle vendite libere nel periodo selezionato" wrapText="true">
+                  <TextArea fx:id="txtAreaInfo" editable="false" layoutX="845.0" layoutY="22.0" prefHeight="81.0" prefWidth="222.0" text="I valori si rifeiriscono alle vendite libere nel periodo selezionato" wrapText="true">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </TextArea>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="815.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="798.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="/com/klugesoftware/farmamanager/img/icons8-about-50.png" />
                      </image>
@@ -143,9 +143,9 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="603.0" prefWidth="469.0">
+            <VBox prefHeight="481.0" prefWidth="458.0">
                <children>
-                  <Pane fx:id="pnlTitleTable1" prefHeight="45.0" prefWidth="455.0">
+                  <Pane fx:id="pnlTitleTable1" prefHeight="53.0" prefWidth="443.0">
                      <children>
                         <Label fx:id="lblTable1" layoutX="87.0" layoutY="8.0" text="PRODOTTI PIU' VENDUTI">
                            <font>
@@ -153,13 +153,13 @@
                            </font></Label>
                      </children>
                   </Pane>
-                  <ScrollPane hbarPolicy="NEVER" prefHeight="558.0" prefWidth="526.0" vbarPolicy="NEVER">
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="432.0" prefWidth="433.0" vbarPolicy="NEVER">
                      <content>
-                        <TableView fx:id="tableQuantita" prefHeight="556.0" prefWidth="458.0">
+                        <TableView fx:id="tableQuantita" prefHeight="420.0" prefWidth="441.0">
                           <columns>
                             <TableColumn fx:id="colMinsan1" editable="false" prefWidth="89.0" sortable="false" text="minsan" />
-                            <TableColumn fx:id="colDescrizione1" editable="false" prefWidth="240.0" sortable="false" text="descrizione" />
-                              <TableColumn fx:id="colPrezzoVendita1" editable="false" prefWidth="67.0" sortable="false" text="prezzo&#10;vendita&#10;" />
+                            <TableColumn fx:id="colDescrizione1" editable="false" prefWidth="206.0" sortable="false" text="descrizione" />
+                              <TableColumn fx:id="colPrezzoVendita1" editable="false" prefWidth="68.0" sortable="false" text="prezzo&#10;vendita&#10;" />
                               <TableColumn fx:id="colQuantita1" editable="false" prefWidth="60.0" sortable="false" text="quantità" />
                           </columns>
                         </TableView>
@@ -170,7 +170,7 @@
             <Pane fx:id="pnlSeparatore" prefHeight="603.0" prefWidth="19.0" />
             <VBox prefHeight="603.0" prefWidth="715.0">
                <children>
-                  <Pane fx:id="pnlTitleTable2" prefHeight="61.0" prefWidth="715.0">
+                  <Pane fx:id="pnlTitleTable2" prefHeight="77.0" prefWidth="700.0">
                      <children>
                         <Label fx:id="lblTable2" layoutX="156.0" layoutY="9.0" text="PRODOTTI A PIU' ALTO PROFITTO">
                            <font>
@@ -178,41 +178,44 @@
                            </font></Label>
                      </children>
                   </Pane>
-                  <ScrollPane hbarPolicy="NEVER" prefHeight="258.0" vbarPolicy="NEVER">
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="238.0" prefWidth="689.0" vbarPolicy="NEVER">
                      <content>
-                        <TableView fx:id="tableHiProfitti" prefHeight="238.0" prefWidth="704.0">
+                        <TableView fx:id="tableHiProfitti" prefHeight="190.0" prefWidth="699.0">
                           <columns>
                             <TableColumn fx:id="colMinsan2" editable="false" prefWidth="104.0" sortable="false" text="minsan" />
-                            <TableColumn fx:id="colDescrizione2" editable="false" prefWidth="215.0" sortable="false" text="descrizione" />
-                              <TableColumn fx:id="colQuantita2" editable="false" prefWidth="71.0" sortable="false" text="quantità&#10;&#10;" />
-                              <TableColumn fx:id="colPrezzoVendita2" editable="false" sortable="false" text="prezzo&#10;vendita&#10;medio&#10;" />
-                              <TableColumn fx:id="colMargineMedio2" editable="false" prefWidth="83.0" sortable="false" text="margine&#10;medio&#10;" />
-                              <TableColumn fx:id="colRicaricoMedio2" editable="false" prefWidth="79.0" sortable="false" text="ricarico&#10;medio&#10;&#10;" />
-                              <TableColumn fx:id="colProfittoMedio2" editable="false" prefWidth="71.0" sortable="false" text="profitto&#10;medio&#10;&#10;" />
+                            <TableColumn fx:id="colDescrizione2" editable="false" prefWidth="202.0" sortable="false" text="descrizione" />
+                              <TableColumn fx:id="colQuantita2" editable="false" prefWidth="61.0" sortable="false" text="quantità&#10;&#10;" />
+                              <TableColumn fx:id="colPrezzoVendita2" editable="false" prefWidth="85.0" sortable="false" text="prezzo&#10;vendita&#10;medio&#10;" />
+                              <TableColumn fx:id="colMargineMedio2" editable="false" prefWidth="75.0" sortable="false" text="margine&#10;medio&#10;" />
+                              <TableColumn fx:id="colRicaricoMedio2" editable="false" prefWidth="81.0" sortable="false" text="ricarico&#10;medio&#10;&#10;" />
+                              <TableColumn fx:id="colProfittoMedio2" editable="false" prefWidth="77.0" sortable="false" text="profitto&#10;medio&#10;&#10;" />
                           </columns>
                         </TableView>
                      </content>
                   </ScrollPane>
-                  <Pane fx:id="pnlSeparatore2" prefHeight="25.0" prefWidth="706.0" />
-                  <Pane fx:id="pnlTitleTable3" layoutX="10.0" layoutY="10.0" prefHeight="65.0" prefWidth="715.0">
+                  <Pane fx:id="pnlSeparatore2" prefHeight="66.0" prefWidth="700.0">
                      <children>
-                        <Label fx:id="lblTable3" layoutX="148.0" layoutY="11.0" text="PRODOTTI A PIU' BASSO PROFITTO">
-                           <font>
-                              <Font size="24.0" />
-                           </font></Label>
-                     </children>
-                  </Pane>
-                  <ScrollPane hbarPolicy="NEVER" layoutX="10.0" layoutY="54.0" prefHeight="278.0" vbarPolicy="NEVER">
+                        <Pane fx:id="pnlTitleTable3" layoutX="1.0" layoutY="-9.0" prefHeight="61.0" prefWidth="698.0">
+                           <children>
+                              <Label fx:id="lblTable3" layoutX="148.0" layoutY="7.0" prefHeight="33.0" prefWidth="411.0" text="PRODOTTI A PIU' BASSO PROFITTO">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children></Pane>
+                  <ScrollPane hbarPolicy="NEVER" layoutX="10.0" layoutY="54.0" prefHeight="228.0" prefWidth="698.0" vbarPolicy="NEVER">
                      <content>
-                        <TableView fx:id="tableLowProfitti" prefHeight="260.0">
+                        <TableView fx:id="tableLowProfitti" prefHeight="190.0" prefWidth="700.0">
                            <columns>
                               <TableColumn fx:id="colMinsan3" editable="false" prefWidth="104.0" sortable="false" text="minsan" />
-                              <TableColumn fx:id="colDescrizione3" editable="false" prefWidth="215.0" sortable="false" text="descrizione" />
-                              <TableColumn fx:id="colQuantita3" editable="false" prefWidth="71.0" sortable="false" text="quantità&#10;&#10;" />
-                              <TableColumn fx:id="colPrezzoVendita3" editable="false" sortable="false" text="prezzo&#10;vendita&#10;medio&#10;" />
-                              <TableColumn fx:id="colMargineMedio3" editable="false" prefWidth="83.0" sortable="false" text="margine&#10;medio&#10;" />
-                              <TableColumn fx:id="colRicaricoMedio3" editable="false" prefWidth="81.0" sortable="false" text="ricarico&#10;medio&#10;&#10;" />
-                              <TableColumn fx:id="colProfittoMedio3" editable="false" prefWidth="69.0" sortable="false" text="profitto&#10;medio&#10;&#10;" />
+                              <TableColumn fx:id="colDescrizione3" editable="false" prefWidth="201.0" sortable="false" text="descrizione" />
+                              <TableColumn fx:id="colQuantita3" editable="false" prefWidth="59.0" sortable="false" text="quantità&#10;&#10;" />
+                              <TableColumn fx:id="colPrezzoVendita3" editable="false" prefWidth="87.0" sortable="false" text="prezzo&#10;vendita&#10;medio&#10;" />
+                              <TableColumn fx:id="colMargineMedio3" editable="false" prefWidth="78.0" sortable="false" text="margine&#10;medio&#10;" />
+                              <TableColumn fx:id="colRicaricoMedio3" editable="false" prefWidth="79.0" sortable="false" text="ricarico&#10;medio&#10;&#10;" />
+                              <TableColumn fx:id="colProfittoMedio3" editable="false" prefWidth="76.0" sortable="false" text="profitto&#10;medio&#10;&#10;" />
                            </columns>
                         </TableView>
                      </content>

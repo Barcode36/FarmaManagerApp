@@ -45,16 +45,7 @@ public class FarmaManagerMain extends Application{
         BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfitti.fxml"));
         Scene sceneSituazioneVenditeEProfitti = new Scene(root);
         primaryStage.setScene(sceneSituazioneVenditeEProfitti);
-
-        /*
-        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-
-        //set Stage boundaries to visible bounds of the main screen
-        primaryStage.setX(primaryScreenBounds.getMinX());
-        primaryStage.setY(primaryScreenBounds.getMinY());
-        primaryStage.setWidth(primaryScreenBounds.getWidth());
-        primaryStage.setHeight(primaryScreenBounds.getHeight());
-        */
+        
         primaryStage.show();
 
     }
