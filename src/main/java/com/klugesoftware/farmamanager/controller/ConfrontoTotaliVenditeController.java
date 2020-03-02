@@ -460,31 +460,43 @@ public class ConfrontoTotaliVenditeController implements Initializable {
                 if (init) {
                     init = false;
                 } else {
+                    Importazioni importazione = new Importazioni();
+                    importazione = ImportazioniDAOManager.findUltimoInsert();
+                    Date lastUpdate = importazione.getDataUltimoMovImportato();
+                    if (newValue.isAfter(DateUtility.converteDateToLocalDate(lastUpdate))) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Congruenza date");
+                        alert.setContentText("E' stata selezionata una data in cui non sono presenti movimenti!!!");
+                        Optional<ButtonType> result = alert.showAndWait();
+                        newValue = oldValue;
+                        return;
+                    }
                     if (observable.getValue().equals(txtFldDataFrom.getValue())) {
                         if (newValue.isBefore(txtFldDataTo.getValue())) {
                             clickedDataFrom(newValue);
                         } else {
                             Date fineMese = DateUtility.ultimoGiornoDelMeseCorrente(DateUtility.converteLocalDateToDate(newValue));
                             txtFldDataTo.setValue(DateUtility.converteDateToLocalDate(fineMese));
-                        }
-                    } else {
-                        if (observable.getValue().equals(txtFldDataTo.getValue())) {
-                            if (newValue.isAfter(txtFldDataFrom.getValue())) {
-                                clickedDataTo(newValue);
-                            } else {
-                                Alert alert = new Alert(Alert.AlertType.WARNING);
-                                alert.setTitle("Congruenza date");
-                                alert.setContentText("La data è precedente alla data iniziale!!!\nImporto come data finale FINE MESE");
-                                Optional<ButtonType> result = alert.showAndWait();
-                                Date firstDate = DateUtility.converteLocalDateToDate(txtFldDataFrom.getValue());
-                                Date lastDate = DateUtility.ultimoGiornoDelMeseCorrente(firstDate);
-                                txtFldDataTo.setValue(DateUtility.converteDateToLocalDate(lastDate));
+                          }
+                        } else{
+                            if (observable.getValue().equals(txtFldDataTo.getValue())) {
+                                if (newValue.isAfter(txtFldDataFrom.getValue())) {
+                                    clickedDataTo(newValue);
+                                } else {
+                                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    alert.setTitle("Congruenza date");
+                                    alert.setContentText("La data è precedente alla data iniziale!!!\nImporto come data finale FINE MESE");
+                                    Optional<ButtonType> result = alert.showAndWait();
+                                    Date firstDate = DateUtility.converteLocalDateToDate(txtFldDataFrom.getValue());
+                                    Date lastDate = DateUtility.ultimoGiornoDelMeseCorrente(firstDate);
+                                    txtFldDataTo.setValue(DateUtility.converteDateToLocalDate(lastDate));
+                                }
                             }
                         }
-                    }
                 }
             }
         }
+
     }
 
 }
