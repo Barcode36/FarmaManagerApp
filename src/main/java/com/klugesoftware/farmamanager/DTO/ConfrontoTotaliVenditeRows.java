@@ -180,7 +180,7 @@ public class ConfrontoTotaliVenditeRows {
             temp = 0;
         row7.setTotaleSSN(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
         if (totaliGeneraliPrecedenti.getTotaleProfittiSSN().doubleValue() > 0 && totaliGeneraliPrecedenti.getTotaleVenditeNetteSSN().doubleValue() > 0) {
-            temp = totaliGeneraliPrecedenti.getTotaleProfittiSSN().doubleValue() / totaliGeneraliPrecedenti.getTotaleVenditeNette().doubleValue() * 100;
+            temp = totaliGeneraliPrecedenti.getTotaleProfittiSSN().doubleValue() / totaliGeneraliPrecedenti.getTotaleVenditeNetteSSN().doubleValue() * 100;
         }else
             temp = 0;
         row7.setTotaleSSNPrecedente(new BigDecimal(temp).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));

@@ -3,6 +3,9 @@ package com.klugesoftware.farmamanager.utility;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +35,14 @@ public class DateUtility {
             date = null;
 		}
         return date;
+	}
+
+	public static Date converteLocalDateToDate(LocalDate localDate){
+		return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+	}
+
+	public static LocalDate converteDateToLocalDate(Date date){
+		return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 	
 	/**

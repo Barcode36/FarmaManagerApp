@@ -42,6 +42,7 @@ public class GetDBFFileName {
     }
 
     public String getMovimentiFileName(Date dateFrom){
+        //FIXME: da sistemare in caso di passaggio d'anno.
         Calendar myCal = Calendar.getInstance(Locale.ITALY);
         myCal.setTime(dateFrom);
         int anno = myCal.get(Calendar.YEAR);

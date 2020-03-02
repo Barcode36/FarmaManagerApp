@@ -4,6 +4,7 @@ package com.klugesoftware.farmamanager.controller;
 import com.klugesoftware.farmamanager.DTO.ConfrontoTotaliVenditeRowData;
 import com.klugesoftware.farmamanager.DTO.ConfrontoTotaliVenditeRows;
 import com.klugesoftware.farmamanager.db.ImportazioniDAOManager;
+import com.klugesoftware.farmamanager.db.TotaliGeneraliVenditaEstrattiDAOManager;
 import com.klugesoftware.farmamanager.model.Importazioni;
 import com.klugesoftware.farmamanager.utility.DateUtility;
 import javafx.beans.value.ChangeListener;
@@ -19,15 +20,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.sql.rowset.JdbcRowSet;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 
@@ -53,7 +57,12 @@ public class ConfrontoTotaliVenditeController implements Initializable {
     @FXML private RadioButton rdtBtnAnnoPrecedente;
     @FXML private RadioButton rdtBtnMesePrecedente;
     @FXML private ToggleGroup periodoDiConfronto;
+    @FXML private RadioButton rdbtIntervalloDate;
+    @FXML private RadioButton rdbtAnnoMese;
+    @FXML private ToggleGroup metodoFiltroDate;
+    @FXML private Pane pnlIntervalloDate;
     @FXML private ComboBox<String> comboMeseDaConfrontare;
+    @FXML private ComboBox<String> comboAnnoDaConfrontare;
     @FXML private TextArea txtAreaPeriodiConfrontati;
     @FXML private Label lblNumDayLavoratiDiff;
     @FXML private Label lblNumDayLavoratiPrec;
@@ -64,6 +73,9 @@ public class ConfrontoTotaliVenditeController implements Initializable {
     private String testoArea;
     private ConfrontoTotaliVenditeRows rows;
     private boolean confrontabile = true;
+    private Map<String,List<String>> mapAnnoEmeseImportati;
+    private boolean init = false;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -71,23 +83,14 @@ public class ConfrontoTotaliVenditeController implements Initializable {
         rdtBtnAnnoPrecedente.setUserData(annoPrecedente);
         rdtBtnMesePrecedente.setUserData(mesePrecedente);
         periodoDiConfronto.selectedToggleProperty().addListener(new ListenerCambioPeriodoConfronto());
-        ArrayList<String> mesiComboBox = new ArrayList<String>();
-        mesiComboBox.add("seleziona il mese da analizzare");
-        mesiComboBox.add("GENNAIO");
-        mesiComboBox.add("FEBBRAIO");
-        mesiComboBox.add("MARZO");
-        mesiComboBox.add("APRILE");
-        mesiComboBox.add("MAGGIO");
-        mesiComboBox.add("GIUGNO");
-        mesiComboBox.add("LUGLIO");
-        mesiComboBox.add("AGOSTO");
-        mesiComboBox.add("SETTEMBRE");
-        mesiComboBox.add("OTTOBRE");
-        mesiComboBox.add("NOVEMBRE");
-        mesiComboBox.add("DICEMBRE");
 
-        comboMeseDaConfrontare.setItems(FXCollections.observableList(mesiComboBox));
-
+        mapAnnoEmeseImportati = new HashMap<>();
+        ArrayList<String> listAnniImportati = TotaliGeneraliVenditaEstrattiDAOManager.listAnniImportati();
+        for(String anno : listAnniImportati){
+            mapAnnoEmeseImportati.put(anno,TotaliGeneraliVenditaEstrattiDAOManager.listMesiImportatiByAnno(anno));
+        }
+        metodoFiltroDate.selectedToggleProperty().addListener(new ListenerCambioFiltroDate());
+        
         colDescrizione.setCellValueFactory(new PropertyValueFactory<ConfrontoTotaliVenditeRowData,String>("colDescrizione"));
         colTotaleLibere.setCellValueFactory(new PropertyValueFactory<ConfrontoTotaliVenditeRowData,BigDecimal>("totaleLibere"));
         colTotaleLiberePrecedente.setCellValueFactory(new PropertyValueFactory<ConfrontoTotaliVenditeRowData,BigDecimal>("totaleLiberePrec"));
@@ -155,6 +158,29 @@ public class ConfrontoTotaliVenditeController implements Initializable {
             }
         });
 
+        //listener datepicker
+        /*
+        txtFldDataFrom.valueProperty().addListener((ov,oldValue,newValue)->{
+            Date dateFrom = DateUtility.converteLocalDateToDate(newValue);
+            Date datoTo = DateUtility.converteGUIStringDDMMYYYYToDate(DateUtility.fineMese(dateFrom));
+            txtFldDataTo.setValue(DateUtility.converteDateToLocalDate(datoTo));
+            clickedDataFrom(newValue);
+        });
+
+        txtFldDataTo.valueProperty().addListener((ov,oldValue,newValue)->{
+            if(newValue.isAfter(txtFldDataFrom.getValue())){
+                System.out.println("hello");
+                clickedDataTo();
+            }else{
+                ;
+            }
+
+        });
+
+         */
+        ListenerDatePicker listenerDatePicker = new ListenerDatePicker();
+        txtFldDataFrom.valueProperty().addListener(listenerDatePicker);
+        txtFldDataTo.valueProperty().addListener(listenerDatePicker);
     }
 
     /**
@@ -213,6 +239,8 @@ public class ConfrontoTotaliVenditeController implements Initializable {
      */
     public void setIntervalloMensile(Date dateFrom, Date dateTo,boolean annoPrecedente){
 
+        this.init = true;
+
         //set the date, set the comboBox and radio button; at init I must set the monthly period VS monthly period of the year before
 
         Date firstDay = DateUtility.primoGiornoDelMeseCorrente(dateFrom);
@@ -231,11 +259,9 @@ public class ConfrontoTotaliVenditeController implements Initializable {
         txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
         myCal.setTime(lastDay);
         txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(firstDay));
-        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(lastDay));
+        //txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(firstDay));
+        //txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(lastDay));
 
-        int meseSelezionato = myCal.get(Calendar.MONTH)+1;
-        comboMeseDaConfrontare.getSelectionModel().select(meseSelezionato);
 
         if (annoPrecedente)
             rdtBtnAnnoPrecedente.setSelected(true);
@@ -247,93 +273,103 @@ public class ConfrontoTotaliVenditeController implements Initializable {
         intiTabella(firstDay,lastDay,datesBefore[0],datesBefore[1]);
     }
 
+
     /**
      *
-     * @param event
+     *
      * Listener clickDataFrom: setto il valore del txtDataTo com ultimo del mese del giorno
      * selezionato in txtDataFrom e aggiorno i valori
      */
-    @FXML
-    private void clickedDataFrom(ActionEvent event){
 
-        //TODO: gestire il caso in cui la dataFrom è posteriore all'ultima data importazione: avvertendo l'utente con DialogBox?
-        Date firstDay = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-        Date lastDay = DateUtility.ultimoGiornoDelMeseCorrente(firstDay);
+    private void clickedDataFrom(LocalDate dateFrom){
 
-        Importazioni importazione = new Importazioni();
-        importazione = ImportazioniDAOManager.findUltimoInsert();
-        Date lastUpdate = importazione.getDataUltimoMovImportato();
+        if(rdbtIntervalloDate.isSelected()) {
+            Date firstDay = DateUtility.converteLocalDateToDate(dateFrom);
+            //Date lastDay = DateUtility.converteGUIStringDDMMYYYYToDate(DateUtility.fineMese(firstDay));
+            Date lastDay = DateUtility.converteLocalDateToDate(txtFldDataTo.getValue());
+            Importazioni importazione = new Importazioni();
+            importazione = ImportazioniDAOManager.findUltimoInsert();
+            Date lastUpdate = importazione.getDataUltimoMovImportato();
 
-        if(lastUpdate.before(lastDay))
-            lastDay = lastUpdate;
+            if (lastUpdate.before(lastDay))
+                lastDay = lastUpdate;
 
 
-        Calendar myCal = Calendar.getInstance(Locale.ITALY);
-        myCal.setTime(firstDay);
-        txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-        myCal.setTime(lastDay);
-        txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(firstDay));
-        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(lastDay));
+            Date[] datesBefore;
+            if (rdtBtnAnnoPrecedente.isSelected())
+                datesBefore = DateUtility.datesBefore(firstDay, lastDay, true);
+            else
+                datesBefore = DateUtility.datesBefore(firstDay, lastDay, false);
 
-        int meseSelezionato = myCal.get(Calendar.MONTH)+1;
-        comboMeseDaConfrontare.getSelectionModel().select(meseSelezionato);
-
-        Date[] datesBefore;
-        if (rdtBtnAnnoPrecedente.isSelected())
-            datesBefore = DateUtility.datesBefore(firstDay,lastDay,true);
-        else
-            datesBefore = DateUtility.datesBefore(firstDay,lastDay,false);
-
-        intiTabella(firstDay,lastDay,datesBefore[0],datesBefore[1]);
+            intiTabella(firstDay, lastDay, datesBefore[0], datesBefore[1]);
+        }
 
     }
 
-    @FXML
-    private void clickedDataTo(ActionEvent event){
-        Date firstDay = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
-        Date lastDay = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
 
-        Importazioni importazione = new Importazioni();
-        importazione = ImportazioniDAOManager.findUltimoInsert();
-        Date lastUpdate = importazione.getDataUltimoMovImportato();
+    private void clickedDataTo(LocalDate newValue){
+        if(rdbtIntervalloDate.isSelected()) {
+            //Date firstDay = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataFrom.getEditor().getText());
+            //Date lastDay = DateUtility.converteGUIStringDDMMYYYYToDate(txtFldDataTo.getEditor().getText());
 
-        if(lastUpdate.before(lastDay))
-            lastDay = lastUpdate;
+            Date firstDay = DateUtility.converteLocalDateToDate(txtFldDataFrom.getValue());
+            Date lastDay = DateUtility.converteLocalDateToDate(newValue);
 
+            Importazioni importazione = new Importazioni();
+            importazione = ImportazioniDAOManager.findUltimoInsert();
+            Date lastUpdate = importazione.getDataUltimoMovImportato();
 
-        Calendar myCal = Calendar.getInstance(Locale.ITALY);
-        myCal.setTime(firstDay);
-        txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-        myCal.setTime(lastDay);
-        txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-        txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(firstDay));
-        txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(lastDay));
+            if (lastUpdate.before(lastDay))
+                lastDay = lastUpdate;
 
-        int meseSelezionato = myCal.get(Calendar.MONTH)+1;
-        comboMeseDaConfrontare.getSelectionModel().select(meseSelezionato);
+            /*
+            Calendar myCal = Calendar.getInstance(Locale.ITALY);
+            myCal.setTime(firstDay);
+            txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
+            myCal.setTime(lastDay);
+            txtFldDataTo.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
+            txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(firstDay));
+            txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(lastDay));
+            */
+            Date[] datesBefore;
+            if (rdtBtnAnnoPrecedente.isSelected())
+                datesBefore = DateUtility.datesBefore(firstDay, lastDay, true);
+            else
+                datesBefore = DateUtility.datesBefore(firstDay, lastDay, false);
 
-        Date[] datesBefore;
-        if (rdtBtnAnnoPrecedente.isSelected())
-            datesBefore = DateUtility.datesBefore(firstDay,lastDay,true);
-        else
-            datesBefore = DateUtility.datesBefore(firstDay,lastDay,false);
-
-        intiTabella(firstDay,lastDay,datesBefore[0],datesBefore[1]);
-
+            intiTabella(firstDay, lastDay, datesBefore[0], datesBefore[1]);
+        }
     }
 
     @FXML
     private void clickedMeseDaConfrontare(ActionEvent event){
+        if(rdbtAnnoMese.isSelected()) {
+            int meseSelezionato = comboMeseDaConfrontare.getSelectionModel().getSelectedIndex();
+            String anno = comboAnnoDaConfrontare.getSelectionModel().getSelectedItem();
+            String mese = comboMeseDaConfrontare.getSelectionModel().getSelectedItem();
+            Calendar myCal = Calendar.getInstance(Locale.ITALY);
+            myCal.set(Calendar.DAY_OF_MONTH, 1);
+            myCal.set(Calendar.MONTH, meseSelezionato);
+            myCal.set(Calendar.YEAR, Integer.parseInt(anno));
+            txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
+            Date dateFrom = DateUtility.converteLocalDateToDate(txtFldDataFrom.getValue());
+            txtFldDataTo.setValue(DateUtility.converteDateToLocalDate(DateUtility.ultimoGiornoDelMeseCorrente(dateFrom)));
+            Date firstDay = DateUtility.converteLocalDateToDate(LocalDate.of(myCal.get(Calendar.YEAR), myCal.get(Calendar.MONTH) + 1, myCal.get(Calendar.DAY_OF_MONTH)));
+            Date lastDay = DateUtility.converteGUIStringDDMMYYYYToDate(DateUtility.fineMese(firstDay));
+            Date[] datesBefore;
+            if (rdtBtnAnnoPrecedente.isSelected())
+                datesBefore = DateUtility.datesBefore(firstDay, lastDay, true);
+            else
+                datesBefore = DateUtility.datesBefore(firstDay, lastDay, false);
 
-        int meseSelezionato = comboMeseDaConfrontare.getSelectionModel().getSelectedIndex();
-        if (meseSelezionato == 0) return;
+            intiTabella(firstDay, lastDay, datesBefore[0], datesBefore[1]);
+        }
+    }
 
-        Calendar myCal = Calendar.getInstance(Locale.ITALY);
-        myCal.set(Calendar.DAY_OF_MONTH,1);
-        myCal.set(Calendar.MONTH,meseSelezionato-1);
-        txtFldDataFrom.setValue(LocalDate.of(myCal.get(Calendar.YEAR),myCal.get(Calendar.MONTH)+1,myCal.get(Calendar.DAY_OF_MONTH)));
-
+    @FXML
+    private void annoClicked(ActionEvent event){
+        if(rdbtAnnoMese.isSelected())
+            comboMeseDaConfrontare.setItems(FXCollections.observableArrayList(mapAnnoEmeseImportati.get(comboAnnoDaConfrontare.getSelectionModel().getSelectedItem())));
     }
 
     @FXML
@@ -389,9 +425,66 @@ public class ConfrontoTotaliVenditeController implements Initializable {
 
         @Override
         public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-            if(periodoDiConfronto.getSelectedToggle() != null){
-                txtFldDataFrom.fireEvent(new ActionEvent());
+                if(rdbtAnnoMese.isSelected())
+                    clickedMeseDaConfrontare(new ActionEvent());
+                else
+                    clickedDataFrom(txtFldDataFrom.getValue());
+        }
+    }
+
+    class ListenerCambioFiltroDate implements ChangeListener<Toggle>{
+
+        @Override
+        public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+            if(rdbtAnnoMese.isSelected()){
+                comboAnnoDaConfrontare.setItems(FXCollections.observableArrayList(mapAnnoEmeseImportati.keySet()));
+                comboAnnoDaConfrontare.setDisable(false);
+                comboMeseDaConfrontare.setDisable(false);
+                pnlIntervalloDate.setDisable(true);
+            }else{
+                comboMeseDaConfrontare.setItems(FXCollections.observableArrayList("seleziona mese "));
+                comboAnnoDaConfrontare.setItems(FXCollections.observableArrayList("seleziona anno "));
+                pnlIntervalloDate.setDisable(false);
+                comboAnnoDaConfrontare.setDisable(true);
+                comboMeseDaConfrontare.setDisable(true);
             }
         }
     }
+
+    class ListenerDatePicker implements ChangeListener<LocalDate>{
+
+
+        @Override
+        public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
+            if (rdbtIntervalloDate.isSelected()) {
+                if (init) {
+                    init = false;
+                } else {
+                    if (observable.getValue().equals(txtFldDataFrom.getValue())) {
+                        if (newValue.isBefore(txtFldDataTo.getValue())) {
+                            clickedDataFrom(newValue);
+                        } else {
+                            Date fineMese = DateUtility.ultimoGiornoDelMeseCorrente(DateUtility.converteLocalDateToDate(newValue));
+                            txtFldDataTo.setValue(DateUtility.converteDateToLocalDate(fineMese));
+                        }
+                    } else {
+                        if (observable.getValue().equals(txtFldDataTo.getValue())) {
+                            if (newValue.isAfter(txtFldDataFrom.getValue())) {
+                                clickedDataTo(newValue);
+                            } else {
+                                Alert alert = new Alert(Alert.AlertType.WARNING);
+                                alert.setTitle("Congruenza date");
+                                alert.setContentText("La data è precedente alla data iniziale!!!\nImporto come data finale FINE MESE");
+                                Optional<ButtonType> result = alert.showAndWait();
+                                Date firstDate = DateUtility.converteLocalDateToDate(txtFldDataFrom.getValue());
+                                Date lastDate = DateUtility.ultimoGiornoDelMeseCorrente(firstDate);
+                                txtFldDataTo.setValue(DateUtility.converteDateToLocalDate(lastDate));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

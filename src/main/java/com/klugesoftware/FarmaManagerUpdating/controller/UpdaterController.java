@@ -32,6 +32,7 @@ public class UpdaterController implements Initializable {
     @FXML private ProgressIndicator progressIndicator;
     @FXML private ListView<String> elencoMessaggi;
 
+
     private Logger logger = LogManager.getLogger(com.klugesoftware.FarmaManagerUpdating.controller.UpdaterController.class.getName());
     private FTPUtilityTask ftpUtilityTask;
     private FileUtility taskFileUtility;

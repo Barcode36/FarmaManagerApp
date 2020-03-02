@@ -40,6 +40,10 @@ public class TotaliGeneraliVenditaEstrattiDAO {
 	
 	static final String SQL_FIND_COUNT_BY_MESE_ANNO = "SELECT COUNT(*) FROM TotaliGeneraliMensili WHERE mese = ? AND anno = ? ";
 
+	static final String SQL_LIST_ANNI_IMPORTATI = "SELECT DISTINCT anno FROM TotaliGeneraliMensili ORDER BY anno ASC";
+
+	static final String SQL_LIST_MESI_IMPORTATI_BY_ANNO = "SELECT mese FROM TotaliGeneraliMensili WHERE anno = ? ORDER BY mese ASC";
+
 	private final Logger logger = LogManager.getLogger(TotaliGeneraliVenditaEstrattiDAO.class.getName());
 	
 	private DAOFactory daoFactory;
@@ -91,6 +95,70 @@ public class TotaliGeneraliVenditaEstrattiDAO {
 			DAOUtil.close(conn, preparedStatement, resultSet);
 		}
 		return elenco;
+	}
+
+	private ArrayList<String> listMesiByAnno(String sql, Object...values){
+		Connection conn = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ArrayList<String> elenco = new ArrayList<String>();
+		try{
+			conn = daoFactory.getConnetcion();
+			preparedStatement = DAOUtil.prepareStatement(conn, sql, false, values);
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet != null) {
+				String ret = "";
+				while(resultSet.next()){
+					switch (resultSet.getString("mese")){
+						case "1": ret = "GENNAIO";break;
+						case "2": ret = "FEBBRAIO";break;
+						case "3": ret = "MARZO";break;
+						case "4": ret = "APRILE";break;
+						case "5": ret = "MAGGIO";break;
+						case "6": ret = "GIUGNO";break;
+						case "7": ret = "LUGLIO";break;
+						case "8": ret = "AGOSTO";break;
+						case "9": ret = "SETTEMBRE";break;
+						case "10": ret = "OTTOBRE";break;
+						case "11": ret = "NOVEMBRE";break;
+						case "12": ret = "DICEMBRE";break;
+					}
+					elenco.add(ret);
+				}
+			}
+		}catch(SQLException ex){
+			logger.error(ex);
+		}finally{
+			DAOUtil.close(conn, preparedStatement, resultSet);
+		}
+		return elenco;
+	}
+
+
+	private ArrayList<String> listAnniImportati(String sql,Object...values){
+		Connection conn = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		ArrayList<String> elenco = new ArrayList<String>();
+		try{
+			conn = daoFactory.getConnetcion();
+			preparedStatement = DAOUtil.prepareStatement(conn, sql, false, values);
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet != null) {
+				while(resultSet.next()){
+					elenco.add(resultSet.getString("anno"));
+				}
+			}
+		}catch(SQLException ex){
+			logger.error(ex);
+		}finally{
+			DAOUtil.close(conn, preparedStatement, resultSet);
+		}
+		return elenco;
+	}
+
+	public ArrayList<String> listMesiImportatiByAnno(String anno){
+		return listMesiByAnno(SQL_LIST_MESI_IMPORTATI_BY_ANNO,anno);
 	}
 
 	public TotaliGeneraliVenditaEstratti create(TotaliGeneraliVenditaEstratti totaleGenerale){
@@ -213,6 +281,9 @@ public class TotaliGeneraliVenditaEstrattiDAO {
 		return totaleGenerale;
 	}
 
+	public ArrayList<String> listAnniImportati(){
+		return listAnniImportati(SQL_LIST_ANNI_IMPORTATI);
+	}
 
 	public TotaliGeneraliVenditaEstratti findById(int idTotale){
 		return find(SQL_FIND_BY_ID, idTotale);

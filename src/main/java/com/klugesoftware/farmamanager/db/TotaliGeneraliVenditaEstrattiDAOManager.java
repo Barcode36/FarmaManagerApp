@@ -9,6 +9,7 @@ import com.klugesoftware.farmamanager.utility.DateUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -28,7 +29,20 @@ public class TotaliGeneraliVenditaEstrattiDAOManager {
 		TotaliGeneraliVenditaEstrattiDAO totaliGeneraliDAO = daoFactory.getTotaliGeneraliVenditaEstrattiDAO();
 		return totaliGeneraliDAO.findById(idTotale);		
 	}
-	
+
+	public static ArrayList<String> listAnniImportati(){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		TotaliGeneraliVenditaEstrattiDAO totaliGeneraliDAO = daoFactory.getTotaliGeneraliVenditaEstrattiDAO();
+		return totaliGeneraliDAO.listAnniImportati();
+	}
+
+	public static ArrayList<String> listMesiImportatiByAnno(String anno){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		TotaliGeneraliVenditaEstrattiDAO totaliGeneraliDAO = daoFactory.getTotaliGeneraliVenditaEstrattiDAO();
+		return totaliGeneraliDAO.listMesiImportatiByAnno(anno);
+	}
+
+
 	public static TotaliGeneraliVenditaEstratti findByDate(int mese,int anno){
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		TotaliGeneraliVenditaEstrattiDAO totaliGeneraliDAO = daoFactory.getTotaliGeneraliVenditaEstrattiDAO();

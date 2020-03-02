@@ -6,7 +6,7 @@
 
     <groupId>com.klugesoftware</groupId>
     <artifactId>FarmaManagerApp</artifactId>
-    <version>1.0.4_betatest</version>
+    <version>1.0.5_betatest</version>
 
 
     <dependencies>
@@ -26,9 +26,9 @@
             <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>com.mysql.jdbc</groupId>
+            <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.24</version>
+            <version>8.0.16</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons.io</groupId>
@@ -243,13 +243,13 @@
                             <mainClass>
                                 com.klugesoftware.farmamanager.main.FarmaManagerMain
                             </mainClass>
+<!--
 
-                            <!--
                             <mainClass>
                                 com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiVisibleMain
                             </mainClass>
--->
-<!--                            <mainClass>
+
+                           <mainClass>
                                 com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiNotVisibleMain
                             </mainClass>
 -->
@@ -257,8 +257,8 @@
                     </archive>
 
                     <finalName>FarmaManagerApp/FarmaManagerApp-${version}</finalName>
-
 <!--
+
                     <finalName>FarmaManagerApp/FarmaManagerUpdaterMovimentiVisible-${version}</finalName>
 
                     <finalName>FarmaManagerApp/FarmaManagerUpdaterMovimentiNotVisible-${version}</finalName>
