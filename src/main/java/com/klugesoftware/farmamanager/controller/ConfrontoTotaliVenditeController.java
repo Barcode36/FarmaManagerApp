@@ -25,13 +25,10 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import javax.sql.rowset.JdbcRowSet;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 
 
@@ -471,6 +468,8 @@ public class ConfrontoTotaliVenditeController implements Initializable {
                         newValue = oldValue;
                         return;
                     }
+
+
                     if (observable.getValue().equals(txtFldDataFrom.getValue())) {
                         if (newValue.isBefore(txtFldDataTo.getValue())) {
                             clickedDataFrom(newValue);

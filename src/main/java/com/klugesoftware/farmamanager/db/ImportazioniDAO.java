@@ -22,7 +22,7 @@ public class ImportazioniDAO {
 			+ "dataImportazione = ?,ultimoNumRegImportato = ?,dataUltimoMovImportato = ?,note = ?) "
 			+ "WHERE idImportazione = ?";
 	private static final String SQL_FIND_LAST_INSERT = "SELECT * FROM Importazioni WHERE "
-			+ "idImportazione = (SELECT max(idImportazione) FROM Importazioni)";
+			+ "dataUltimoMovImportato = (SELECT max(dataUltimoMovImportato) FROM Importazioni) LIMIT 1";
 	private static final String SQL_FIND_ALL = "SELECT * FROM Importazioni";
 	private static final String SQL_FIND_BY_ID = "SELECT * FROM Importazioni WHERE idImportazione = ?";
 	private static final String SQL_TRUNCATE_TABLE = "TRUNCATE TABLE Importazioni";

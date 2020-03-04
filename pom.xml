@@ -231,6 +231,75 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>main_jar</id>
+                        <goals><goal>jar</goal></goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <archive>
+                                <manifestEntries>
+                                    <jarVersion>${version}</jarVersion>
+                                </manifestEntries>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>lib/</classpathPrefix>
+
+                                    <mainClass>
+                                        com.klugesoftware.farmamanager.main.FarmaManagerMain
+                                    </mainClass>
+
+                                </manifest>
+                            </archive>
+                            <finalName>FarmaManagerApp/FarmaManagerApp-${version}</finalName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>utility_visible_jar</id>
+                        <goals><goal>jar</goal></goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <archive>
+                                <manifestEntries>
+                                    <jarVersion>${version}</jarVersion>
+                                </manifestEntries>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>lib/</classpathPrefix>
+
+                                    <mainClass>
+                                        com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiVisibleMain
+                                    </mainClass>
+
+                                </manifest>
+                            </archive>
+                            <finalName>FarmaManagerApp/FarmaManagerUpdaterMovimentiVisible-${version}</finalName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>utility_not_visible_jar</id>
+                        <goals><goal>jar</goal></goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <archive>
+                                <manifestEntries>
+                                    <jarVersion>${version}</jarVersion>
+                                </manifestEntries>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <classpathPrefix>lib/</classpathPrefix>
+
+                                    <mainClass>
+                                        com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiNotVisibleMain
+                                    </mainClass>
+
+                                </manifest>
+                            </archive>
+                            <finalName>FarmaManagerApp/FarmaManagerUpdaterMovimentiNotVisible-${version}</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+                <!--
                 <configuration>
                     <archive>
                         <manifestEntries>
@@ -243,7 +312,7 @@
                             <mainClass>
                                 com.klugesoftware.farmamanager.main.FarmaManagerMain
                             </mainClass>
-<!--
+
 
                             <mainClass>
                                 com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiVisibleMain
@@ -252,18 +321,20 @@
                            <mainClass>
                                 com.klugesoftware.FarmaManagerUpdating.main.UpdaterMovimentiNotVisibleMain
                             </mainClass>
--->
+
                         </manifest>
                     </archive>
 
                     <finalName>FarmaManagerApp/FarmaManagerApp-${version}</finalName>
-<!--
+
+
 
                     <finalName>FarmaManagerApp/FarmaManagerUpdaterMovimentiVisible-${version}</finalName>
 
                     <finalName>FarmaManagerApp/FarmaManagerUpdaterMovimentiNotVisible-${version}</finalName>
--->
+
                 </configuration>
+                -->
             </plugin>
         </plugins>
     </build>
