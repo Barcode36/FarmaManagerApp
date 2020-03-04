@@ -80,7 +80,7 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAOManager {
 
 	private static void aggiungeGiorniNonLavorativi(Date dataOperazione){
 		//lookup ultimo record in TotaliGeneraliGirnalieri
-		TotaliGeneraliVenditaEstrattiGiornalieri lastTotale = lastRecord();
+		TotaliGeneraliVenditaEstrattiGiornalieri lastTotale = lastRecord(dataOperazione);
 		if (lastTotale.getIdTotale() != null){
 			Calendar dataOp = Calendar.getInstance(Locale.ITALY);
 			Calendar dataUltTot = Calendar.getInstance(Locale.ITALY);
@@ -97,10 +97,10 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAOManager {
 		}
 	}
 
-	public static TotaliGeneraliVenditaEstrattiGiornalieri lastRecord(){
+	public static TotaliGeneraliVenditaEstrattiGiornalieri lastRecord(Date dataOperazione){
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		TotaliGeneraliVenditaEstrattiGiornalieriDAO totaliGeneraliDAO = daoFactory.getTotaliGeneraliVenditaEstrattiGiornalieriDAO();
-		return totaliGeneraliDAO.findByMaxId();
+		return totaliGeneraliDAO.findMaxData(dataOperazione);
 	}
 
 }

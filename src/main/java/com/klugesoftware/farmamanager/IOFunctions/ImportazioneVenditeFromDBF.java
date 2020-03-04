@@ -481,7 +481,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 			 *  - calcolo della  percentualeMargineUnitario: (ProfittoUnitario/PrezzoUnitarioVenditaNetto)*100
 			 *  - calcolo della  percentualeRicaricoUnitario: (ProfitttoUnitario/CostoNetto)*100 
 			 *  
-			 *  *****Attenzione in questa fase manca l'eventuale sconto ripartito da Vendita Generale******
+			 *  *****Attenzione in questa fase manca l'eventuale sconto ripartito da Vendita Generale: viene ripartito successivamante in insertMovimento******
 			 */
 
 			if (prodotto.getCostoCompresoIva().doubleValue() > 0){
@@ -771,7 +771,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 						 */
 						double tempPrezzoVenditaNetto = (prodottoVenditaLibera.getPrezzoVendita().doubleValue() - prodottoVenditaLibera.getTotaleScontoUnitario().doubleValue())/(1+((double)prodottoVenditaLibera.getAliquotaIva())/100);
 						prodottoVenditaLibera.setPrezzoVenditaNetto(new BigDecimal(tempPrezzoVenditaNetto).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
-						if ((prodottoVenditaLibera.getCostoCompresoIva().doubleValue() > 0) && (prodottoVenditaLibera.getProfittoUnitario().doubleValue() > 0)){
+						if ((prodottoVenditaLibera.getCostoCompresoIva().doubleValue() > 0) ){
 								prodottoVenditaLibera.setProfittoUnitario(prodottoVenditaLibera.getPrezzoVenditaNetto().subtract(prodottoVenditaLibera.getCostoNettoIva()));
 								if (prodottoVenditaLibera.getProfittoUnitario().doubleValue() > 0){
 								double tempMargine = (prodottoVenditaLibera.getProfittoUnitario().doubleValue()/prodottoVenditaLibera.getPrezzoVenditaNetto().doubleValue())*100;
@@ -826,7 +826,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 						
 		
 						// aggiorno ProfittoUnitario
-						if (prodottoVenditaSSN.getProfittoUnitario().doubleValue() > 0){
+						if (prodottoVenditaSSN.getProfittoUnitario().doubleValue() != 0){
 							double tempProfitto = prodottoVenditaSSN.getPrezzoVenditaNetto().doubleValue() - prodottoVenditaSSN.getCostoNettoIva().doubleValue();
 							prodottoVenditaSSN.setProfittoUnitario(new BigDecimal(tempProfitto).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 							if (prodottoVenditaSSN.getProfittoUnitario().doubleValue() > 0){

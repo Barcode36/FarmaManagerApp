@@ -36,7 +36,7 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAO {
  
 	static final String SQL_FIND_BY_ID = "SELECT * FROM TotaliGeneraliGiornalieri WHERE idTotale = ?";
 
-	static final String SQL_FIND_BY_MAX_ID = "SELECT * FROM TotaliGeneraliGiornalieri WHERE idTotale = (SELECT max(idTotale) FROM TotaliGeneraliGiornalieri) ";
+	static final String SQL_FIND_MAX_DATA = "SELECT * FROM TotaliGeneraliGiornalieri WHERE data in ( select max(data) FROM TotaliGeneraliGiornalieri WHERE data < ? )";
 
 	static final String SQL_FIND_BY_DATA = "SELECT * FROM TotaliGeneraliGiornalieri WHERE data = ? ";
 	
@@ -216,8 +216,8 @@ public class TotaliGeneraliVenditaEstrattiGiornalieriDAO {
 		return find(SQL_FIND_BY_ID, idTotale);
 	}
 
-	public TotaliGeneraliVenditaEstrattiGiornalieri findByMaxId(){
-		return find(SQL_FIND_BY_MAX_ID);
+	public TotaliGeneraliVenditaEstrattiGiornalieri findMaxData(Date dataOperazione){
+		return find(SQL_FIND_MAX_DATA,dataOperazione);
 	}
 	
 	public TotaliGeneraliVenditaEstrattiGiornalieri findByDate(Date data){

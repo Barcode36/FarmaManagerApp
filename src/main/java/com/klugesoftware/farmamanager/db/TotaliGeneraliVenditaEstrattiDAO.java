@@ -40,7 +40,7 @@ public class TotaliGeneraliVenditaEstrattiDAO {
 	
 	static final String SQL_FIND_COUNT_BY_MESE_ANNO = "SELECT COUNT(*) FROM TotaliGeneraliMensili WHERE mese = ? AND anno = ? ";
 
-	static final String SQL_LIST_ANNI_IMPORTATI = "SELECT DISTINCT anno FROM TotaliGeneraliMensili ORDER BY anno ASC";
+	static final String SQL_LIST_ANNI_IMPORTATI = "SELECT DISTINCT anno FROM TotaliGeneraliMensili ORDER BY anno DESC";
 
 	static final String SQL_LIST_MESI_IMPORTATI_BY_ANNO = "SELECT mese FROM TotaliGeneraliMensili WHERE anno = ? ORDER BY mese ASC";
 
