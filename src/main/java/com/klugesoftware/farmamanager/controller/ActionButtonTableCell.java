@@ -16,6 +16,7 @@ public class ActionButtonTableCell<S> extends TableCell<S, Button> {
     public ActionButtonTableCell(String label, Function< S, S> function) {
         this.getStyleClass().add("action-button-table-cell");
         iconButton = new ImageView("/com/klugesoftware/farmamanager/img/1904745-32.png");
+
         this.actionButton = new Button(label);
         this.actionButton.setGraphic(iconButton);
         this.actionButton.setOnAction((ActionEvent e) -> {

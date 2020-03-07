@@ -7,10 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 import com.klugesoftware.farmamanager.db.*;
 import com.klugesoftware.farmamanager.model.*;
@@ -372,17 +369,10 @@ public class ImportazioneVenditeFromDBF extends Task {
 			 *  - calcolo del ProfittoUnitario: (prezzoVenditaNettoDa Sconti ed Iva) - Costo
 			 *  - calcolo della  percentualeMargineUnitario: (ProfittoUnitario/PrezzoUnitarioVenditaNetto)*100
 			 *  - calcolo della  percentualeRicaricoUnitario: (ProfitttoUnitario/CostoNetto)*100 
-			 */			
-			if (prodotto.getCostoCompresoIva().doubleValue() > 0){
-				prodotto.setProfittoUnitario(prodotto.getPrezzoVenditaNetto().subtract(prodotto.getCostoNettoIva()).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
-				if(prodotto.getProfittoUnitario().doubleValue() > 0){
-					double tempPercentualeMargineUnitario = (prodotto.getProfittoUnitario().doubleValue()/prodotto.getPrezzoVenditaNetto().doubleValue())*100;
-					double tempPercentualeRicaricoUnitario = (prodotto.getProfittoUnitario().doubleValue()/prodotto.getCostoNettoIva().doubleValue())*100;
-					prodotto.setPercentualeMargineUnitario(new BigDecimal(tempPercentualeMargineUnitario).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
-					prodotto.setPercentualeRicaricoUnitario(new BigDecimal(tempPercentualeRicaricoUnitario).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
-				}	
-			}
-				
+			 */
+
+			prodotto.setProfittoUnitario(prodotto.getPrezzoVenditaNetto().subtract(prodotto.getCostoNettoIva()));
+			setProfittoMargineRicarico(prodotto);
 		} catch (SQLException e) {
 			logger.error("mappingVenditeSSN(): I can't create record...",e);
 		} finally{
@@ -483,9 +473,10 @@ public class ImportazioneVenditeFromDBF extends Task {
 			 *  
 			 *  *****Attenzione in questa fase manca l'eventuale sconto ripartito da Vendita Generale: viene ripartito successivamante in insertMovimento******
 			 */
-
+			prodotto.setProfittoUnitario(prodotto.getPrezzoVenditaNetto().subtract(prodotto.getCostoNettoIva()));
+			setProfittoMargineRicarico(prodotto);
+			/*
 			if (prodotto.getCostoCompresoIva().doubleValue() > 0){
-				prodotto.setProfittoUnitario(prodotto.getPrezzoVenditaNetto().subtract(prodotto.getCostoNettoIva()));
 				if (prodotto.getProfittoUnitario().doubleValue() > 0){
 					double tempMargine = (prodotto.getProfittoUnitario().doubleValue()/prodotto.getPrezzoVenditaNetto().doubleValue())*100;
 					double tempRicarico = (prodotto.getProfittoUnitario().doubleValue()/prodotto.getCostoNettoIva().doubleValue())*100;
@@ -493,10 +484,75 @@ public class ImportazioneVenditeFromDBF extends Task {
 					prodotto.setPercentualeRicaricoUnitario(new BigDecimal(tempRicarico).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 				}
 			}
+			 */
 		} catch (Exception e) {
 			logger.error("mappingVenditaLibera(): I can't create record...",e);
 		} finally{
 			return false;
+		}
+	}
+
+	/**
+	 *
+	 * @param prodotto
+	 *
+	 * 	Il metodo calcola il margine e ricarico nei vari casi con profittoUnitario,
+	 * 	costoNetto o prezzo Vendita con valori <0 oppure =0 oppure >0
+	 */
+	private void setProfittoMargineRicarico(Object prodotto){
+		ProdottiVenditaLibera prodottoVenditaLibera = null;
+		ProdottiVenditaSSN prodottoVenditaSSN = null;
+		double margineUnitario = 0;
+		double ricaricoUnitario = 0;
+		double profittoUnitario = 0;
+		double prezzoVenditaNetto = 0;
+		double costoNetto = 0;
+		if (prodotto instanceof ProdottiVenditaLibera){
+			prodottoVenditaLibera = (ProdottiVenditaLibera)prodotto;
+			profittoUnitario = prodottoVenditaLibera.getProfittoUnitario().doubleValue();
+			prezzoVenditaNetto = prodottoVenditaLibera.getPrezzoVenditaNetto().doubleValue();
+			costoNetto = prodottoVenditaLibera.getCostoNettoIva().doubleValue();
+		}else{
+			if (prodotto instanceof ProdottiVenditaSSN){
+				prodottoVenditaSSN = (ProdottiVenditaSSN) prodotto;
+				profittoUnitario = prodottoVenditaSSN.getProfittoUnitario().doubleValue();
+				prezzoVenditaNetto = prodottoVenditaSSN.getPrezzoVenditaNetto().doubleValue();
+				costoNetto = prodottoVenditaSSN.getCostoNettoIva().doubleValue();
+			}
+		}
+
+		if(profittoUnitario != 0){
+
+			if(profittoUnitario > 0 && costoNetto == 0 && prezzoVenditaNetto > 0){
+				margineUnitario = (profittoUnitario/Math.abs(prezzoVenditaNetto))*100;
+				ricaricoUnitario = margineUnitario;
+			}else {
+				if (profittoUnitario < 0 && costoNetto > 0 && prezzoVenditaNetto == 0) {
+					ricaricoUnitario = (profittoUnitario / Math.abs(costoNetto)) * 100;
+					margineUnitario = ricaricoUnitario;
+				}else{
+					if(profittoUnitario < 0 && costoNetto == 0 && prezzoVenditaNetto < 0){
+						margineUnitario = (profittoUnitario/Math.abs(prezzoVenditaNetto))*100;
+						ricaricoUnitario = margineUnitario;
+					}else {
+						margineUnitario = (profittoUnitario/Math.abs(prezzoVenditaNetto))*100;
+						ricaricoUnitario = (profittoUnitario/Math.abs(costoNetto))*100;
+					}
+				}
+			}
+		}
+		if (prodotto instanceof ProdottiVenditaLibera){
+			if(prodottoVenditaLibera != null) {
+				prodottoVenditaLibera.setPercentualeRicaricoUnitario(new BigDecimal(ricaricoUnitario).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+				prodottoVenditaLibera.setPercentualeMargineUnitario(new BigDecimal(margineUnitario).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
+			}
+		}else {
+			if (prodotto instanceof  ProdottiVenditaSSN){
+				if(prodottoVenditaSSN != null){
+					prodottoVenditaSSN.setPercentualeRicaricoUnitario(new BigDecimal(ricaricoUnitario).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
+					prodottoVenditaSSN.setPercentualeMargineUnitario(new BigDecimal(margineUnitario).setScale(CustomRoundingAndScaling.getScaleValue(),CustomRoundingAndScaling.getRoundingMode()));
+				}
+			}
 		}
 	}
 	
@@ -518,8 +574,12 @@ public class ImportazioneVenditeFromDBF extends Task {
 			resoProdottoSSN.setQuotaAssistito(rs.getBigDecimal("QASS"));// si riferisce alla quantità totale
 			resoProdottoSSN.setAliquotaIva(rs.getInt("ALIVA"));
 			
-			
-			resoProdottoSSN.setCostoCompresoIva(rs.getBigDecimal("COSTO"));
+			ProdottiVenditaSSN prodottoVenditaSSN = ProdottiVenditaSSNDAOManager.lookupProdottoPerReso(resoProdottoSSN.getMinsan(),resoProdottoSSN.getDataReso());
+			if(prodottoVenditaSSN != null)
+				resoProdottoSSN.setCostoCompresoIva(prodottoVenditaSSN.getCostoCompresoIva());
+			else
+				resoProdottoSSN.setCostoCompresoIva(rs.getBigDecimal("COSTO"));
+
 			if (resoProdottoSSN.getCostoCompresoIva().doubleValue() > 0){
 				double tempCostoDeivato = resoProdottoSSN.getCostoCompresoIva().doubleValue()/(1+((double)resoProdottoSSN.getAliquotaIva())/100);
 				resoProdottoSSN.setCostoNettoIva(new BigDecimal(tempCostoDeivato).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
@@ -579,9 +639,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 			resoProdottoSSN.setPrezzoVenditaNetto(new BigDecimal(tempPrezzoVenditaNetto).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 
 			// calcolo del profitto unitario
-			if (resoProdottoSSN.getCostoCompresoIva().doubleValue() > 0){
-				resoProdottoSSN.setProfittoUnitario(resoProdottoSSN.getPrezzoVenditaNetto().subtract(resoProdottoSSN.getCostoNettoIva()));
-			}
+			resoProdottoSSN.setProfittoUnitario(resoProdottoSSN.getPrezzoVenditaNetto().subtract(resoProdottoSSN.getCostoNettoIva()));
 
 			//calcolo TotaleResoSSN
 			double totaleReso = tempPrezzoVendita * ((double)resoProdottoSSN.getQuantita());
@@ -604,17 +662,22 @@ public class ImportazioneVenditeFromDBF extends Task {
 			resoProdotto.setNumreg(rs.getInt("NUMREG"));
 			resoProdotto.setMinsan(rs.getString("MINSAN10"));
 			resoProdotto.setDescrizione(rs.getString("DESCRIZ"));
+			resoProdotto.setDataReso(rs.getDate("DATAREG"));
 			resoProdotto.setPrezzoVendita(rs.getBigDecimal("PREZZO_F"));
 			resoProdotto.setScontoProdotti(rs.getBigDecimal("SCONTO"));
 			resoProdotto.setAliquotaIva(rs.getInt("ALIVA"));
-			resoProdotto.setCostoCompresoIva(rs.getBigDecimal("COSTO"));
+			ProdottiVenditaLibera prodottoVenditaLibera = ProdottiVenditaLiberaDAOManager.findProdottoPerReso(resoProdotto.getMinsan(),resoProdotto.getDataReso());
+			if(prodottoVenditaLibera != null)
+				resoProdotto.setCostoCompresoIva(prodottoVenditaLibera.getCostoCompresoIva());
+			else
+				resoProdotto.setCostoCompresoIva(rs.getBigDecimal("COSTO"));
 			//calcolo costo deivato
 			if (resoProdotto.getCostoCompresoIva().doubleValue() > 0){
 				double tempCostoDeivato = resoProdotto.getCostoCompresoIva().doubleValue()/(1+((double)resoProdotto.getAliquotaIva())/100);
 				resoProdotto.setCostoNettoIva(new BigDecimal(tempCostoDeivato).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 			}
 			resoProdotto.setQuantita(rs.getInt("QUANT"));
-			resoProdotto.setDataReso(rs.getDate("DATAREG"));
+
 			
 			//se c'è differenza fra PREZZO_F e PREZZO valorizzo lo sconto payBack: tengo conto che non siano prodotti integrative regionale
 			//if (!(rs.getString("K_ESENZION").equals("ESA"))){
@@ -636,10 +699,8 @@ public class ImportazioneVenditeFromDBF extends Task {
 			resoProdotto.setPrezzoVenditaNetto(new BigDecimal(tempPrezzoVenditaNetto).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 			
 			// calcolo del profitto unitario
-			if (resoProdotto.getCostoCompresoIva().doubleValue() > 0){
-				resoProdotto.setProfittoUnitario(resoProdotto.getPrezzoVenditaNetto().subtract(resoProdotto.getCostoNettoIva()));
-			}
-			
+			resoProdotto.setProfittoUnitario(resoProdotto.getPrezzoVenditaNetto().subtract(resoProdotto.getCostoNettoIva()));
+
 			/*
 			 * Aggiorno ResoVenditaLibera e ResiVendita
 			 */
@@ -771,6 +832,9 @@ public class ImportazioneVenditeFromDBF extends Task {
 						 */
 						double tempPrezzoVenditaNetto = (prodottoVenditaLibera.getPrezzoVendita().doubleValue() - prodottoVenditaLibera.getTotaleScontoUnitario().doubleValue())/(1+((double)prodottoVenditaLibera.getAliquotaIva())/100);
 						prodottoVenditaLibera.setPrezzoVenditaNetto(new BigDecimal(tempPrezzoVenditaNetto).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+						prodottoVenditaLibera.setProfittoUnitario(prodottoVenditaLibera.getPrezzoVenditaNetto().subtract(prodottoVenditaLibera.getCostoNettoIva()));
+						setProfittoMargineRicarico(prodottoVenditaLibera);
+						/*
 						if ((prodottoVenditaLibera.getCostoCompresoIva().doubleValue() > 0) ){
 								prodottoVenditaLibera.setProfittoUnitario(prodottoVenditaLibera.getPrezzoVenditaNetto().subtract(prodottoVenditaLibera.getCostoNettoIva()));
 								if (prodottoVenditaLibera.getProfittoUnitario().doubleValue() > 0){
@@ -783,7 +847,9 @@ public class ImportazioneVenditeFromDBF extends Task {
 									prodottoVenditaLibera.setPercentualeMargineUnitario(new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 									prodottoVenditaLibera.setPercentualeRicaricoUnitario(new BigDecimal(0).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 								}
-						}	
+						}
+
+						 */
 					}
 					
 					//aggiorno i dati relativi alla VenditaLibera: aggiungo lo sconto Ripartito al totale sconto prodotti; decurto il totaleVenditaScontata del totaleScontoRipartito
@@ -823,12 +889,13 @@ public class ImportazioneVenditeFromDBF extends Task {
 						// aggiornamento prezzoVenditaNetto
 						double tempPrezzoVenditaNetto = (tempPrezzoVenditaLordo - prodottoVenditaSSN.getTotaleScontoUnitario().doubleValue())/(1+((double)prodottoVenditaSSN.getAliquotaIva())/100);
 						prodottoVenditaSSN.setPrezzoVenditaNetto(new BigDecimal(tempPrezzoVenditaNetto).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
-						
-		
+
 						// aggiorno ProfittoUnitario
+						double tempProfitto = prodottoVenditaSSN.getPrezzoVenditaNetto().doubleValue() - prodottoVenditaSSN.getCostoNettoIva().doubleValue();
+						prodottoVenditaSSN.setProfittoUnitario(new BigDecimal(tempProfitto).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
+						setProfittoMargineRicarico(prodottoVenditaSSN);
+						/*
 						if (prodottoVenditaSSN.getProfittoUnitario().doubleValue() != 0){
-							double tempProfitto = prodottoVenditaSSN.getPrezzoVenditaNetto().doubleValue() - prodottoVenditaSSN.getCostoNettoIva().doubleValue();
-							prodottoVenditaSSN.setProfittoUnitario(new BigDecimal(tempProfitto).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 							if (prodottoVenditaSSN.getProfittoUnitario().doubleValue() > 0){
 								double tempMargine = (tempProfitto/prodottoVenditaSSN.getPrezzoVenditaNetto().doubleValue())*100;
 								double tempRicarico = (tempProfitto/prodottoVenditaSSN.getCostoNettoIva().doubleValue())*100;
@@ -836,6 +903,8 @@ public class ImportazioneVenditeFromDBF extends Task {
 								prodottoVenditaSSN.setPercentualeRicaricoUnitario(new BigDecimal(tempRicarico).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 							}
 						}
+
+						 */
 					}
 					
 					//aggiorno i dati di VenditaSSN: aggiungo l'eventuale scontoRipartito in scontoSSN e ricalcolo la Vendita scontata
@@ -850,9 +919,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 		TotaliGeneraliVenditaEstrattiDAOManager.aggiornaTotaliGenerali(venditaGenerale);
 		TotaliGeneraliVenditaEstrattiGiornalieriDAOManager.aggiornaTotaliGenerali(venditaGenerale);
 	}
-	
-	
-	
+
 	private void insertResi(ResiVendite resoVendite){
 		
 		//resoVendite = ResiDAOManager.updateResoVendita(resoVendite);

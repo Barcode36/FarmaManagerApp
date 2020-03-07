@@ -93,6 +93,12 @@ public class ProdottiVenditaLiberaDAOManager {
 		return prodottoDao.create(prodotto);
 	}
 
+	public static ProdottiVenditaLibera findProdottoPerReso(String minsan, Date dataReso){
+		DAOFactory daoFactory = DAOFactory.getInstance();
+		ProdottiVenditaLiberaDAO prodottoDao = daoFactory.getProdottoVenditaLiberaDAO();
+		return prodottoDao.lookUpProdottoReso(minsan,dataReso);
+	}
+
 	public static  boolean deleteByIdProdottoVenditaLibera(int idProdotto) {
 		DAOFactory daoFactory = DAOFactory.getInstance();
 		ProdottiVenditaLiberaDAO prodottoDao = daoFactory.getProdottoVenditaLiberaDAO();

@@ -121,7 +121,7 @@
          <children>
             <ScrollPane hbarPolicy="NEVER" prefHeight="603.0" prefWidth="719.0" vbarPolicy="NEVER">
                <content>
-                  <TableView fx:id="tableElencoMinsan" prefHeight="465.0" prefWidth="704.0">
+                  <TableView fx:id="tableElencoMinsan" prefHeight="465.0" prefWidth="713.0">
                     <columns>
                       <TableColumn fx:id="colMinsan" editable="false" prefWidth="86.0" resizable="false" text="minsan" />
                       <TableColumn fx:id="colDescrizione" editable="false" minWidth="0.0" prefWidth="237.0" resizable="false" text="descrizione" />
@@ -129,7 +129,7 @@
                         <TableColumn fx:id="colPrezzoVenditaMedio" editable="false" prefWidth="76.0" resizable="false" text="prezzo&#10;vendita&#10;medio" />
                         <TableColumn fx:id="colMargineMedio" editable="false" prefWidth="82.0" resizable="false" text="margine&#10;medio" />
                         <TableColumn fx:id="colRicaricoMedio" editable="false" prefWidth="76.0" resizable="false" text="ricarico&#10;medio" />
-                        <TableColumn fx:id="colProfittoMedio" editable="false" prefWidth="73.0" resizable="false" text="profitto&#10;medio" />
+                        <TableColumn fx:id="colProfittoMedio" editable="false" prefWidth="78.0" resizable="false" text="profitto&#10;medio" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -137,7 +137,7 @@
                   </TableView>
                </content>
             </ScrollPane>
-            <PieChart fx:id="graficoComposizioneRicarico" labelLineLength="5.0" prefHeight="603.0" prefWidth="457.0" title="Composizione Ricarico" />
+            <PieChart fx:id="graficoComposizioneRicarico" labelLineLength="5.0" prefHeight="467.0" prefWidth="438.0" title="Composizione Ricarico" />
          </children>
       </HBox>
    </center>

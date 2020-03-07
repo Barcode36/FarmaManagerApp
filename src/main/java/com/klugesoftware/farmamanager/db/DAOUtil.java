@@ -128,15 +128,16 @@ public final class DAOUtil {
 	}
 	
 	public static ElencoMinsanLiberaVenditaRowData mapElencoMinsanLiberaVenditaRowData(ResultSet rs) throws SQLException{
-		
+		//FIXME: da correggere in modo che il profitto sia negativo in caso di prezzoVeNett = 0
 		Integer tempQuantitaTotale = new Integer(rs.getString("quantitaTotale"));
 		double tempProfittoMedio=0;
 		double tempMargineMedio=0;
 		double tempRicaricoMedio=0;
 
+		tempProfittoMedio = rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue() - rs.getBigDecimal("costoMedio").doubleValue();
 
 		if ( (rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue() != 0) && (rs.getBigDecimal("costoMedio").doubleValue() != 0)  ){
-			tempProfittoMedio = rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue() - rs.getBigDecimal("costoMedio").doubleValue();
+
 			tempMargineMedio = (tempProfittoMedio/rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue()) * 100;
 			tempRicaricoMedio = (tempProfittoMedio/rs.getBigDecimal("costoMedio").doubleValue()) * 100;
 		}

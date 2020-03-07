@@ -254,8 +254,8 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
         txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(firstDay));
         txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(lastDay));
 
-        int meseSelezionato = myCal.get(Calendar.MONTH)+1;
-        comboMeseDaConfrontare.getSelectionModel().select(meseSelezionato);
+        //int meseSelezionato = myCal.get(Calendar.MONTH)+1;
+        //comboMeseDaConfrontare.getSelectionModel().select(meseSelezionato);
 
         Date[] datesBefore;
         if (rdtBtnAnnoPrecedente.isSelected())
@@ -288,8 +288,8 @@ public class ConfrontoTotaliVenditeLibereController implements Initializable {
         txtFldDataFrom.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(firstDay));
         txtFldDataTo.getEditor().setText(DateUtility.converteDateToGUIStringDDMMYYYY(lastDay));
 
-        int meseSelezionato = myCal.get(Calendar.MONTH)+1;
-        comboMeseDaConfrontare.getSelectionModel().select(meseSelezionato);
+        //int meseSelezionato = myCal.get(Calendar.MONTH)+1;
+        //comboMeseDaConfrontare.getSelectionModel().select(meseSelezionato);
 
         Date[] datesBefore;
         if (rdtBtnAnnoPrecedente.isSelected())

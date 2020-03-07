@@ -72,7 +72,7 @@
                         </RadioButton>
                      </children>
                   </VBox>
-                  <ComboBox fx:id="comboMeseDaConfrontare" layoutX="316.0" layoutY="48.0" onAction="#clickedMeseDaConfrontare" prefHeight="27.0" prefWidth="246.0" promptText="seleziona il mese da confrontare" visibleRowCount="13" />
+                  <ComboBox fx:id="comboMeseDaConfrontare" disable="true" layoutX="316.0" layoutY="48.0" onAction="#clickedMeseDaConfrontare" prefHeight="27.0" prefWidth="246.0" promptText="seleziona il mese da confrontare" visible="false" visibleRowCount="13" />
                   <TextArea fx:id="txtAreaPeriodiConfrontati" layoutX="847.0" layoutY="11.0" prefHeight="97.0" prefWidth="236.0" text="&#10;" />
                </children>
                <opaqueInsets>

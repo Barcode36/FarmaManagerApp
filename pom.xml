@@ -6,7 +6,7 @@
 
     <groupId>com.klugesoftware</groupId>
     <artifactId>FarmaManagerApp</artifactId>
-    <version>1.0.5_betatest</version>
+    <version>1.0.6_betatest</version>
 
 
     <dependencies>

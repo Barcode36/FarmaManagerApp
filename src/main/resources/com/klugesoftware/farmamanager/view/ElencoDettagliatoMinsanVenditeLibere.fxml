@@ -127,7 +127,7 @@
                         <TableColumn fx:id="colCostoMedio" editable="false" prefWidth="112.0" resizable="false" text="costo&#10;medio" />
                         <TableColumn fx:id="colMargineMedio" editable="false" prefWidth="94.0" resizable="false" text="margine&#10;medio" />
                         <TableColumn fx:id="colRicaricoMedio" editable="false" prefWidth="100.0" resizable="false" text="ricarico&#10;medio" />
-                        <TableColumn fx:id="colProfittoMedio" editable="false" prefWidth="92.0" resizable="false" text="profitto&#10;medio" />
+                        <TableColumn fx:id="colProfittoMedio" editable="false" prefWidth="88.0" resizable="false" text="profitto&#10;medio" />
                     </columns>
                   </TableView>
                </content>

@@ -1,6 +1,7 @@
 package com.klugesoftware.farmamanager.main;
 import com.klugesoftware.FarmaManagerUpdating.ftp.FTPConnector;
 import com.klugesoftware.farmamanager.utility.GetDBFFileName;
+import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,11 +22,25 @@ import java.util.Properties;
 public class FarmaManagerMain extends Application{
 
     private Logger logger = LogManager.getLogger(FarmaManagerMain.class.getName());
+    private static final int COUNT_LIMIT = 50000;
+    @Override
+    public void init() {
+        try {
+
+            for (int i = 0; i < COUNT_LIMIT; i++) {
+                double progress = (100 * i) / COUNT_LIMIT;
+                LauncherImpl.notifyPreloader(this, new MainPreloader.ProgressNotification(progress));
+            }
+        }catch(Exception ex){
+            logger.error(ex.getMessage());
+        }
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         //controllo se ci sono aggiornamenti da scaricare
+        /*
         try {
             FTPConnector ftpClient = new FTPConnector();
             boolean ret = ftpClient.isEmptyFolderUpdate();
@@ -42,6 +57,7 @@ public class FarmaManagerMain extends Application{
         }catch(IOException ex){
             logger.error(ex.getMessage());
         }
+         */
         BorderPane root = (BorderPane) FXMLLoader.load(getClass().getResource("/com/klugesoftware/farmamanager/view/SituazioneVenditeEProfitti.fxml"));
         Scene sceneSituazioneVenditeEProfitti = new Scene(root);
         primaryStage.setTitle("Farma Manager");
@@ -52,6 +68,7 @@ public class FarmaManagerMain extends Application{
     }
 
     public static void main(String[] args){
-        Application.launch(FarmaManagerMain.class,args);
+        LauncherImpl.launchApplication(FarmaManagerMain.class,MainPreloader.class,args);
+        //Application.launch(FarmaManagerMain.class,args);
     }
 }
