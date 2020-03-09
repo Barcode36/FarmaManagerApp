@@ -121,13 +121,13 @@
                     <columns>
                       <TableColumn fx:id="colMinsan" editable="false" prefWidth="103.0" resizable="false" text="minsan" />
                       <TableColumn fx:id="colDescrizione" editable="false" minWidth="0.0" prefWidth="308.0" resizable="false" text="descrizione" />
-                        <TableColumn fx:id="colQuantita" editable="false" prefWidth="103.0" resizable="false" text="quantità&#10;totale&#10;" />
-                        <TableColumn fx:id="colPrezzoVenditaMedio" editable="false" prefWidth="130.0" resizable="false" text="prezzo&#10;vendita&#10;medio" />
-                        <TableColumn fx:id="colScontoMedio" editable="false" prefWidth="93.0" resizable="false" text="sconto&#10;medio" />
-                        <TableColumn fx:id="colCostoMedio" editable="false" prefWidth="112.0" resizable="false" text="costo&#10;medio" />
-                        <TableColumn fx:id="colMargineMedio" editable="false" prefWidth="94.0" resizable="false" text="margine&#10;medio" />
-                        <TableColumn fx:id="colRicaricoMedio" editable="false" prefWidth="100.0" resizable="false" text="ricarico&#10;medio" />
-                        <TableColumn fx:id="colProfittoMedio" editable="false" prefWidth="88.0" resizable="false" text="profitto&#10;medio" />
+                        <TableColumn fx:id="colQuantita" editable="false" prefWidth="89.0" resizable="false" text="quantità&#10;totale&#10;" />
+                        <TableColumn fx:id="colPrezzoVenditaMedio" editable="false" prefWidth="119.0" resizable="false" text="prezzo&#10;vendita&#10;lordo&#10;medio" />
+                        <TableColumn fx:id="colScontoMedio" editable="false" prefWidth="96.0" resizable="false" text="sconto&#10;medio" />
+                        <TableColumn fx:id="colCostoMedio" editable="false" prefWidth="114.0" resizable="false" text="costo&#10;netto iva&#10;medio&#10;" />
+                        <TableColumn fx:id="colMargineMedio" editable="false" prefWidth="102.0" resizable="false" text="margine&#10;medio" />
+                        <TableColumn fx:id="colRicaricoMedio" editable="false" prefWidth="101.0" resizable="false" text="ricarico&#10;medio" />
+                        <TableColumn fx:id="colProfittoMedio" editable="false" prefWidth="99.0" resizable="false" text="profitto&#10;medio" />
                     </columns>
                   </TableView>
                </content>

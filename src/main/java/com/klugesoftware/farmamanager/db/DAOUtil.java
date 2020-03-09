@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.klugesoftware.farmamanager.model.CustomRoundingAndScaling;
 import com.klugesoftware.farmamanager.model.Giacenze;
@@ -26,6 +28,7 @@ import com.klugesoftware.farmamanager.IOFunctions.TotaliGeneraliVenditaEstrattiG
 import com.klugesoftware.farmamanager.DTO.ElencoProdottiLiberaVenditaRowData;
 import com.klugesoftware.farmamanager.DTO.ElencoMinsanLiberaVenditaRowData;
 import com.klugesoftware.farmamanager.DTO.ElencoTotaliGiornalieriRowData;
+import com.klugesoftware.farmamanager.utility.CalcoloRicaricoEMargine;
 import com.klugesoftware.farmamanager.utility.DateUtility;
 
 public final class DAOUtil {
@@ -130,17 +133,24 @@ public final class DAOUtil {
 	public static ElencoMinsanLiberaVenditaRowData mapElencoMinsanLiberaVenditaRowData(ResultSet rs) throws SQLException{
 		//FIXME: da correggere in modo che il profitto sia negativo in caso di prezzoVeNett = 0
 		Integer tempQuantitaTotale = new Integer(rs.getString("quantitaTotale"));
-		double tempProfittoMedio=0;
-		double tempMargineMedio=0;
-		double tempRicaricoMedio=0;
+		double tempProfittoMedio = 0 ;
+		double tempMargineMedio = 0 ;
+		double tempRicaricoMedio = 0 ;
 
 		tempProfittoMedio = rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue() - rs.getBigDecimal("costoMedio").doubleValue();
-
+		/*
 		if ( (rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue() != 0) && (rs.getBigDecimal("costoMedio").doubleValue() != 0)  ){
 
 			tempMargineMedio = (tempProfittoMedio/rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue()) * 100;
 			tempRicaricoMedio = (tempProfittoMedio/rs.getBigDecimal("costoMedio").doubleValue()) * 100;
 		}
+
+		 */
+		Map<String,Double> ret = new HashMap<>();
+		ret = CalcoloRicaricoEMargine.calcoloMargineERicarico(tempProfittoMedio,rs.getBigDecimal("prezzoVenditaNettoMedio").doubleValue(),rs.getBigDecimal("costoMedio").doubleValue());
+		tempMargineMedio = ret.get("margine");
+		tempRicaricoMedio = ret.get("ricarico");
+
 		return new ElencoMinsanLiberaVenditaRowData(
 				rs.getString("minsan"), 
 				rs.getString("descrizione"), 

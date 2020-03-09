@@ -8,11 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-
 import com.klugesoftware.farmamanager.db.*;
 import com.klugesoftware.farmamanager.model.*;
+import com.klugesoftware.farmamanager.utility.CalcoloRicaricoEMargine;
 import javafx.concurrent.Task;
-import javafx.scene.control.Alert;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.klugesoftware.farmamanager.utility.DateUtility;
@@ -372,7 +371,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 			 */
 
 			prodotto.setProfittoUnitario(prodotto.getPrezzoVenditaNetto().subtract(prodotto.getCostoNettoIva()));
-			setProfittoMargineRicarico(prodotto);
+			CalcoloRicaricoEMargine.calcolo(prodotto);
 		} catch (SQLException e) {
 			logger.error("mappingVenditeSSN(): I can't create record...",e);
 		} finally{
@@ -474,7 +473,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 			 *  *****Attenzione in questa fase manca l'eventuale sconto ripartito da Vendita Generale: viene ripartito successivamante in insertMovimento******
 			 */
 			prodotto.setProfittoUnitario(prodotto.getPrezzoVenditaNetto().subtract(prodotto.getCostoNettoIva()));
-			setProfittoMargineRicarico(prodotto);
+			CalcoloRicaricoEMargine.calcolo(prodotto);
 			/*
 			if (prodotto.getCostoCompresoIva().doubleValue() > 0){
 				if (prodotto.getProfittoUnitario().doubleValue() > 0){
@@ -492,13 +491,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 		}
 	}
 
-	/**
-	 *
-	 * @param prodotto
-	 *
-	 * 	Il metodo calcola il margine e ricarico nei vari casi con profittoUnitario,
-	 * 	costoNetto o prezzo Vendita con valori <0 oppure =0 oppure >0
-	 */
+	/*
 	private void setProfittoMargineRicarico(Object prodotto){
 		ProdottiVenditaLibera prodottoVenditaLibera = null;
 		ProdottiVenditaSSN prodottoVenditaSSN = null;
@@ -555,6 +548,8 @@ public class ImportazioneVenditeFromDBF extends Task {
 			}
 		}
 	}
+
+	 */
 	
 	private void mappingResoVenditaSSN(ResiVendite resoVendita,ResiVenditeSSN resoSSN, ResultSet rs){
 		ResiProdottiVenditaSSN resoProdottoSSN = null;
@@ -833,7 +828,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 						double tempPrezzoVenditaNetto = (prodottoVenditaLibera.getPrezzoVendita().doubleValue() - prodottoVenditaLibera.getTotaleScontoUnitario().doubleValue())/(1+((double)prodottoVenditaLibera.getAliquotaIva())/100);
 						prodottoVenditaLibera.setPrezzoVenditaNetto(new BigDecimal(tempPrezzoVenditaNetto).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
 						prodottoVenditaLibera.setProfittoUnitario(prodottoVenditaLibera.getPrezzoVenditaNetto().subtract(prodottoVenditaLibera.getCostoNettoIva()));
-						setProfittoMargineRicarico(prodottoVenditaLibera);
+						CalcoloRicaricoEMargine.calcolo(prodottoVenditaLibera);
 						/*
 						if ((prodottoVenditaLibera.getCostoCompresoIva().doubleValue() > 0) ){
 								prodottoVenditaLibera.setProfittoUnitario(prodottoVenditaLibera.getPrezzoVenditaNetto().subtract(prodottoVenditaLibera.getCostoNettoIva()));
@@ -893,7 +888,7 @@ public class ImportazioneVenditeFromDBF extends Task {
 						// aggiorno ProfittoUnitario
 						double tempProfitto = prodottoVenditaSSN.getPrezzoVenditaNetto().doubleValue() - prodottoVenditaSSN.getCostoNettoIva().doubleValue();
 						prodottoVenditaSSN.setProfittoUnitario(new BigDecimal(tempProfitto).setScale(CustomRoundingAndScaling.getScaleValue(), CustomRoundingAndScaling.getRoundingMode()));
-						setProfittoMargineRicarico(prodottoVenditaSSN);
+						CalcoloRicaricoEMargine.calcolo(prodottoVenditaSSN);
 						/*
 						if (prodottoVenditaSSN.getProfittoUnitario().doubleValue() != 0){
 							if (prodottoVenditaSSN.getProfittoUnitario().doubleValue() > 0){
